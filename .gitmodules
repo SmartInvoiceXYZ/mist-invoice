@@ -1,0 +1,3 @@
+[submodule "mist-invoice-contracts/lib/forge-std"]
+	path = mist-invoice-contracts/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
