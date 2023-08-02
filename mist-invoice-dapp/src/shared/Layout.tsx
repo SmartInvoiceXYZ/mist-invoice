@@ -2,8 +2,8 @@ import { Flex } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { useLocation } from "react-router-dom";
 
-import { Web3Context } from "../context/Web3Context";
-import { ChainId, SUPPORTED_NETWORKS } from "../utils/constants";
+import { Web3Context } from "../context";
+import { ChainId, SUPPORTED_NETWORKS } from "../utils";
 import { ConnectWeb3 } from "./ConnectWeb3";
 import { Footer } from "./Footer";
 import { Header } from "./Header";

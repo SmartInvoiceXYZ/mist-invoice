@@ -29,6 +29,7 @@ export const ConnectWeb3 = () => {
   };
 
   const NETWORK_NAMES = SUPPORTED_NETWORKS.map(getNetworkName).join(" or ");
+
   return (
     <Container>
       <Flex

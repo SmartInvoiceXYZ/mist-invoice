@@ -9,27 +9,28 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useWeb3 } from "../context/Web3Context";
-import { INVOICE_TYPES } from "../utils/constants";
-import { logError } from "../utils/helpers";
+import { useWeb3 } from "../context";
+import { INVOICE_TYPES, logError } from "../utils";
 
 const SelectInvoiceType = () => {
   const { connectAccount } = useWeb3();
   const { Instant, Escrow } = INVOICE_TYPES;
 
   const navigate = useNavigate();
-  const [isMobile, onMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     if (window) {
       toggleMobileMode();
       window.addEventListener("resize", toggleMobileMode);
     }
   });
+
   const toggleMobileMode = () => {
     if (window.innerWidth < 600) {
-      onMobile(true);
+      setIsMobile(true);
     } else {
-      onMobile(false);
+      setIsMobile(false);
     }
   };
 

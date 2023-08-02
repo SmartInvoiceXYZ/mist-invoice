@@ -15,13 +15,16 @@ import { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 import logo from "../assets/smart-invoice/normal.svg";
-import { ProfileButton } from "../components/ProfileButton";
-import { StyledButton } from "../components/StyledButton";
-import { Web3Context } from "../context/Web3Context";
+import { ProfileButton, StyledButton } from "../components";
+import { Web3Context } from "../context";
 import { HamburgerIcon } from "../icons/HamburgerIcon";
 import { theme } from "../theme";
-import { Profile, getProfile } from "../utils";
-import { getAccountString, getNetworkLabel } from "../utils/helpers";
+import {
+  Profile,
+  getAccountString,
+  getNetworkLabel,
+  getProfile,
+} from "../utils";
 
 export const Header = () => {
   const { account, disconnect, chainId } = useContext(Web3Context);
