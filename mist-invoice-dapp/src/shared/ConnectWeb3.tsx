@@ -1,12 +1,12 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import { useContext } from "react";
 
+import { Container } from "../components/Container";
 import { Loader } from "../components/Loader";
 import { Web3Context } from "../context/Web3Context";
 import { WalletFilledIcon } from "../icons/WalletFilledIcon";
 import { SUPPORTED_NETWORKS } from "../utils/constants";
 import { getNetworkName, logError } from "../utils/helpers";
-import { Container } from "./Container";
 
 export const ConnectWeb3 = () => {
   const { connectAccount, loading, account, disconnect } =
