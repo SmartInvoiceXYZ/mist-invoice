@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer should render 1`] = `
+<DocumentFragment>
+  <div
+    class="css-15cs0q7"
+  >
+    <div
+      class="css-qymxha"
+    >
+      <a
+        class="chakra-link css-0"
+        href="/invoices"
+      >
+        <img
+          alt="Smart Invoice"
+          class="chakra-image css-lu3yos"
+          src="white.svg"
+        />
+      </a>
+      <div
+        class="css-1a9re40"
+      >
+        <a
+          class="chakra-link css-0"
+          href="https://smartinvoice.xyz"
+          rel="noopener"
+          target="_blank"
+        >
+          Website
+        </a>
+        <a
+          class="chakra-link css-0"
+          href="https://docs.smartinvoice.xyz"
+          rel="noopener"
+          target="_blank"
+        >
+          Documentation
+        </a>
+        <a
+          class="chakra-link css-0"
+          href="https://docs.smartinvoice.xyz/misc/get-support"
+          rel="noopener"
+          target="_blank"
+        >
+          Support
+        </a>
+        <a
+          class="chakra-link css-0"
+          href="https://twitter.com/SmartInvoiceXYZ"
+          rel="noopener"
+          target="_blank"
+        >
+          Twitter
+        </a>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
