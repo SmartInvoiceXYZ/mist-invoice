@@ -10,7 +10,7 @@ import {
 import React from "react";
 
 import { theme } from "../theme";
-import { getAccountString, getNetworkLabel } from "../utils/helpers";
+import { getAccountString, getNetworkLabel } from "../utils";
 
 export type ProfileButtonProps = {
   profile?: any;

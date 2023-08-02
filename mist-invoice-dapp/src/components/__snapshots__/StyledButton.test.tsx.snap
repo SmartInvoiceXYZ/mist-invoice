@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StyledButton should render 1`] = `
+<DocumentFragment>
+  <button
+    class="chakra-button css-4lg1l4"
+    type="button"
+  />
+</DocumentFragment>
+`;
