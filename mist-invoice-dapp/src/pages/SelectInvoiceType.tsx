@@ -10,10 +10,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useWeb3 } from "../context/Web3Context";
-import { logError } from "../utils/helpers";
 import { INVOICE_TYPES } from "../utils/constants";
+import { logError } from "../utils/helpers";
 
-export const SelectInvoiceType = () => {
+const SelectInvoiceType = () => {
   const { connectAccount } = useWeb3();
   const { Instant, Escrow } = INVOICE_TYPES;
 
@@ -123,3 +123,5 @@ export const SelectInvoiceType = () => {
     </Flex>
   );
 };
+
+export default SelectInvoiceType;

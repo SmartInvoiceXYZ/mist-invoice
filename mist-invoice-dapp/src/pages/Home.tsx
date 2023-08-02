@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useWeb3 } from "../context";
 import { logError } from "../utils";
 
-export const Home = () => {
+const Home = () => {
   const { connectAccount, account } = useWeb3();
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
@@ -109,3 +109,5 @@ export const Home = () => {
     </Flex>
   );
 };
+
+export default Home;
