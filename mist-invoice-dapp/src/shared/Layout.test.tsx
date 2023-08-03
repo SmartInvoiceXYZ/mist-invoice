@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import { Web3ContextProvider } from "../context";
 import { Layout } from "./Layout";
 
 jest.mock("@chakra-ui/react", () => ({
@@ -10,9 +11,11 @@ jest.mock("@chakra-ui/react", () => ({
 describe("Layout", () => {
   it("should render", () => {
     const view = render(
-      <MemoryRouter>
-        <Layout />
-      </MemoryRouter>,
+      <Web3ContextProvider>
+        <MemoryRouter>
+          <Layout />
+        </MemoryRouter>
+      </Web3ContextProvider>,
     );
 
     expect(view.asFragment()).toMatchSnapshot();
