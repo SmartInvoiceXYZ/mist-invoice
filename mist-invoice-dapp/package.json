@@ -56,7 +56,16 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "jest": "^29.6.2",
     "prettier": "^3.0.0"
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "src/utils/constants.ts",
+      "src/index.tsx",
+      "src/reportWebVitals.ts"
+    ]
   }
 }
