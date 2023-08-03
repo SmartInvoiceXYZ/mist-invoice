@@ -26,7 +26,7 @@ export const getProfile = async (account: string) => {
 
   const response = await fetch(
     `${BOX_ENDPOINT}/profile?address=${encodeURIComponent(address)}`,
-    fetchOptions
+    fetchOptions,
   );
   if (response.ok && response.status === 200) {
     const boxProfile = await response.json();

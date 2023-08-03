@@ -1,8 +1,4 @@
-import {
-  ChakraProvider,
-  ColorModeScript,
-  CSSReset
-} from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript, CSSReset } from "@chakra-ui/react";
 import theme from "@chakra-ui/theme";
 import { Global } from "@emotion/react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -34,6 +30,5 @@ const App = () => (
     </ErrorBoundary>
   </ChakraProvider>
 );
-
 
 export default App;

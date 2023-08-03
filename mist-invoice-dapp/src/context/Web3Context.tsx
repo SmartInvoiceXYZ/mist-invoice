@@ -68,17 +68,17 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
 }) => {
   const [loading, setLoading] = useState(true);
   const [{ account, provider, chainId }, setWeb3] = useState<Web3ProviderState>(
-    {}
+    {},
   );
 
   const setWeb3Provider = async (
     prov: Web3BaseProvider<EthExecutionAPI>,
-    initialCall = false
+    initialCall = false,
   ) => {
     if (prov) {
       const web3Provider = new Web3(prov);
       const gotProvider = new BrowserProvider(
-        web3Provider.currentProvider as Eip1193Provider
+        web3Provider.currentProvider as Eip1193Provider,
       );
       const network = await gotProvider.getNetwork();
       const gotChainId = Number(network.chainId);
@@ -97,7 +97,7 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
             ..._provider,
             provider: gotProvider,
             chainId: gotChainId,
-          })
+          }),
         );
       }
     }

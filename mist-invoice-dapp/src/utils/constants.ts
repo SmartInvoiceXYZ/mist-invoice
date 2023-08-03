@@ -157,7 +157,7 @@ export const invoiceFactory = {
 };
 
 export const SUPPORTED_NETWORKS = Object.keys(NETWORK_CONFIG).map(
-  (n) => Number(n) as ChainId
+  (n) => Number(n) as ChainId,
 );
 
 export const INVOICE_VERSION = "smart-invoice-v0";
@@ -210,5 +210,5 @@ export const INFURA_AUTH =
   Buffer.from(
     `${REACT_APP_INFURA_PROJECT_ID}` +
       ":" +
-      `${REACT_APP_INFURA_PROJECT_SECRET}`
+      `${REACT_APP_INFURA_PROJECT_SECRET}`,
   ).toString("base64");
