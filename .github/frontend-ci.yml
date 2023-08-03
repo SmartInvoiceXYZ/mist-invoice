@@ -11,6 +11,7 @@ on:
     branches:
       - "main"
       - "develop"
+      - "dapp/**"
     paths:
       - "mist-invoice-dapp/**"
 
