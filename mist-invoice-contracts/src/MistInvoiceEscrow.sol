@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.13;
 
-import "../interfaces/ISmartInvoiceFactory.sol";
+import "./interfaces/ISmartInvoiceFactory.sol";
 
 contract MistInvoiceEscrow {
 
@@ -39,7 +39,6 @@ contract MistInvoiceEscrow {
         MistSecret memory meta = MistSecret(_merkleRoot, _clientRandom, _providerRandom, _clientKey, _providerKey);
         // TODO call factory.createInvoice
         ISmartInvoiceFactory factory = new ISmartInvoiceFactory(INVOICE_FACTORY);
-        factory
         // TODO add meta to mapping for invoice address
 
         // TODO return invoice address
