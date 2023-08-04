@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.13;
 
-import "@smart-invoice/src/interfaces/ISmartInvoiceFactory.sol";
+import "../interfaces/ISmartInvoiceFactory.sol";
 
 contract MistInvoiceEscrow {
 
