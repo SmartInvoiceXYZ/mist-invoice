@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.13;
 
-// TODO import ISmartInvoiceEscrow
+import "@smart-invoice/src/interfaces/ISmartInvoiceFactory.sol";
 
 contract MistInvoiceEscrow {
 
@@ -38,6 +38,8 @@ contract MistInvoiceEscrow {
         // TODO set tracking for client and provider
         MistSecret memory meta = MistSecret(_merkleRoot, _clientRandom, _providerRandom, _clientKey, _providerKey);
         // TODO call factory.createInvoice
+        ISmartInvoiceFactory factory = new ISmartInvoiceFactory(INVOICE_FACTORY);
+        factory
         // TODO add meta to mapping for invoice address
 
         // TODO return invoice address
@@ -48,20 +50,20 @@ contract MistInvoiceEscrow {
         // TODO call transfer to _invoiceAddr
     }
 
-    function privateRelease(address _invoiceAddr, bytes calldata _proof, uint256 _milestone) {
+    function privateRelease(address _invoiceAddr, bytes calldata _proof, uint256 _milestone) external {
         // TODO verify proof
         // TODO call release on _invoiceAddr
         // TODO save amount to provider data
         // TODO deposit to MIST pool
     }
 
-    function privateDispute(address _invoiceAddr, bytes calldata _proof) {
+    function privateDispute(address _invoiceAddr, bytes calldata _proof) external {
         // TODO verify proof
         // TODO call lock on _invoiceAddr
     }
 
     // TODO other resolve arguments needed
-    function resolve(address _invoiceAddr) {
+    function resolve(address _invoiceAddr) external {
         // TODO check arbitration address msg.sender
         // TODO calculate client, provider, arb splits; update mappings
         // TODO call invoice resolve
@@ -69,7 +71,7 @@ contract MistInvoiceEscrow {
         // TODO deposit to MIST pool for client + provider
     }
 
-    function privateWithdraw(address _invoiceAddr, bytes calldata _proof) {
+    function privateWithdraw(address _invoiceAddr, bytes calldata _proof) external {
         // TODO verify withdraw enabled
         // TODO verify proof of client
         // TODO call withdraw on invoice
