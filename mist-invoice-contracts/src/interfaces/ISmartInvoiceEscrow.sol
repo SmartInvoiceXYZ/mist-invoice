@@ -17,9 +17,5 @@ interface ISmartInvoiceEscrow is ISmartInvoice {
 
     function lock(bytes32 _details) external payable;
 
-    function resolve(
-        uint256 _clientAward,
-        uint256 _providerAward,
-        bytes32 _details
-    ) external;
+    function resolve(uint256 _clientAward, uint256 _providerAward, bytes32 _details) external;
 }

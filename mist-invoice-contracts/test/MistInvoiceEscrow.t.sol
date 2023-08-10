@@ -8,14 +8,13 @@ contract MistInvoiceEscrowTest is Test {
     MistInvoiceEscrow public wrapper;
 
     function setUp() public {
-        address _addr = new MockInvoiceFactory().address();
-        wrapper = new MistInvoiceEscrow(_addr);
-        counter.setNumber(0);
+        // address _addr = new MockInvoiceFactory().address();
+        // wrapper = new MistInvoiceEscrow(_addr);
+        // counter.setNumber(0);
     }
 
     function testCreate() public {
         // TODO create new invoice
         //assertEq(created.amount, 100);
     }
-
 }

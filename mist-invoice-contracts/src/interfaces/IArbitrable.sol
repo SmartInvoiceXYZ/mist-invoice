@@ -16,11 +16,7 @@ interface IArbitrable {
      * @param _disputeID ID of the dispute in the Arbitrator contract.
      * @param _ruling The ruling which was given.
      */
-    event Ruling(
-        address indexed _arbitrator,
-        uint256 indexed _disputeID,
-        uint256 _ruling
-    );
+    event Ruling(address indexed _arbitrator, uint256 indexed _disputeID, uint256 _ruling);
 
     /**
      * @dev Give a ruling for a dispute. Must be called by the arbitrator.

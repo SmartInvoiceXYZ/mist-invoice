@@ -3,11 +3,11 @@
 pragma solidity ^0.8.13;
 
 import "./interfaces/ISmartInvoiceFactory.sol";
+import "./interfaces/IMistPool.sol";
 
 contract MistInvoiceEscrow {
-
     address public immutable INVOICE_FACTORY;
-    address public mistPool;
+    IMISTPool public mistPool = IMISTPool(0x6bA81b91c72755459CfdF3c5ad25eFe636DCd493);
 
     mapping(address => MistSecret) mistSecrets;
 
@@ -20,25 +20,27 @@ contract MistInvoiceEscrow {
         bytes encProviderKey;
     }
 
-    constructor(address _invoiceFactory, address _mistPool) public {
+    constructor(address _invoiceFactory, address _mistPool) {
         INVOICE_FACTORY = _invoiceFactory;
-        mistPool = _mistPool;
+        mistPool = IMISTPool(_mistPool);
     }
 
-    function createInvoice(bytes calldata _merkleRoot,
-                           bytes calldata _clientRandom,
-                           bytes calldata _providerRandom,
-                           bytes calldata _clientKey,
-                           bytes calldata _providerKey,
-                           uint256[] calldata _amounts,
-                           bytes calldata _data) external returns (address invoice) {
-        require(_merkleRoot != bytes(0), "merkle root required");
+    function createInvoice(
+        bytes calldata _merkleRoot,
+        bytes calldata _clientRandom,
+        bytes calldata _providerRandom,
+        bytes calldata _clientKey,
+        bytes calldata _providerKey,
+        uint256[] calldata _amounts,
+        bytes calldata _data
+    ) external returns (address invoice) {
+        require(_merkleRoot.length != 0, "merkle root required");
         // TODO check other inputs
 
         // TODO set tracking for client and provider
         MistSecret memory meta = MistSecret(_merkleRoot, _clientRandom, _providerRandom, _clientKey, _providerKey);
         // TODO call factory.createInvoice
-        ISmartInvoiceFactory factory = new ISmartInvoiceFactory(INVOICE_FACTORY);
+        ISmartInvoiceFactory factory = ISmartInvoiceFactory(INVOICE_FACTORY);
         // TODO add meta to mapping for invoice address
 
         // TODO return invoice address
