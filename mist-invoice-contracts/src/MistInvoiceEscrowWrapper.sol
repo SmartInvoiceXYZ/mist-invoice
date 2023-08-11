@@ -5,9 +5,9 @@ pragma solidity ^0.8.13;
 import "./interfaces/ISmartInvoiceFactory.sol";
 import "./interfaces/IMistPool.sol";
 
-contract MistInvoiceEscrow {
+contract MistInvoiceEscrowWrapper {
     address public immutable INVOICE_FACTORY;
-    IMISTPool public mistPool = IMISTPool(0x6bA81b91c72755459CfdF3c5ad25eFe636DCd493);
+    IMISTPool public mistPool;
 
     mapping(address => MistSecret) mistSecrets;
 
@@ -20,25 +20,34 @@ contract MistInvoiceEscrow {
         bytes encProviderKey;
     }
 
+    struct MistData {
+        bytes merkleRoot;
+        bytes clientRandom;
+        bytes providerRandom;
+        bytes clientKey;
+        bytes providerKey;
+    }
+
     constructor(address _invoiceFactory, address _mistPool) {
         INVOICE_FACTORY = _invoiceFactory;
         mistPool = IMISTPool(_mistPool);
     }
 
-    function createInvoice(
-        bytes calldata _merkleRoot,
-        bytes calldata _clientRandom,
-        bytes calldata _providerRandom,
-        bytes calldata _clientKey,
-        bytes calldata _providerKey,
-        uint256[] calldata _amounts,
-        bytes calldata _data
-    ) external returns (address invoice) {
-        require(_merkleRoot.length != 0, "merkle root required");
+    function createInvoice(MistData calldata _mistData, uint256[] calldata _amounts, bytes calldata _data)
+        external
+        returns (address invoice)
+    {
+        require(_mistData.merkleRoot.length != 0, "merkle root required");
         // TODO check other inputs
 
         // TODO set tracking for client and provider
-        MistSecret memory meta = MistSecret(_merkleRoot, _clientRandom, _providerRandom, _clientKey, _providerKey);
+        MistSecret memory meta = MistSecret(
+            _mistData.merkleRoot,
+            _mistData.clientRandom,
+            _mistData.providerRandom,
+            _mistData.clientKey,
+            _mistData.providerKey
+        );
         // TODO call factory.createInvoice
         ISmartInvoiceFactory factory = ISmartInvoiceFactory(INVOICE_FACTORY);
         // TODO add meta to mapping for invoice address
@@ -46,6 +55,7 @@ contract MistInvoiceEscrow {
         // TODO return invoice address
     }
 
+    // maybe don't need wrapper
     function privateDeposit(address _invoiceAddr) external {
         // TODO call MIST withdraw()
         // TODO call transfer to _invoiceAddr

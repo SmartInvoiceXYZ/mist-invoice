@@ -2,10 +2,10 @@
 pragma solidity ^0.8.13;
 
 import {Test, console2} from "forge-std/Test.sol";
-import {MistInvoiceEscrow} from "../src/MistInvoiceEscrow.sol";
+import {MistInvoiceEscrowWrapper} from "../src/MistInvoiceEscrowWrapper.sol";
 
 contract MistInvoiceEscrowTest is Test {
-    MistInvoiceEscrow public wrapper;
+    MistInvoiceEscrowWrapper public wrapper;
 
     function setUp() public {
         // address _addr = new MockInvoiceFactory().address();
