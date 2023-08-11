@@ -21,7 +21,7 @@ contract InvoiceCreationScript is Script {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        // COPY FORK DEPLOYMENT HERE
+        // THIS IS THE SEPOLIA MIST POOL, NEEDS TO BE UPDATED TO LINEA-GOERLI
         MistInvoiceEscrowWrapper mistWrapper = MistInvoiceEscrowWrapper(0xda430a73106D31120Ec5128Bb1008bcd00d25A9C);
 
         // Dummy data
