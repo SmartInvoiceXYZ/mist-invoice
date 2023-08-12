@@ -33,7 +33,7 @@ contract MistInvoiceEscrowWrapper {
         mistPool = IMISTPool(_mistPool);
     }
 
-    function createInvoice(MistData calldata _mistData, uint256[] calldata _amounts, bytes calldata _data)
+    function createInvoice(MistData calldata _mistData, uint256[] calldata _amounts, bytes calldata _data, bytes32 _type)
         external
         returns (address invoice)
     {
@@ -48,11 +48,15 @@ contract MistInvoiceEscrowWrapper {
             _mistData.clientKey,
             _mistData.providerKey
         );
-        // TODO call factory.createInvoice
+        
+        // create new invoice
         ISmartInvoiceFactory factory = ISmartInvoiceFactory(INVOICE_FACTORY);
-        // TODO add meta to mapping for invoice address
+        invoice = factory.create(address(mistPool), _amounts, _data, _type);
+        // add meta to mapping for invoice address
+        mistSecrets[invoice] = meta;
 
-        // TODO return invoice address
+        // return invoice address
+        return invoice;
     }
 
     // maybe don't need wrapper

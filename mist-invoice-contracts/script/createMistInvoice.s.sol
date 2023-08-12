@@ -22,7 +22,7 @@ contract InvoiceCreationScript is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         // COPY FORK DEPLOYMENT HERE
-        MistInvoiceEscrowWrapper mistWrapper = MistInvoiceEscrowWrapper(0xda430a73106D31120Ec5128Bb1008bcd00d25A9C);
+        MistInvoiceEscrowWrapper mistWrapper = MistInvoiceEscrowWrapper(0xC6D07643f95a8eaC299299e2eb895DF0088354Ed);
 
         // Dummy data
         MistData memory _mistData = MistData(
@@ -35,6 +35,7 @@ contract InvoiceCreationScript is Script {
         uint256[] memory _amounts = new uint256[](1);
         _amounts[0] = 1000;
         bytes memory _data = bytes("dummyData");
+        bytes32 _type = bytes32(0x73706c69742d657363726f770000000000000000000000000000000000000000);
 
         MistInvoiceEscrowWrapper.MistData memory mistDataForWrapper = MistInvoiceEscrowWrapper.MistData({
             merkleRoot: _mistData.merkleRoot,
@@ -44,7 +45,7 @@ contract InvoiceCreationScript is Script {
             providerKey: _mistData.providerKey
         });
 
-        address invoiceAddress = mistWrapper.createInvoice(mistDataForWrapper, _amounts, _data);
+        address invoiceAddress = mistWrapper.createInvoice(mistDataForWrapper, _amounts, _data, _type);
 
         console.log("Mist Invoice Address: %s", invoiceAddress);
 
