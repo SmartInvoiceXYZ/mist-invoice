@@ -12,7 +12,7 @@ interface ISmartInvoiceEscrow is ISmartInvoice {
     function resolver() external returns (address);
 
     function token() external returns (address);
-    function amounts() external returns (uint256[]);
+    function amounts() external returns (uint256[] memory);
     function locked() external returns (bool);
 
     function milestone() external returns (uint256);

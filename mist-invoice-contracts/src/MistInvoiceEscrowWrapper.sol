@@ -5,6 +5,7 @@ pragma solidity ^0.8.13;
 import "./interfaces/ISmartInvoiceFactory.sol";
 import "./interfaces/ISmartInvoiceEscrow.sol";
 import "./interfaces/IMistPool.sol";
+import "./interfaces/IERC20.sol";
 
 contract MistInvoiceEscrowWrapper {
     address public immutable INVOICE_FACTORY;
