@@ -1,4 +1,11 @@
+cache
 coverage
 node_modules
+out
+
+mist-invoice-contracts/src/types
 
 .DS_Store
+.yarn
+.env
+.env.local

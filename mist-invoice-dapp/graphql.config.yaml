@@ -1,0 +1,23 @@
+schema:
+  - https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/@githubUser/@subgraphName:
+      headers:
+        Authorization: "<SUBGRAPH_API_TOKEN>"
+documents: './src/graphql/**/*.graphql'
+generates:
+  src/graphql/generated.ts:
+    plugins:
+      - typescript
+      - typescript-operations:
+          strictScalars: true
+          scalars:
+            BooleanType: boolean
+            CustomData: Record<string, unknown>
+            Date: string
+            DateTime: string
+            FloatType: number
+            IntType: number
+            ItemId: string
+            JsonField: unknown
+            MetaTagAttributes: Record<string, string>
+            UploadId: string
+      - typed-document-node
