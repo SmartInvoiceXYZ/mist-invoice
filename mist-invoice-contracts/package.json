@@ -1,0 +1,19 @@
+{
+  "license": "UNLICENSED",
+  "scripts": {
+    "lint": "yarn lint:sol && yarn prettier:check",
+    "lint:sol": "forge fmt --check && yarn solhint \"{script,src,test}/**/*.sol\"",
+    "prettier:check": "yarn prettier --check \"**/*.{json,md,svg,yml}\"",
+    "test": "forge t -vvv --ffi --fork-url http://localhost:8545",
+    "fork": "anvil --fork-url https://rpc.goerli.linea.build  --block-base-fee-per-gas 30000000000 --chain-id 31137",
+    "deploy-local": "forge script script/deployMistInvoiceEscrowWrapper.s.sol --fork-url http://localhost:8545 --broadcast --ffi",
+    "create-invoice": "forge script script/createMistInvoice.s.sol --fork-url http://localhost:8545 --broadcast --ffi"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0",
+    "solhint": "^3.4.1"
+  },
+  "name": "mist-invoice",
+  "description": "A privacy layer on top of smart invoice."
+}
+
