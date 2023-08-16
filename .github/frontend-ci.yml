@@ -1,0 +1,59 @@
+name: "DAPP-CI"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+      - "develop"
+    paths:
+      - "mist-invoice-dapp/**"
+  push:
+    branches:
+      - "main"
+      - "develop"
+      - "dapp/**"
+    paths:
+      - "mist-invoice-dapp/**"
+
+jobs:
+  ci:
+    runs-on: "ubuntu-latest"
+    env:
+      GITHUB_STEP_SUMMARY: ${{ github.workspace }}/.github/step-summary.md
+      WORKING_DIR: ${{ github.workspace }}/mist-invoice-dapp
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+
+      - name: "Install Node.js"
+        uses: "actions/setup-node@v3"
+        with:
+          node-version: "18"
+
+      # - name: "Copy config"
+      #   run: |
+      #     mv ./evm/.env.github ./evm/.env
+      #     echo "::debug::$(less .env)"
+      #     working-directory: ${{ env.WORKING_DIR }}
+
+      - name: "Install the dependencies"
+        run: "npm ci"
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: "Lint the code"
+        run: "npm run lint"
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: "Add lint summary"
+        run: |
+          echo "## Lint results" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
+
+      - name: "Test the code and generate the coverage report"
+        run: "npm test -- --coverage --watchAll=false"
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: "Add test summary"
+        run: |
+          echo "## Test results" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
