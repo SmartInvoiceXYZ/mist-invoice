@@ -5,9 +5,11 @@
     "lint:sol": "forge fmt --check && yarn solhint \"{script,src,test}/**/*.sol\"",
     "prettier:check": "yarn prettier --check \"**/*.{json,md,svg,yml}\"",
     "test": "forge t -vvv --ffi --fork-url http://localhost:8545",
-    "fork": "anvil --fork-url https://rpc.goerli.linea.build  --block-base-fee-per-gas 30000000000 --chain-id 31137",
-    "deploy-local": "forge script script/deployMistInvoiceEscrowWrapper.s.sol --fork-url http://localhost:8545 --broadcast --ffi",
-    "create-invoice": "forge script script/createMistInvoice.s.sol --fork-url http://localhost:8545 --broadcast --ffi"
+    "fork-linea": "anvil --fork-url https://rpc.goerli.linea.build  --block-base-fee-per-gas 30000000000 --chain-id 31137",
+    "fork-sepolia": "anvil --fork-url https://gateway.tenderly.co/public/sepolia  --block-base-fee-per-gas 30000000000 --chain-id 31137",
+    "deploy-local-linea": "forge script script/deployMistInvoiceEscrowWrapper.s.sol --fork-url http://localhost:8545 --broadcast --ffi --legacy",
+    "deploy-local-sepolia": "forge script script/deployMistInvoiceEscrowWrapper.s.sol --fork-url http://localhost:8545 --broadcast --ffi --legacy",
+    "create-invoice-local": "forge script script/createMistInvoice.s.sol --fork-url http://localhost:8545 --broadcast --ffi"
   },
   "devDependencies": {
     "prettier": "^3.0.0",
