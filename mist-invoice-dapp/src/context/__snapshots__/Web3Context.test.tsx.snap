@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Web3Context should connect to web3 1`] = `
+<DocumentFragment>
+  <div>
+    <div>
+      Loading...
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Web3Context should render 1`] = `
+<DocumentFragment>
+  <div>
+    <button
+      data-testid="button:connect"
+      type="button"
+    >
+      Connect
+    </button>
+  </div>
+</DocumentFragment>
+`;
