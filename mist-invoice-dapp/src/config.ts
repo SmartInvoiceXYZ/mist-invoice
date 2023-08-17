@@ -1,7 +1,7 @@
-import LexDAOLogo from "./assets/lex-dao.png";
+// import LexDAOLogo from "/assets/lexdao-logo.png";
 
 export const CONFIG = {
-  INFURA_ID: process.env.REACT_APP_INFURA_ID,
+  INFURA_ID: process.env.NEXT_INFURA_ID,
   IPFS_ENDPOINT: "https://smart-invoice.infura-ipfs.io",
   BOX_ENDPOINT: "https://ipfs.3box.io",
   NETWORK_CONFIG: {
@@ -14,7 +14,7 @@ export const CONFIG = {
       RESOLVERS: {
         ["0x01b92e2c0d06325089c6fd53c98a214f5c75b2ac".toLowerCase()]: {
           name: "LexDAO",
-          logoUrl: LexDAOLogo,
+          // logoUrl: LexDAOLogo,
           termsUrl:
             "https://github.com/lexDAO/Arbitration/blob/master/rules/ToU.md#lexdao-resolver",
         },
@@ -29,7 +29,7 @@ export const CONFIG = {
       RESOLVERS: {
         ["0x153Fbf5da827903e030Dc317C4031755D74D508a".toLowerCase()]: {
           name: "LexDAO",
-          logoUrl: LexDAOLogo,
+          // logoUrl: LexDAOLogo,
           termsUrl:
             "https://github.com/lexDAO/Arbitration/blob/master/rules/ToU.md#lexdao-resolver",
         },
@@ -44,7 +44,7 @@ export const CONFIG = {
       RESOLVERS: {
         ["0x1206b51217271FC3ffCa57d0678121983ce0390E".toLowerCase()]: {
           name: "LexDAO",
-          logoUrl: LexDAOLogo,
+          // logoUrl: LexDAOLogo,
           termsUrl:
             "https://github.com/lexDAO/Arbitration/blob/master/rules/ToU.md#lexdao-resolver",
         },
@@ -59,7 +59,7 @@ export const CONFIG = {
       RESOLVERS: {
         ["0x1206b51217271FC3ffCa57d0678121983ce0390E".toLowerCase()]: {
           name: "LexDAO",
-          logoUrl: LexDAOLogo,
+          // logoUrl: LexDAOLogo,
           termsUrl:
             "https://github.com/lexDAO/Arbitration/blob/master/rules/ToU.md#lexdao-resolver",
         },
@@ -74,7 +74,7 @@ export const CONFIG = {
       RESOLVERS: {
         ["0xc680eB3C6395C8Ab94Cbf3Bb46Cd7C3340481e40".toLowerCase()]: {
           name: "LexDAO",
-          logoUrl: LexDAOLogo,
+          // logoUrl: LexDAOLogo,
           termsUrl:
             "https://github.com/lexDAO/Arbitration/blob/master/rules/ToU.md#lexdao-resolver",
         },
@@ -89,7 +89,7 @@ export const CONFIG = {
       RESOLVERS: {
         ["0xf8DBd458f841424e2fD5fBDf18A7dEA17eb2211D".toLowerCase()]: {
           name: "LexDAO",
-          logoUrl: LexDAOLogo,
+          // logoUrl: LexDAOLogo,
           termsUrl:
             "https://github.com/lexDAO/Arbitration/blob/master/rules/ToU.md#lexdao-resolver",
         },
@@ -104,7 +104,7 @@ export const CONFIG = {
       RESOLVERS: {
         ["0x1206b51217271FC3ffCa57d0678121983ce0390E".toLowerCase()]: {
           name: "LexDAO",
-          logoUrl: LexDAOLogo,
+          // logoUrl: LexDAOLogo,
           termsUrl:
             "https://github.com/lexDAO/Arbitration/blob/master/rules/ToU.md#lexdao-resolver",
         },
