@@ -29,7 +29,7 @@ export const SearchContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
         })
         .catch((searchError) => {
           logError({ searchError });
-          setResult();
+          setResult(undefined);
           setFetching(false);
           setLoading(false);
         });
