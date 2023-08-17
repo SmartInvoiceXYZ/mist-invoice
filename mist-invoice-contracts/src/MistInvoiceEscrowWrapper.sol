@@ -18,7 +18,7 @@ contract MistInvoiceEscrowWrapper {
         bytes32 merkleRoot;
         bytes32 providerHash;
         bytes32 clientHash;
-        bytes32 encData;
+        bytes encData;
     }
 
     struct MistData {
@@ -47,8 +47,8 @@ contract MistInvoiceEscrowWrapper {
 
         bytes32 clientHash = keccak256(abi.encodePacked(_mistData.clientRandom, address(this), _mistData.clientKey));
 
-        bytes32 mistEncData =
-            keccak256(abi.encodePacked(providerHash, clientHash, _mistData.clientKey, _mistData.providerKey));
+        bytes memory mistEncData =
+            bytes(abi.encodePacked(providerHash, clientHash, _mistData.clientKey, _mistData.providerKey));
 
         MistSecret memory meta = MistSecret(_mistData.merkleRoot, providerHash, clientHash, mistEncData);
 
