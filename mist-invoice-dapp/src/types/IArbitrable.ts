@@ -24,28 +24,16 @@ import type {
 } from "./common";
 
 export interface IArbitrableInterface extends Interface {
-  getFunction(
-    nameOrSignature: "rule" | "rule(uint256,uint256)"
-  ): FunctionFragment;
+  getFunction(nameOrSignature: "rule"): FunctionFragment;
 
-  getEvent(
-    nameOrSignatureOrTopic: "Ruling" | "Ruling(address,uint256,uint256)"
-  ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Ruling"): EventFragment;
 
   encodeFunctionData(
     functionFragment: "rule",
     values: [BigNumberish, BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "rule(uint256,uint256)",
-    values: [BigNumberish, BigNumberish]
-  ): string;
 
   decodeFunctionResult(functionFragment: "rule", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "rule(uint256,uint256)",
-    data: BytesLike
-  ): Result;
 }
 
 export namespace RulingEvent {
@@ -119,25 +107,12 @@ export interface IArbitrable extends BaseContract {
     "nonpayable"
   >;
 
-  "rule(uint256,uint256)": TypedContractMethod<
-    [_disputeID: BigNumberish, _ruling: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
     nameOrSignature: "rule"
-  ): TypedContractMethod<
-    [_disputeID: BigNumberish, _ruling: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "rule(uint256,uint256)"
   ): TypedContractMethod<
     [_disputeID: BigNumberish, _ruling: BigNumberish],
     [void],
@@ -150,13 +125,6 @@ export interface IArbitrable extends BaseContract {
     RulingEvent.InputTuple,
     RulingEvent.OutputTuple,
     RulingEvent.OutputObject
-  >;
-  getEvent(
-    key: "Ruling(address,uint256,uint256)"
-  ): TypedContractEvent<
-    Ruling_address_uint256_uint256_Event.InputTuple,
-    Ruling_address_uint256_uint256_Event.OutputTuple,
-    Ruling_address_uint256_uint256_Event.OutputObject
   >;
 
   filters: {

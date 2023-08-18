@@ -24,55 +24,33 @@ import type {
 } from "../common";
 
 export interface DSTestInterface extends Interface {
-  getFunction(
-    nameOrSignature: "IS_TEST" | "IS_TEST()" | "failed" | "failed()"
-  ): FunctionFragment;
+  getFunction(nameOrSignature: "IS_TEST" | "failed"): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic:
       | "log"
-      | "log(string)"
       | "log_address"
-      | "log_address(address)"
       | "log_bytes"
-      | "log_bytes(bytes)"
       | "log_bytes32"
-      | "log_bytes32(bytes32)"
       | "log_int"
-      | "log_int(int256)"
       | "log_named_address"
-      | "log_named_address(string,address)"
       | "log_named_bytes"
-      | "log_named_bytes(string,bytes)"
       | "log_named_bytes32"
-      | "log_named_bytes32(string,bytes32)"
       | "log_named_decimal_int"
-      | "log_named_decimal_int(string,int256,uint256)"
       | "log_named_decimal_uint"
-      | "log_named_decimal_uint(string,uint256,uint256)"
       | "log_named_int"
-      | "log_named_int(string,int256)"
       | "log_named_string"
-      | "log_named_string(string,string)"
       | "log_named_uint"
-      | "log_named_uint(string,uint256)"
       | "log_string"
-      | "log_string(string)"
       | "log_uint"
-      | "log_uint(uint256)"
       | "logs"
-      | "logs(bytes)"
   ): EventFragment;
 
   encodeFunctionData(functionFragment: "IS_TEST", values?: undefined): string;
-  encodeFunctionData(functionFragment: "IS_TEST()", values?: undefined): string;
   encodeFunctionData(functionFragment: "failed", values?: undefined): string;
-  encodeFunctionData(functionFragment: "failed()", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "IS_TEST", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "IS_TEST()", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "failed", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "failed()", data: BytesLike): Result;
 }
 
 export namespace logEvent {
@@ -330,11 +308,7 @@ export interface DSTest extends BaseContract {
 
   IS_TEST: TypedContractMethod<[], [boolean], "view">;
 
-  "IS_TEST()": TypedContractMethod<[], [boolean], "view">;
-
   failed: TypedContractMethod<[], [boolean], "nonpayable">;
-
-  "failed()": TypedContractMethod<[], [boolean], "nonpayable">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -344,13 +318,7 @@ export interface DSTest extends BaseContract {
     nameOrSignature: "IS_TEST"
   ): TypedContractMethod<[], [boolean], "view">;
   getFunction(
-    nameOrSignature: "IS_TEST()"
-  ): TypedContractMethod<[], [boolean], "view">;
-  getFunction(
     nameOrSignature: "failed"
-  ): TypedContractMethod<[], [boolean], "nonpayable">;
-  getFunction(
-    nameOrSignature: "failed()"
   ): TypedContractMethod<[], [boolean], "nonpayable">;
 
   getEvent(
@@ -361,25 +329,11 @@ export interface DSTest extends BaseContract {
     logEvent.OutputObject
   >;
   getEvent(
-    key: "log(string)"
-  ): TypedContractEvent<
-    log_string_Event.InputTuple,
-    log_string_Event.OutputTuple,
-    log_string_Event.OutputObject
-  >;
-  getEvent(
     key: "log_address"
   ): TypedContractEvent<
     log_addressEvent.InputTuple,
     log_addressEvent.OutputTuple,
     log_addressEvent.OutputObject
-  >;
-  getEvent(
-    key: "log_address(address)"
-  ): TypedContractEvent<
-    log_address_address_Event.InputTuple,
-    log_address_address_Event.OutputTuple,
-    log_address_address_Event.OutputObject
   >;
   getEvent(
     key: "log_bytes"
@@ -389,25 +343,11 @@ export interface DSTest extends BaseContract {
     log_bytesEvent.OutputObject
   >;
   getEvent(
-    key: "log_bytes(bytes)"
-  ): TypedContractEvent<
-    log_bytes_bytes_Event.InputTuple,
-    log_bytes_bytes_Event.OutputTuple,
-    log_bytes_bytes_Event.OutputObject
-  >;
-  getEvent(
     key: "log_bytes32"
   ): TypedContractEvent<
     log_bytes32Event.InputTuple,
     log_bytes32Event.OutputTuple,
     log_bytes32Event.OutputObject
-  >;
-  getEvent(
-    key: "log_bytes32(bytes32)"
-  ): TypedContractEvent<
-    log_bytes32_bytes32_Event.InputTuple,
-    log_bytes32_bytes32_Event.OutputTuple,
-    log_bytes32_bytes32_Event.OutputObject
   >;
   getEvent(
     key: "log_int"
@@ -417,25 +357,11 @@ export interface DSTest extends BaseContract {
     log_intEvent.OutputObject
   >;
   getEvent(
-    key: "log_int(int256)"
-  ): TypedContractEvent<
-    log_int_int256_Event.InputTuple,
-    log_int_int256_Event.OutputTuple,
-    log_int_int256_Event.OutputObject
-  >;
-  getEvent(
     key: "log_named_address"
   ): TypedContractEvent<
     log_named_addressEvent.InputTuple,
     log_named_addressEvent.OutputTuple,
     log_named_addressEvent.OutputObject
-  >;
-  getEvent(
-    key: "log_named_address(string,address)"
-  ): TypedContractEvent<
-    log_named_address_string_address_Event.InputTuple,
-    log_named_address_string_address_Event.OutputTuple,
-    log_named_address_string_address_Event.OutputObject
   >;
   getEvent(
     key: "log_named_bytes"
@@ -445,25 +371,11 @@ export interface DSTest extends BaseContract {
     log_named_bytesEvent.OutputObject
   >;
   getEvent(
-    key: "log_named_bytes(string,bytes)"
-  ): TypedContractEvent<
-    log_named_bytes_string_bytes_Event.InputTuple,
-    log_named_bytes_string_bytes_Event.OutputTuple,
-    log_named_bytes_string_bytes_Event.OutputObject
-  >;
-  getEvent(
     key: "log_named_bytes32"
   ): TypedContractEvent<
     log_named_bytes32Event.InputTuple,
     log_named_bytes32Event.OutputTuple,
     log_named_bytes32Event.OutputObject
-  >;
-  getEvent(
-    key: "log_named_bytes32(string,bytes32)"
-  ): TypedContractEvent<
-    log_named_bytes32_string_bytes32_Event.InputTuple,
-    log_named_bytes32_string_bytes32_Event.OutputTuple,
-    log_named_bytes32_string_bytes32_Event.OutputObject
   >;
   getEvent(
     key: "log_named_decimal_int"
@@ -473,25 +385,11 @@ export interface DSTest extends BaseContract {
     log_named_decimal_intEvent.OutputObject
   >;
   getEvent(
-    key: "log_named_decimal_int(string,int256,uint256)"
-  ): TypedContractEvent<
-    log_named_decimal_int_string_int256_uint256_Event.InputTuple,
-    log_named_decimal_int_string_int256_uint256_Event.OutputTuple,
-    log_named_decimal_int_string_int256_uint256_Event.OutputObject
-  >;
-  getEvent(
     key: "log_named_decimal_uint"
   ): TypedContractEvent<
     log_named_decimal_uintEvent.InputTuple,
     log_named_decimal_uintEvent.OutputTuple,
     log_named_decimal_uintEvent.OutputObject
-  >;
-  getEvent(
-    key: "log_named_decimal_uint(string,uint256,uint256)"
-  ): TypedContractEvent<
-    log_named_decimal_uint_string_uint256_uint256_Event.InputTuple,
-    log_named_decimal_uint_string_uint256_uint256_Event.OutputTuple,
-    log_named_decimal_uint_string_uint256_uint256_Event.OutputObject
   >;
   getEvent(
     key: "log_named_int"
@@ -501,25 +399,11 @@ export interface DSTest extends BaseContract {
     log_named_intEvent.OutputObject
   >;
   getEvent(
-    key: "log_named_int(string,int256)"
-  ): TypedContractEvent<
-    log_named_int_string_int256_Event.InputTuple,
-    log_named_int_string_int256_Event.OutputTuple,
-    log_named_int_string_int256_Event.OutputObject
-  >;
-  getEvent(
     key: "log_named_string"
   ): TypedContractEvent<
     log_named_stringEvent.InputTuple,
     log_named_stringEvent.OutputTuple,
     log_named_stringEvent.OutputObject
-  >;
-  getEvent(
-    key: "log_named_string(string,string)"
-  ): TypedContractEvent<
-    log_named_string_string_string_Event.InputTuple,
-    log_named_string_string_string_Event.OutputTuple,
-    log_named_string_string_string_Event.OutputObject
   >;
   getEvent(
     key: "log_named_uint"
@@ -529,25 +413,11 @@ export interface DSTest extends BaseContract {
     log_named_uintEvent.OutputObject
   >;
   getEvent(
-    key: "log_named_uint(string,uint256)"
-  ): TypedContractEvent<
-    log_named_uint_string_uint256_Event.InputTuple,
-    log_named_uint_string_uint256_Event.OutputTuple,
-    log_named_uint_string_uint256_Event.OutputObject
-  >;
-  getEvent(
     key: "log_string"
   ): TypedContractEvent<
     log_stringEvent.InputTuple,
     log_stringEvent.OutputTuple,
     log_stringEvent.OutputObject
-  >;
-  getEvent(
-    key: "log_string(string)"
-  ): TypedContractEvent<
-    log_string_string_Event.InputTuple,
-    log_string_string_Event.OutputTuple,
-    log_string_string_Event.OutputObject
   >;
   getEvent(
     key: "log_uint"
@@ -557,25 +427,11 @@ export interface DSTest extends BaseContract {
     log_uintEvent.OutputObject
   >;
   getEvent(
-    key: "log_uint(uint256)"
-  ): TypedContractEvent<
-    log_uint_uint256_Event.InputTuple,
-    log_uint_uint256_Event.OutputTuple,
-    log_uint_uint256_Event.OutputObject
-  >;
-  getEvent(
     key: "logs"
   ): TypedContractEvent<
     logsEvent.InputTuple,
     logsEvent.OutputTuple,
     logsEvent.OutputObject
-  >;
-  getEvent(
-    key: "logs(bytes)"
-  ): TypedContractEvent<
-    logs_bytes_Event.InputTuple,
-    logs_bytes_Event.OutputTuple,
-    logs_bytes_Event.OutputObject
   >;
 
   filters: {

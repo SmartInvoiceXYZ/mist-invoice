@@ -63,7 +63,7 @@ export const Web3Context = createContext<Web3ContextType>({
 });
 export const useWeb3 = () => useContext(Web3Context);
 
-export const Web3ContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
+export const Web3ContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const [loading, setLoading] = useState(true);

@@ -96,30 +96,20 @@ export interface VmInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "accesses"
-      | "accesses(address)"
       | "activeFork"
-      | "activeFork()"
       | "addr"
-      | "addr(uint256)"
       | "allowCheatcodes"
-      | "allowCheatcodes(address)"
       | "assume"
-      | "assume(bool)"
       | "breakpoint(string)"
       | "breakpoint(string,bool)"
       | "broadcast()"
       | "broadcast(address)"
       | "broadcast(uint256)"
       | "chainId"
-      | "chainId(uint256)"
       | "clearMockedCalls"
-      | "clearMockedCalls()"
       | "closeFile"
-      | "closeFile(string)"
       | "coinbase"
-      | "coinbase(address)"
       | "createDir"
-      | "createDir(string,bool)"
       | "createFork(string)"
       | "createFork(string,uint256)"
       | "createFork(string,bytes32)"
@@ -127,11 +117,9 @@ export interface VmInterface extends Interface {
       | "createSelectFork(string,bytes32)"
       | "createSelectFork(string)"
       | "deal"
-      | "deal(address,uint256)"
       | "deriveKey(string,uint32)"
       | "deriveKey(string,string,uint32)"
       | "difficulty"
-      | "difficulty(uint256)"
       | "envAddress(string)"
       | "envAddress(string,string)"
       | "envBool(string)"
@@ -161,7 +149,6 @@ export interface VmInterface extends Interface {
       | "envUint(string)"
       | "envUint(string,string)"
       | "etch"
-      | "etch(address,bytes)"
       | "expectCall(address,uint256,uint64,bytes)"
       | "expectCall(address,uint256,uint64,bytes,uint64)"
       | "expectCall(address,uint256,bytes,uint64)"
@@ -178,31 +165,18 @@ export interface VmInterface extends Interface {
       | "expectRevert(bytes)"
       | "expectRevert()"
       | "expectSafeMemory"
-      | "expectSafeMemory(uint64,uint64)"
       | "expectSafeMemoryCall"
-      | "expectSafeMemoryCall(uint64,uint64)"
       | "fee"
-      | "fee(uint256)"
       | "ffi"
-      | "ffi(string[])"
       | "fsMetadata"
-      | "fsMetadata(string)"
       | "getCode"
-      | "getCode(string)"
       | "getDeployedCode"
-      | "getDeployedCode(string)"
       | "getLabel"
-      | "getLabel(address)"
       | "getNonce"
-      | "getNonce(address)"
       | "getRecordedLogs"
-      | "getRecordedLogs()"
       | "isPersistent"
-      | "isPersistent(address)"
       | "label"
-      | "label(address,string)"
       | "load"
-      | "load(address,bytes32)"
       | "makePersistent(address[])"
       | "makePersistent(address,address)"
       | "makePersistent(address)"
@@ -212,100 +186,59 @@ export interface VmInterface extends Interface {
       | "mockCallRevert(address,uint256,bytes,bytes)"
       | "mockCallRevert(address,bytes,bytes)"
       | "parseAddress"
-      | "parseAddress(string)"
       | "parseBool"
-      | "parseBool(string)"
       | "parseBytes"
-      | "parseBytes(string)"
       | "parseBytes32"
-      | "parseBytes32(string)"
       | "parseInt"
-      | "parseInt(string)"
       | "parseJson(string)"
       | "parseJson(string,string)"
       | "parseJsonAddress"
-      | "parseJsonAddress(string,string)"
       | "parseJsonAddressArray"
-      | "parseJsonAddressArray(string,string)"
       | "parseJsonBool"
-      | "parseJsonBool(string,string)"
       | "parseJsonBoolArray"
-      | "parseJsonBoolArray(string,string)"
       | "parseJsonBytes"
-      | "parseJsonBytes(string,string)"
       | "parseJsonBytes32"
-      | "parseJsonBytes32(string,string)"
       | "parseJsonBytes32Array"
-      | "parseJsonBytes32Array(string,string)"
       | "parseJsonBytesArray"
-      | "parseJsonBytesArray(string,string)"
       | "parseJsonInt"
-      | "parseJsonInt(string,string)"
       | "parseJsonIntArray"
-      | "parseJsonIntArray(string,string)"
       | "parseJsonString"
-      | "parseJsonString(string,string)"
       | "parseJsonStringArray"
-      | "parseJsonStringArray(string,string)"
       | "parseJsonUint"
-      | "parseJsonUint(string,string)"
       | "parseJsonUintArray"
-      | "parseJsonUintArray(string,string)"
       | "parseUint"
-      | "parseUint(string)"
       | "pauseGasMetering"
-      | "pauseGasMetering()"
       | "prank(address,address)"
       | "prank(address)"
       | "prevrandao"
-      | "prevrandao(bytes32)"
       | "projectRoot"
-      | "projectRoot()"
       | "readCallers"
-      | "readCallers()"
       | "readDir(string,uint64)"
       | "readDir(string,uint64,bool)"
       | "readDir(string)"
       | "readFile"
-      | "readFile(string)"
       | "readFileBinary"
-      | "readFileBinary(string)"
       | "readLine"
-      | "readLine(string)"
       | "readLink"
-      | "readLink(string)"
       | "record"
-      | "record()"
       | "recordLogs"
-      | "recordLogs()"
       | "rememberKey"
-      | "rememberKey(uint256)"
       | "removeDir"
-      | "removeDir(string,bool)"
       | "removeFile"
-      | "removeFile(string)"
       | "resetNonce"
-      | "resetNonce(address)"
       | "resumeGasMetering"
-      | "resumeGasMetering()"
       | "revertTo"
-      | "revertTo(uint256)"
       | "revokePersistent(address[])"
       | "revokePersistent(address)"
       | "roll"
-      | "roll(uint256)"
       | "rollFork(bytes32)"
       | "rollFork(uint256,uint256)"
       | "rollFork(uint256)"
       | "rollFork(uint256,bytes32)"
       | "rpcUrl"
-      | "rpcUrl(string)"
       | "rpcUrlStructs"
-      | "rpcUrlStructs()"
       | "rpcUrls"
-      | "rpcUrls()"
       | "selectFork"
-      | "selectFork(uint256)"
       | "serializeAddress(string,string,address[])"
       | "serializeAddress(string,string,address)"
       | "serializeBool(string,string,bool[])"
@@ -321,28 +254,19 @@ export interface VmInterface extends Interface {
       | "serializeUint(string,string,uint256)"
       | "serializeUint(string,string,uint256[])"
       | "setEnv"
-      | "setEnv(string,string)"
       | "setNonce"
-      | "setNonce(address,uint64)"
       | "setNonceUnsafe"
-      | "setNonceUnsafe(address,uint64)"
       | "sign"
-      | "sign(uint256,bytes32)"
       | "skip"
-      | "skip(bool)"
       | "snapshot"
-      | "snapshot()"
       | "startBroadcast()"
       | "startBroadcast(address)"
       | "startBroadcast(uint256)"
       | "startPrank(address)"
       | "startPrank(address,address)"
       | "stopBroadcast"
-      | "stopBroadcast()"
       | "stopPrank"
-      | "stopPrank()"
       | "store"
-      | "store(address,bytes32,bytes32)"
       | "toString(address)"
       | "toString(uint256)"
       | "toString(bytes)"
@@ -352,17 +276,12 @@ export interface VmInterface extends Interface {
       | "transact(uint256,bytes32)"
       | "transact(bytes32)"
       | "txGasPrice"
-      | "txGasPrice(uint256)"
       | "warp"
-      | "warp(uint256)"
       | "writeFile"
-      | "writeFile(string,string)"
       | "writeFileBinary"
-      | "writeFileBinary(string,bytes)"
       | "writeJson(string,string,string)"
       | "writeJson(string,string)"
       | "writeLine"
-      | "writeLine(string,string)"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -370,35 +289,15 @@ export interface VmInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "accesses(address)",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "activeFork",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "activeFork()",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "addr", values: [BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: "addr(uint256)",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "allowCheatcodes",
     values: [AddressLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "allowCheatcodes(address)",
-    values: [AddressLike]
-  ): string;
   encodeFunctionData(functionFragment: "assume", values: [boolean]): string;
-  encodeFunctionData(
-    functionFragment: "assume(bool)",
-    values: [boolean]
-  ): string;
   encodeFunctionData(
     functionFragment: "breakpoint(string)",
     values: [string]
@@ -424,36 +323,16 @@ export interface VmInterface extends Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "chainId(uint256)",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "clearMockedCalls",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "clearMockedCalls()",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "closeFile", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "closeFile(string)",
-    values: [string]
-  ): string;
   encodeFunctionData(
     functionFragment: "coinbase",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "coinbase(address)",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "createDir",
-    values: [string, boolean]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "createDir(string,bool)",
     values: [string, boolean]
   ): string;
   encodeFunctionData(
@@ -485,10 +364,6 @@ export interface VmInterface extends Interface {
     values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "deal(address,uint256)",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "deriveKey(string,uint32)",
     values: [string, BigNumberish]
   ): string;
@@ -498,10 +373,6 @@ export interface VmInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "difficulty",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "difficulty(uint256)",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -621,10 +492,6 @@ export interface VmInterface extends Interface {
     values: [AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "etch(address,bytes)",
-    values: [AddressLike, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "expectCall(address,uint256,uint64,bytes)",
     values: [AddressLike, BigNumberish, BigNumberish, BytesLike]
   ): string;
@@ -689,43 +556,15 @@ export interface VmInterface extends Interface {
     values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "expectSafeMemory(uint64,uint64)",
-    values: [BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "expectSafeMemoryCall",
     values: [BigNumberish, BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "expectSafeMemoryCall(uint64,uint64)",
-    values: [BigNumberish, BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "fee", values: [BigNumberish]): string;
-  encodeFunctionData(
-    functionFragment: "fee(uint256)",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "ffi", values: [string[]]): string;
-  encodeFunctionData(
-    functionFragment: "ffi(string[])",
-    values: [string[]]
-  ): string;
   encodeFunctionData(functionFragment: "fsMetadata", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "fsMetadata(string)",
-    values: [string]
-  ): string;
   encodeFunctionData(functionFragment: "getCode", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "getCode(string)",
-    values: [string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getDeployedCode",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getDeployedCode(string)",
     values: [string]
   ): string;
   encodeFunctionData(
@@ -733,15 +572,7 @@ export interface VmInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "getLabel(address)",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getNonce",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getNonce(address)",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
@@ -749,15 +580,7 @@ export interface VmInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getRecordedLogs()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "isPersistent",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "isPersistent(address)",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
@@ -765,15 +588,7 @@ export interface VmInterface extends Interface {
     values: [AddressLike, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "label(address,string)",
-    values: [AddressLike, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "load",
-    values: [AddressLike, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "load(address,bytes32)",
     values: [AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
@@ -812,33 +627,13 @@ export interface VmInterface extends Interface {
     functionFragment: "parseAddress",
     values: [string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "parseAddress(string)",
-    values: [string]
-  ): string;
   encodeFunctionData(functionFragment: "parseBool", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "parseBool(string)",
-    values: [string]
-  ): string;
   encodeFunctionData(functionFragment: "parseBytes", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "parseBytes(string)",
-    values: [string]
-  ): string;
   encodeFunctionData(
     functionFragment: "parseBytes32",
     values: [string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "parseBytes32(string)",
-    values: [string]
-  ): string;
   encodeFunctionData(functionFragment: "parseInt", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "parseInt(string)",
-    values: [string]
-  ): string;
   encodeFunctionData(
     functionFragment: "parseJson(string)",
     values: [string]
@@ -852,15 +647,7 @@ export interface VmInterface extends Interface {
     values: [string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "parseJsonAddress(string,string)",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "parseJsonAddressArray",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "parseJsonAddressArray(string,string)",
     values: [string, string]
   ): string;
   encodeFunctionData(
@@ -868,15 +655,7 @@ export interface VmInterface extends Interface {
     values: [string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "parseJsonBool(string,string)",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "parseJsonBoolArray",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "parseJsonBoolArray(string,string)",
     values: [string, string]
   ): string;
   encodeFunctionData(
@@ -884,15 +663,7 @@ export interface VmInterface extends Interface {
     values: [string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "parseJsonBytes(string,string)",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "parseJsonBytes32",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "parseJsonBytes32(string,string)",
     values: [string, string]
   ): string;
   encodeFunctionData(
@@ -900,15 +671,7 @@ export interface VmInterface extends Interface {
     values: [string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "parseJsonBytes32Array(string,string)",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "parseJsonBytesArray",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "parseJsonBytesArray(string,string)",
     values: [string, string]
   ): string;
   encodeFunctionData(
@@ -916,15 +679,7 @@ export interface VmInterface extends Interface {
     values: [string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "parseJsonInt(string,string)",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "parseJsonIntArray",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "parseJsonIntArray(string,string)",
     values: [string, string]
   ): string;
   encodeFunctionData(
@@ -932,15 +687,7 @@ export interface VmInterface extends Interface {
     values: [string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "parseJsonString(string,string)",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "parseJsonStringArray",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "parseJsonStringArray(string,string)",
     values: [string, string]
   ): string;
   encodeFunctionData(
@@ -948,28 +695,12 @@ export interface VmInterface extends Interface {
     values: [string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "parseJsonUint(string,string)",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "parseJsonUintArray",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "parseJsonUintArray(string,string)",
     values: [string, string]
   ): string;
   encodeFunctionData(functionFragment: "parseUint", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "parseUint(string)",
-    values: [string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "pauseGasMetering",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "pauseGasMetering()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -985,23 +716,11 @@ export interface VmInterface extends Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "prevrandao(bytes32)",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "projectRoot",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "projectRoot()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "readCallers",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "readCallers()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -1018,35 +737,14 @@ export interface VmInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "readFile", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "readFile(string)",
-    values: [string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "readFileBinary",
     values: [string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "readFileBinary(string)",
-    values: [string]
-  ): string;
   encodeFunctionData(functionFragment: "readLine", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "readLine(string)",
-    values: [string]
-  ): string;
   encodeFunctionData(functionFragment: "readLink", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "readLink(string)",
-    values: [string]
-  ): string;
   encodeFunctionData(functionFragment: "record", values?: undefined): string;
-  encodeFunctionData(functionFragment: "record()", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "recordLogs",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "recordLogs()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -1054,28 +752,12 @@ export interface VmInterface extends Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "rememberKey(uint256)",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "removeDir",
-    values: [string, boolean]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "removeDir(string,bool)",
     values: [string, boolean]
   ): string;
   encodeFunctionData(functionFragment: "removeFile", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "removeFile(string)",
-    values: [string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "resetNonce",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "resetNonce(address)",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
@@ -1083,15 +765,7 @@ export interface VmInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "resumeGasMetering()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "revertTo",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "revertTo(uint256)",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -1103,10 +777,6 @@ export interface VmInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(functionFragment: "roll", values: [BigNumberish]): string;
-  encodeFunctionData(
-    functionFragment: "roll(uint256)",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(
     functionFragment: "rollFork(bytes32)",
     values: [BytesLike]
@@ -1125,25 +795,12 @@ export interface VmInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "rpcUrl", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "rpcUrl(string)",
-    values: [string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "rpcUrlStructs",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "rpcUrlStructs()",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "rpcUrls", values?: undefined): string;
-  encodeFunctionData(functionFragment: "rpcUrls()", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "selectFork",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "selectFork(uint256)",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -1207,15 +864,7 @@ export interface VmInterface extends Interface {
     values: [string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "setEnv(string,string)",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "setNonce",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setNonce(address,uint64)",
     values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
@@ -1223,24 +872,11 @@ export interface VmInterface extends Interface {
     values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "setNonceUnsafe(address,uint64)",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "sign",
     values: [BigNumberish, BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "sign(uint256,bytes32)",
-    values: [BigNumberish, BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "skip", values: [boolean]): string;
-  encodeFunctionData(functionFragment: "skip(bool)", values: [boolean]): string;
   encodeFunctionData(functionFragment: "snapshot", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "snapshot()",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "startBroadcast()",
     values?: undefined
@@ -1265,21 +901,9 @@ export interface VmInterface extends Interface {
     functionFragment: "stopBroadcast",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "stopBroadcast()",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "stopPrank", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "stopPrank()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "store",
-    values: [AddressLike, BytesLike, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "store(address,bytes32,bytes32)",
     values: [AddressLike, BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
@@ -1318,29 +942,13 @@ export interface VmInterface extends Interface {
     functionFragment: "txGasPrice",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "txGasPrice(uint256)",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "warp", values: [BigNumberish]): string;
-  encodeFunctionData(
-    functionFragment: "warp(uint256)",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(
     functionFragment: "writeFile",
     values: [string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "writeFile(string,string)",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "writeFileBinary",
-    values: [string, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "writeFileBinary(string,bytes)",
     values: [string, BytesLike]
   ): string;
   encodeFunctionData(
@@ -1355,39 +963,15 @@ export interface VmInterface extends Interface {
     functionFragment: "writeLine",
     values: [string, string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "writeLine(string,string)",
-    values: [string, string]
-  ): string;
 
   decodeFunctionResult(functionFragment: "accesses", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "accesses(address)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "activeFork", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "activeFork()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "addr", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "addr(uint256)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "allowCheatcodes",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "allowCheatcodes(address)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "assume", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "assume(bool)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "breakpoint(string)",
     data: BytesLike
@@ -1410,32 +994,12 @@ export interface VmInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "chainId(uint256)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "clearMockedCalls",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "clearMockedCalls()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "closeFile", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "closeFile(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "coinbase", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "coinbase(address)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "createDir", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "createDir(string,bool)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "createFork(string)",
     data: BytesLike
@@ -1462,10 +1026,6 @@ export interface VmInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "deal", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "deal(address,uint256)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "deriveKey(string,uint32)",
     data: BytesLike
   ): Result;
@@ -1474,10 +1034,6 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "difficulty", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "difficulty(uint256)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "envAddress(string)",
     data: BytesLike
@@ -1592,10 +1148,6 @@ export interface VmInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "etch", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "etch(address,bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "expectCall(address,uint256,uint64,bytes)",
     data: BytesLike
   ): Result;
@@ -1660,81 +1212,29 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "expectSafeMemory(uint64,uint64)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "expectSafeMemoryCall",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "expectSafeMemoryCall(uint64,uint64)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "fee", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "fee(uint256)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "ffi", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "ffi(string[])",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "fsMetadata", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "fsMetadata(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "getCode", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getCode(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "getDeployedCode",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "getDeployedCode(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "getLabel", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getLabel(address)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getNonce(address)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getRecordedLogs",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getRecordedLogs()",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "isPersistent",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "isPersistent(address)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "label", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "label(address,string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "load", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "load(address,bytes32)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "makePersistent(address[])",
     data: BytesLike
@@ -1771,33 +1271,13 @@ export interface VmInterface extends Interface {
     functionFragment: "parseAddress",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "parseAddress(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "parseBool", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "parseBool(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "parseBytes", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "parseBytes(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "parseBytes32",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "parseBytes32(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "parseInt", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "parseInt(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "parseJson(string)",
     data: BytesLike
@@ -1811,15 +1291,7 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "parseJsonAddress(string,string)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "parseJsonAddressArray",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "parseJsonAddressArray(string,string)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1827,15 +1299,7 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "parseJsonBool(string,string)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "parseJsonBoolArray",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "parseJsonBoolArray(string,string)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1843,15 +1307,7 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "parseJsonBytes(string,string)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "parseJsonBytes32",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "parseJsonBytes32(string,string)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1859,15 +1315,7 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "parseJsonBytes32Array(string,string)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "parseJsonBytesArray",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "parseJsonBytesArray(string,string)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1875,15 +1323,7 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "parseJsonInt(string,string)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "parseJsonIntArray",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "parseJsonIntArray(string,string)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1891,15 +1331,7 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "parseJsonString(string,string)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "parseJsonStringArray",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "parseJsonStringArray(string,string)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1907,28 +1339,12 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "parseJsonUint(string,string)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "parseJsonUintArray",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "parseJsonUintArray(string,string)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "parseUint", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "parseUint(string)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "pauseGasMetering",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "pauseGasMetering()",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1941,23 +1357,11 @@ export interface VmInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "prevrandao", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "prevrandao(bytes32)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "projectRoot",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "projectRoot()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "readCallers",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "readCallers()",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1974,70 +1378,25 @@ export interface VmInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "readFile", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "readFile(string)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "readFileBinary",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "readFileBinary(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "readLine", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "readLine(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "readLink", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "readLink(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "record", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "record()", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "recordLogs", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "recordLogs()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "rememberKey",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "rememberKey(uint256)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "removeDir", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "removeDir(string,bool)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "removeFile", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "removeFile(string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "resetNonce", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "resetNonce(address)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "resumeGasMetering",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "resumeGasMetering()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "revertTo", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "revertTo(uint256)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "revokePersistent(address[])",
     data: BytesLike
@@ -2047,10 +1406,6 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "roll", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "roll(uint256)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "rollFork(bytes32)",
     data: BytesLike
@@ -2069,24 +1424,11 @@ export interface VmInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "rpcUrl", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "rpcUrl(string)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "rpcUrlStructs",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "rpcUrlStructs()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "rpcUrls", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "rpcUrls()", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "selectFork", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "selectFork(uint256)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "serializeAddress(string,string,address[])",
     data: BytesLike
@@ -2144,32 +1486,14 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setEnv", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setEnv(string,string)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "setNonce", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setNonce(address,uint64)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "setNonceUnsafe",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "setNonceUnsafe(address,uint64)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "sign", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "sign(uint256,bytes32)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "skip", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "skip(bool)", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "snapshot", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "snapshot()", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "startBroadcast()",
     data: BytesLike
@@ -2194,20 +1518,8 @@ export interface VmInterface extends Interface {
     functionFragment: "stopBroadcast",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "stopBroadcast()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "stopPrank", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "stopPrank()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "store", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "store(address,bytes32,bytes32)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "toString(address)",
     data: BytesLike
@@ -2241,26 +1553,10 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "txGasPrice", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "txGasPrice(uint256)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "warp", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "warp(uint256)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "writeFile", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "writeFile(string,string)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "writeFileBinary",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "writeFileBinary(string,bytes)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -2272,10 +1568,6 @@ export interface VmInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "writeLine", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "writeLine(string,string)",
-    data: BytesLike
-  ): Result;
 }
 
 export interface Vm extends BaseContract {
@@ -2327,23 +1619,9 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "accesses(address)": TypedContractMethod<
-    [target: AddressLike],
-    [[string[], string[]] & { readSlots: string[]; writeSlots: string[] }],
-    "nonpayable"
-  >;
-
   activeFork: TypedContractMethod<[], [bigint], "view">;
 
-  "activeFork()": TypedContractMethod<[], [bigint], "view">;
-
   addr: TypedContractMethod<[privateKey: BigNumberish], [string], "view">;
-
-  "addr(uint256)": TypedContractMethod<
-    [privateKey: BigNumberish],
-    [string],
-    "view"
-  >;
 
   allowCheatcodes: TypedContractMethod<
     [account: AddressLike],
@@ -2351,15 +1629,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "allowCheatcodes(address)": TypedContractMethod<
-    [account: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
   assume: TypedContractMethod<[condition: boolean], [void], "view">;
-
-  "assume(bool)": TypedContractMethod<[condition: boolean], [void], "view">;
 
   "breakpoint(string)": TypedContractMethod<
     [char: string],
@@ -2393,23 +1663,9 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "chainId(uint256)": TypedContractMethod<
-    [newChainId: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
   clearMockedCalls: TypedContractMethod<[], [void], "nonpayable">;
 
-  "clearMockedCalls()": TypedContractMethod<[], [void], "nonpayable">;
-
   closeFile: TypedContractMethod<[path: string], [void], "nonpayable">;
-
-  "closeFile(string)": TypedContractMethod<
-    [path: string],
-    [void],
-    "nonpayable"
-  >;
 
   coinbase: TypedContractMethod<
     [newCoinbase: AddressLike],
@@ -2417,19 +1673,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "coinbase(address)": TypedContractMethod<
-    [newCoinbase: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
   createDir: TypedContractMethod<
-    [path: string, recursive: boolean],
-    [void],
-    "nonpayable"
-  >;
-
-  "createDir(string,bool)": TypedContractMethod<
     [path: string, recursive: boolean],
     [void],
     "nonpayable"
@@ -2477,12 +1721,6 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "deal(address,uint256)": TypedContractMethod<
-    [account: AddressLike, newBalance: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
   "deriveKey(string,uint32)": TypedContractMethod<
     [mnemonic: string, index: BigNumberish],
     [bigint],
@@ -2496,12 +1734,6 @@ export interface Vm extends BaseContract {
   >;
 
   difficulty: TypedContractMethod<
-    [newDifficulty: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  "difficulty(uint256)": TypedContractMethod<
     [newDifficulty: BigNumberish],
     [void],
     "nonpayable"
@@ -2653,12 +1885,6 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "etch(address,bytes)": TypedContractMethod<
-    [target: AddressLike, newRuntimeBytecode: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
   "expectCall(address,uint256,uint64,bytes)": TypedContractMethod<
     [
       callee: AddressLike,
@@ -2785,19 +2011,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "expectSafeMemory(uint64,uint64)": TypedContractMethod<
-    [min: BigNumberish, max: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
   expectSafeMemoryCall: TypedContractMethod<
-    [min: BigNumberish, max: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  "expectSafeMemoryCall(uint64,uint64)": TypedContractMethod<
     [min: BigNumberish, max: BigNumberish],
     [void],
     "nonpayable"
@@ -2805,19 +2019,7 @@ export interface Vm extends BaseContract {
 
   fee: TypedContractMethod<[newBasefee: BigNumberish], [void], "nonpayable">;
 
-  "fee(uint256)": TypedContractMethod<
-    [newBasefee: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
   ffi: TypedContractMethod<[commandInput: string[]], [string], "nonpayable">;
-
-  "ffi(string[])": TypedContractMethod<
-    [commandInput: string[]],
-    [string],
-    "nonpayable"
-  >;
 
   fsMetadata: TypedContractMethod<
     [path: string],
@@ -2825,19 +2027,7 @@ export interface Vm extends BaseContract {
     "view"
   >;
 
-  "fsMetadata(string)": TypedContractMethod<
-    [path: string],
-    [VmSafe.FsMetadataStructOutput],
-    "view"
-  >;
-
   getCode: TypedContractMethod<[artifactPath: string], [string], "view">;
-
-  "getCode(string)": TypedContractMethod<
-    [artifactPath: string],
-    [string],
-    "view"
-  >;
 
   getDeployedCode: TypedContractMethod<
     [artifactPath: string],
@@ -2845,27 +2035,9 @@ export interface Vm extends BaseContract {
     "view"
   >;
 
-  "getDeployedCode(string)": TypedContractMethod<
-    [artifactPath: string],
-    [string],
-    "view"
-  >;
-
   getLabel: TypedContractMethod<[account: AddressLike], [string], "nonpayable">;
 
-  "getLabel(address)": TypedContractMethod<
-    [account: AddressLike],
-    [string],
-    "nonpayable"
-  >;
-
   getNonce: TypedContractMethod<[account: AddressLike], [bigint], "view">;
-
-  "getNonce(address)": TypedContractMethod<
-    [account: AddressLike],
-    [bigint],
-    "view"
-  >;
 
   getRecordedLogs: TypedContractMethod<
     [],
@@ -2873,19 +2045,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "getRecordedLogs()": TypedContractMethod<
-    [],
-    [VmSafe.LogStructOutput[]],
-    "nonpayable"
-  >;
-
   isPersistent: TypedContractMethod<[account: AddressLike], [boolean], "view">;
-
-  "isPersistent(address)": TypedContractMethod<
-    [account: AddressLike],
-    [boolean],
-    "view"
-  >;
 
   label: TypedContractMethod<
     [account: AddressLike, newLabel: string],
@@ -2893,19 +2053,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "label(address,string)": TypedContractMethod<
-    [account: AddressLike, newLabel: string],
-    [void],
-    "nonpayable"
-  >;
-
   load: TypedContractMethod<
-    [target: AddressLike, slot: BytesLike],
-    [string],
-    "view"
-  >;
-
-  "load(address,bytes32)": TypedContractMethod<
     [target: AddressLike, slot: BytesLike],
     [string],
     "view"
@@ -2975,27 +2123,9 @@ export interface Vm extends BaseContract {
     "view"
   >;
 
-  "parseAddress(string)": TypedContractMethod<
-    [stringifiedValue: string],
-    [string],
-    "view"
-  >;
-
   parseBool: TypedContractMethod<[stringifiedValue: string], [boolean], "view">;
 
-  "parseBool(string)": TypedContractMethod<
-    [stringifiedValue: string],
-    [boolean],
-    "view"
-  >;
-
   parseBytes: TypedContractMethod<[stringifiedValue: string], [string], "view">;
-
-  "parseBytes(string)": TypedContractMethod<
-    [stringifiedValue: string],
-    [string],
-    "view"
-  >;
 
   parseBytes32: TypedContractMethod<
     [stringifiedValue: string],
@@ -3003,19 +2133,7 @@ export interface Vm extends BaseContract {
     "view"
   >;
 
-  "parseBytes32(string)": TypedContractMethod<
-    [stringifiedValue: string],
-    [string],
-    "view"
-  >;
-
   parseInt: TypedContractMethod<[stringifiedValue: string], [bigint], "view">;
-
-  "parseInt(string)": TypedContractMethod<
-    [stringifiedValue: string],
-    [bigint],
-    "view"
-  >;
 
   "parseJson(string)": TypedContractMethod<[json: string], [string], "view">;
 
@@ -3031,19 +2149,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "parseJsonAddress(string,string)": TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string],
-    "nonpayable"
-  >;
-
   parseJsonAddressArray: TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string[]],
-    "nonpayable"
-  >;
-
-  "parseJsonAddressArray(string,string)": TypedContractMethod<
     [arg0: string, arg1: string],
     [string[]],
     "nonpayable"
@@ -3055,19 +2161,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "parseJsonBool(string,string)": TypedContractMethod<
-    [arg0: string, arg1: string],
-    [boolean],
-    "nonpayable"
-  >;
-
   parseJsonBoolArray: TypedContractMethod<
-    [arg0: string, arg1: string],
-    [boolean[]],
-    "nonpayable"
-  >;
-
-  "parseJsonBoolArray(string,string)": TypedContractMethod<
     [arg0: string, arg1: string],
     [boolean[]],
     "nonpayable"
@@ -3079,19 +2173,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "parseJsonBytes(string,string)": TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string],
-    "nonpayable"
-  >;
-
   parseJsonBytes32: TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string],
-    "nonpayable"
-  >;
-
-  "parseJsonBytes32(string,string)": TypedContractMethod<
     [arg0: string, arg1: string],
     [string],
     "nonpayable"
@@ -3103,19 +2185,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "parseJsonBytes32Array(string,string)": TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string[]],
-    "nonpayable"
-  >;
-
   parseJsonBytesArray: TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string[]],
-    "nonpayable"
-  >;
-
-  "parseJsonBytesArray(string,string)": TypedContractMethod<
     [arg0: string, arg1: string],
     [string[]],
     "nonpayable"
@@ -3127,19 +2197,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "parseJsonInt(string,string)": TypedContractMethod<
-    [arg0: string, arg1: string],
-    [bigint],
-    "nonpayable"
-  >;
-
   parseJsonIntArray: TypedContractMethod<
-    [arg0: string, arg1: string],
-    [bigint[]],
-    "nonpayable"
-  >;
-
-  "parseJsonIntArray(string,string)": TypedContractMethod<
     [arg0: string, arg1: string],
     [bigint[]],
     "nonpayable"
@@ -3151,19 +2209,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "parseJsonString(string,string)": TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string],
-    "nonpayable"
-  >;
-
   parseJsonStringArray: TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string[]],
-    "nonpayable"
-  >;
-
-  "parseJsonStringArray(string,string)": TypedContractMethod<
     [arg0: string, arg1: string],
     [string[]],
     "nonpayable"
@@ -3175,19 +2221,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "parseJsonUint(string,string)": TypedContractMethod<
-    [arg0: string, arg1: string],
-    [bigint],
-    "nonpayable"
-  >;
-
   parseJsonUintArray: TypedContractMethod<
-    [arg0: string, arg1: string],
-    [bigint[]],
-    "nonpayable"
-  >;
-
-  "parseJsonUintArray(string,string)": TypedContractMethod<
     [arg0: string, arg1: string],
     [bigint[]],
     "nonpayable"
@@ -3195,15 +2229,7 @@ export interface Vm extends BaseContract {
 
   parseUint: TypedContractMethod<[stringifiedValue: string], [bigint], "view">;
 
-  "parseUint(string)": TypedContractMethod<
-    [stringifiedValue: string],
-    [bigint],
-    "view"
-  >;
-
   pauseGasMetering: TypedContractMethod<[], [void], "nonpayable">;
-
-  "pauseGasMetering()": TypedContractMethod<[], [void], "nonpayable">;
 
   "prank(address,address)": TypedContractMethod<
     [msgSender: AddressLike, txOrigin: AddressLike],
@@ -3223,29 +2249,9 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "prevrandao(bytes32)": TypedContractMethod<
-    [newPrevrandao: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
   projectRoot: TypedContractMethod<[], [string], "view">;
 
-  "projectRoot()": TypedContractMethod<[], [string], "view">;
-
   readCallers: TypedContractMethod<
-    [],
-    [
-      [bigint, string, string] & {
-        callerMode: bigint;
-        msgSender: string;
-        txOrigin: string;
-      }
-    ],
-    "nonpayable"
-  >;
-
-  "readCallers()": TypedContractMethod<
     [],
     [
       [bigint, string, string] & {
@@ -3277,39 +2283,17 @@ export interface Vm extends BaseContract {
 
   readFile: TypedContractMethod<[path: string], [string], "view">;
 
-  "readFile(string)": TypedContractMethod<[path: string], [string], "view">;
-
   readFileBinary: TypedContractMethod<[path: string], [string], "view">;
-
-  "readFileBinary(string)": TypedContractMethod<
-    [path: string],
-    [string],
-    "view"
-  >;
 
   readLine: TypedContractMethod<[path: string], [string], "view">;
 
-  "readLine(string)": TypedContractMethod<[path: string], [string], "view">;
-
   readLink: TypedContractMethod<[linkPath: string], [string], "view">;
-
-  "readLink(string)": TypedContractMethod<[linkPath: string], [string], "view">;
 
   record: TypedContractMethod<[], [void], "nonpayable">;
 
-  "record()": TypedContractMethod<[], [void], "nonpayable">;
-
   recordLogs: TypedContractMethod<[], [void], "nonpayable">;
 
-  "recordLogs()": TypedContractMethod<[], [void], "nonpayable">;
-
   rememberKey: TypedContractMethod<
-    [privateKey: BigNumberish],
-    [string],
-    "nonpayable"
-  >;
-
-  "rememberKey(uint256)": TypedContractMethod<
     [privateKey: BigNumberish],
     [string],
     "nonpayable"
@@ -3321,39 +2305,13 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "removeDir(string,bool)": TypedContractMethod<
-    [path: string, recursive: boolean],
-    [void],
-    "nonpayable"
-  >;
-
   removeFile: TypedContractMethod<[path: string], [void], "nonpayable">;
-
-  "removeFile(string)": TypedContractMethod<
-    [path: string],
-    [void],
-    "nonpayable"
-  >;
 
   resetNonce: TypedContractMethod<[account: AddressLike], [void], "nonpayable">;
 
-  "resetNonce(address)": TypedContractMethod<
-    [account: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
   resumeGasMetering: TypedContractMethod<[], [void], "nonpayable">;
 
-  "resumeGasMetering()": TypedContractMethod<[], [void], "nonpayable">;
-
   revertTo: TypedContractMethod<
-    [snapshotId: BigNumberish],
-    [boolean],
-    "nonpayable"
-  >;
-
-  "revertTo(uint256)": TypedContractMethod<
     [snapshotId: BigNumberish],
     [boolean],
     "nonpayable"
@@ -3372,12 +2330,6 @@ export interface Vm extends BaseContract {
   >;
 
   roll: TypedContractMethod<[newHeight: BigNumberish], [void], "nonpayable">;
-
-  "roll(uint256)": TypedContractMethod<
-    [newHeight: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
 
   "rollFork(bytes32)": TypedContractMethod<
     [txHash: BytesLike],
@@ -3405,27 +2357,11 @@ export interface Vm extends BaseContract {
 
   rpcUrl: TypedContractMethod<[rpcAlias: string], [string], "view">;
 
-  "rpcUrl(string)": TypedContractMethod<[rpcAlias: string], [string], "view">;
-
   rpcUrlStructs: TypedContractMethod<[], [VmSafe.RpcStructOutput[]], "view">;
-
-  "rpcUrlStructs()": TypedContractMethod<
-    [],
-    [VmSafe.RpcStructOutput[]],
-    "view"
-  >;
 
   rpcUrls: TypedContractMethod<[], [[string, string][]], "view">;
 
-  "rpcUrls()": TypedContractMethod<[], [[string, string][]], "view">;
-
   selectFork: TypedContractMethod<[forkId: BigNumberish], [void], "nonpayable">;
-
-  "selectFork(uint256)": TypedContractMethod<
-    [forkId: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
 
   "serializeAddress(string,string,address[])": TypedContractMethod<
     [objectKey: string, valueKey: string, values: AddressLike[]],
@@ -3517,19 +2453,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "setEnv(string,string)": TypedContractMethod<
-    [name: string, value: string],
-    [void],
-    "nonpayable"
-  >;
-
   setNonce: TypedContractMethod<
-    [account: AddressLike, newNonce: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  "setNonce(address,uint64)": TypedContractMethod<
     [account: AddressLike, newNonce: BigNumberish],
     [void],
     "nonpayable"
@@ -3541,19 +2465,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "setNonceUnsafe(address,uint64)": TypedContractMethod<
-    [account: AddressLike, newNonce: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
   sign: TypedContractMethod<
-    [privateKey: BigNumberish, digest: BytesLike],
-    [[bigint, string, string] & { v: bigint; r: string; s: string }],
-    "view"
-  >;
-
-  "sign(uint256,bytes32)": TypedContractMethod<
     [privateKey: BigNumberish, digest: BytesLike],
     [[bigint, string, string] & { v: bigint; r: string; s: string }],
     "view"
@@ -3561,11 +2473,7 @@ export interface Vm extends BaseContract {
 
   skip: TypedContractMethod<[skipTest: boolean], [void], "nonpayable">;
 
-  "skip(bool)": TypedContractMethod<[skipTest: boolean], [void], "nonpayable">;
-
   snapshot: TypedContractMethod<[], [bigint], "nonpayable">;
-
-  "snapshot()": TypedContractMethod<[], [bigint], "nonpayable">;
 
   "startBroadcast()": TypedContractMethod<[], [void], "nonpayable">;
 
@@ -3595,19 +2503,9 @@ export interface Vm extends BaseContract {
 
   stopBroadcast: TypedContractMethod<[], [void], "nonpayable">;
 
-  "stopBroadcast()": TypedContractMethod<[], [void], "nonpayable">;
-
   stopPrank: TypedContractMethod<[], [void], "nonpayable">;
 
-  "stopPrank()": TypedContractMethod<[], [void], "nonpayable">;
-
   store: TypedContractMethod<
-    [target: AddressLike, slot: BytesLike, value: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
-  "store(address,bytes32,bytes32)": TypedContractMethod<
     [target: AddressLike, slot: BytesLike, value: BytesLike],
     [void],
     "nonpayable"
@@ -3659,19 +2557,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "txGasPrice(uint256)": TypedContractMethod<
-    [newGasPrice: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
   warp: TypedContractMethod<[newTimestamp: BigNumberish], [void], "nonpayable">;
-
-  "warp(uint256)": TypedContractMethod<
-    [newTimestamp: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
 
   writeFile: TypedContractMethod<
     [path: string, data: string],
@@ -3679,19 +2565,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "writeFile(string,string)": TypedContractMethod<
-    [path: string, data: string],
-    [void],
-    "nonpayable"
-  >;
-
   writeFileBinary: TypedContractMethod<
-    [path: string, data: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
-  "writeFileBinary(string,bytes)": TypedContractMethod<
     [path: string, data: BytesLike],
     [void],
     "nonpayable"
@@ -3715,12 +2589,6 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
-  "writeLine(string,string)": TypedContractMethod<
-    [path: string, data: string],
-    [void],
-    "nonpayable"
-  >;
-
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
@@ -3733,35 +2601,16 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "accesses(address)"
-  ): TypedContractMethod<
-    [target: AddressLike],
-    [[string[], string[]] & { readSlots: string[]; writeSlots: string[] }],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "activeFork"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "activeFork()"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "addr"
   ): TypedContractMethod<[privateKey: BigNumberish], [string], "view">;
   getFunction(
-    nameOrSignature: "addr(uint256)"
-  ): TypedContractMethod<[privateKey: BigNumberish], [string], "view">;
-  getFunction(
     nameOrSignature: "allowCheatcodes"
   ): TypedContractMethod<[account: AddressLike], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "allowCheatcodes(address)"
-  ): TypedContractMethod<[account: AddressLike], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "assume"
-  ): TypedContractMethod<[condition: boolean], [void], "view">;
-  getFunction(
-    nameOrSignature: "assume(bool)"
   ): TypedContractMethod<[condition: boolean], [void], "view">;
   getFunction(
     nameOrSignature: "breakpoint(string)"
@@ -3782,35 +2631,16 @@ export interface Vm extends BaseContract {
     nameOrSignature: "chainId"
   ): TypedContractMethod<[newChainId: BigNumberish], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "chainId(uint256)"
-  ): TypedContractMethod<[newChainId: BigNumberish], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "clearMockedCalls"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "clearMockedCalls()"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "closeFile"
   ): TypedContractMethod<[path: string], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "closeFile(string)"
-  ): TypedContractMethod<[path: string], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "coinbase"
   ): TypedContractMethod<[newCoinbase: AddressLike], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "coinbase(address)"
-  ): TypedContractMethod<[newCoinbase: AddressLike], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "createDir"
-  ): TypedContractMethod<
-    [path: string, recursive: boolean],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "createDir(string,bool)"
   ): TypedContractMethod<
     [path: string, recursive: boolean],
     [void],
@@ -3858,13 +2688,6 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "deal(address,uint256)"
-  ): TypedContractMethod<
-    [account: AddressLike, newBalance: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "deriveKey(string,uint32)"
   ): TypedContractMethod<
     [mnemonic: string, index: BigNumberish],
@@ -3880,9 +2703,6 @@ export interface Vm extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "difficulty"
-  ): TypedContractMethod<[newDifficulty: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "difficulty(uint256)"
   ): TypedContractMethod<[newDifficulty: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "envAddress(string)"
@@ -4032,13 +2852,6 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "etch(address,bytes)"
-  ): TypedContractMethod<
-    [target: AddressLike, newRuntimeBytecode: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "expectCall(address,uint256,uint64,bytes)"
   ): TypedContractMethod<
     [
@@ -4169,21 +2982,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "expectSafeMemory(uint64,uint64)"
-  ): TypedContractMethod<
-    [min: BigNumberish, max: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "expectSafeMemoryCall"
-  ): TypedContractMethod<
-    [min: BigNumberish, max: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "expectSafeMemoryCall(uint64,uint64)"
   ): TypedContractMethod<
     [min: BigNumberish, max: BigNumberish],
     [void],
@@ -4193,13 +2992,7 @@ export interface Vm extends BaseContract {
     nameOrSignature: "fee"
   ): TypedContractMethod<[newBasefee: BigNumberish], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "fee(uint256)"
-  ): TypedContractMethod<[newBasefee: BigNumberish], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "ffi"
-  ): TypedContractMethod<[commandInput: string[]], [string], "nonpayable">;
-  getFunction(
-    nameOrSignature: "ffi(string[])"
   ): TypedContractMethod<[commandInput: string[]], [string], "nonpayable">;
   getFunction(
     nameOrSignature: "fsMetadata"
@@ -4209,47 +3002,22 @@ export interface Vm extends BaseContract {
     "view"
   >;
   getFunction(
-    nameOrSignature: "fsMetadata(string)"
-  ): TypedContractMethod<
-    [path: string],
-    [VmSafe.FsMetadataStructOutput],
-    "view"
-  >;
-  getFunction(
     nameOrSignature: "getCode"
-  ): TypedContractMethod<[artifactPath: string], [string], "view">;
-  getFunction(
-    nameOrSignature: "getCode(string)"
   ): TypedContractMethod<[artifactPath: string], [string], "view">;
   getFunction(
     nameOrSignature: "getDeployedCode"
   ): TypedContractMethod<[artifactPath: string], [string], "view">;
   getFunction(
-    nameOrSignature: "getDeployedCode(string)"
-  ): TypedContractMethod<[artifactPath: string], [string], "view">;
-  getFunction(
     nameOrSignature: "getLabel"
-  ): TypedContractMethod<[account: AddressLike], [string], "nonpayable">;
-  getFunction(
-    nameOrSignature: "getLabel(address)"
   ): TypedContractMethod<[account: AddressLike], [string], "nonpayable">;
   getFunction(
     nameOrSignature: "getNonce"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
-    nameOrSignature: "getNonce(address)"
-  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
-  getFunction(
     nameOrSignature: "getRecordedLogs"
   ): TypedContractMethod<[], [VmSafe.LogStructOutput[]], "nonpayable">;
   getFunction(
-    nameOrSignature: "getRecordedLogs()"
-  ): TypedContractMethod<[], [VmSafe.LogStructOutput[]], "nonpayable">;
-  getFunction(
     nameOrSignature: "isPersistent"
-  ): TypedContractMethod<[account: AddressLike], [boolean], "view">;
-  getFunction(
-    nameOrSignature: "isPersistent(address)"
   ): TypedContractMethod<[account: AddressLike], [boolean], "view">;
   getFunction(
     nameOrSignature: "label"
@@ -4259,21 +3027,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "label(address,string)"
-  ): TypedContractMethod<
-    [account: AddressLike, newLabel: string],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "load"
-  ): TypedContractMethod<
-    [target: AddressLike, slot: BytesLike],
-    [string],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "load(address,bytes32)"
   ): TypedContractMethod<
     [target: AddressLike, slot: BytesLike],
     [string],
@@ -4341,31 +3095,16 @@ export interface Vm extends BaseContract {
     nameOrSignature: "parseAddress"
   ): TypedContractMethod<[stringifiedValue: string], [string], "view">;
   getFunction(
-    nameOrSignature: "parseAddress(string)"
-  ): TypedContractMethod<[stringifiedValue: string], [string], "view">;
-  getFunction(
     nameOrSignature: "parseBool"
-  ): TypedContractMethod<[stringifiedValue: string], [boolean], "view">;
-  getFunction(
-    nameOrSignature: "parseBool(string)"
   ): TypedContractMethod<[stringifiedValue: string], [boolean], "view">;
   getFunction(
     nameOrSignature: "parseBytes"
   ): TypedContractMethod<[stringifiedValue: string], [string], "view">;
   getFunction(
-    nameOrSignature: "parseBytes(string)"
-  ): TypedContractMethod<[stringifiedValue: string], [string], "view">;
-  getFunction(
     nameOrSignature: "parseBytes32"
   ): TypedContractMethod<[stringifiedValue: string], [string], "view">;
   getFunction(
-    nameOrSignature: "parseBytes32(string)"
-  ): TypedContractMethod<[stringifiedValue: string], [string], "view">;
-  getFunction(
     nameOrSignature: "parseInt"
-  ): TypedContractMethod<[stringifiedValue: string], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "parseInt(string)"
   ): TypedContractMethod<[stringifiedValue: string], [bigint], "view">;
   getFunction(
     nameOrSignature: "parseJson(string)"
@@ -4377,17 +3116,7 @@ export interface Vm extends BaseContract {
     nameOrSignature: "parseJsonAddress"
   ): TypedContractMethod<[arg0: string, arg1: string], [string], "nonpayable">;
   getFunction(
-    nameOrSignature: "parseJsonAddress(string,string)"
-  ): TypedContractMethod<[arg0: string, arg1: string], [string], "nonpayable">;
-  getFunction(
     nameOrSignature: "parseJsonAddressArray"
-  ): TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string[]],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "parseJsonAddressArray(string,string)"
   ): TypedContractMethod<
     [arg0: string, arg1: string],
     [string[]],
@@ -4397,17 +3126,7 @@ export interface Vm extends BaseContract {
     nameOrSignature: "parseJsonBool"
   ): TypedContractMethod<[arg0: string, arg1: string], [boolean], "nonpayable">;
   getFunction(
-    nameOrSignature: "parseJsonBool(string,string)"
-  ): TypedContractMethod<[arg0: string, arg1: string], [boolean], "nonpayable">;
-  getFunction(
     nameOrSignature: "parseJsonBoolArray"
-  ): TypedContractMethod<
-    [arg0: string, arg1: string],
-    [boolean[]],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "parseJsonBoolArray(string,string)"
   ): TypedContractMethod<
     [arg0: string, arg1: string],
     [boolean[]],
@@ -4417,23 +3136,10 @@ export interface Vm extends BaseContract {
     nameOrSignature: "parseJsonBytes"
   ): TypedContractMethod<[arg0: string, arg1: string], [string], "nonpayable">;
   getFunction(
-    nameOrSignature: "parseJsonBytes(string,string)"
-  ): TypedContractMethod<[arg0: string, arg1: string], [string], "nonpayable">;
-  getFunction(
     nameOrSignature: "parseJsonBytes32"
   ): TypedContractMethod<[arg0: string, arg1: string], [string], "nonpayable">;
   getFunction(
-    nameOrSignature: "parseJsonBytes32(string,string)"
-  ): TypedContractMethod<[arg0: string, arg1: string], [string], "nonpayable">;
-  getFunction(
     nameOrSignature: "parseJsonBytes32Array"
-  ): TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string[]],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "parseJsonBytes32Array(string,string)"
   ): TypedContractMethod<
     [arg0: string, arg1: string],
     [string[]],
@@ -4447,17 +3153,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "parseJsonBytesArray(string,string)"
-  ): TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string[]],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "parseJsonInt"
-  ): TypedContractMethod<[arg0: string, arg1: string], [bigint], "nonpayable">;
-  getFunction(
-    nameOrSignature: "parseJsonInt(string,string)"
   ): TypedContractMethod<[arg0: string, arg1: string], [bigint], "nonpayable">;
   getFunction(
     nameOrSignature: "parseJsonIntArray"
@@ -4467,17 +3163,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "parseJsonIntArray(string,string)"
-  ): TypedContractMethod<
-    [arg0: string, arg1: string],
-    [bigint[]],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "parseJsonString"
-  ): TypedContractMethod<[arg0: string, arg1: string], [string], "nonpayable">;
-  getFunction(
-    nameOrSignature: "parseJsonString(string,string)"
   ): TypedContractMethod<[arg0: string, arg1: string], [string], "nonpayable">;
   getFunction(
     nameOrSignature: "parseJsonStringArray"
@@ -4487,17 +3173,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "parseJsonStringArray(string,string)"
-  ): TypedContractMethod<
-    [arg0: string, arg1: string],
-    [string[]],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "parseJsonUint"
-  ): TypedContractMethod<[arg0: string, arg1: string], [bigint], "nonpayable">;
-  getFunction(
-    nameOrSignature: "parseJsonUint(string,string)"
   ): TypedContractMethod<[arg0: string, arg1: string], [bigint], "nonpayable">;
   getFunction(
     nameOrSignature: "parseJsonUintArray"
@@ -4507,23 +3183,10 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "parseJsonUintArray(string,string)"
-  ): TypedContractMethod<
-    [arg0: string, arg1: string],
-    [bigint[]],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "parseUint"
   ): TypedContractMethod<[stringifiedValue: string], [bigint], "view">;
   getFunction(
-    nameOrSignature: "parseUint(string)"
-  ): TypedContractMethod<[stringifiedValue: string], [bigint], "view">;
-  getFunction(
     nameOrSignature: "pauseGasMetering"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "pauseGasMetering()"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "prank(address,address)"
@@ -4539,29 +3202,10 @@ export interface Vm extends BaseContract {
     nameOrSignature: "prevrandao"
   ): TypedContractMethod<[newPrevrandao: BytesLike], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "prevrandao(bytes32)"
-  ): TypedContractMethod<[newPrevrandao: BytesLike], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "projectRoot"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "projectRoot()"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "readCallers"
-  ): TypedContractMethod<
-    [],
-    [
-      [bigint, string, string] & {
-        callerMode: bigint;
-        msgSender: string;
-        txOrigin: string;
-      }
-    ],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "readCallers()"
   ): TypedContractMethod<
     [],
     [
@@ -4598,43 +3242,22 @@ export interface Vm extends BaseContract {
     nameOrSignature: "readFile"
   ): TypedContractMethod<[path: string], [string], "view">;
   getFunction(
-    nameOrSignature: "readFile(string)"
-  ): TypedContractMethod<[path: string], [string], "view">;
-  getFunction(
     nameOrSignature: "readFileBinary"
-  ): TypedContractMethod<[path: string], [string], "view">;
-  getFunction(
-    nameOrSignature: "readFileBinary(string)"
   ): TypedContractMethod<[path: string], [string], "view">;
   getFunction(
     nameOrSignature: "readLine"
   ): TypedContractMethod<[path: string], [string], "view">;
   getFunction(
-    nameOrSignature: "readLine(string)"
-  ): TypedContractMethod<[path: string], [string], "view">;
-  getFunction(
     nameOrSignature: "readLink"
-  ): TypedContractMethod<[linkPath: string], [string], "view">;
-  getFunction(
-    nameOrSignature: "readLink(string)"
   ): TypedContractMethod<[linkPath: string], [string], "view">;
   getFunction(
     nameOrSignature: "record"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "record()"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "recordLogs"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "recordLogs()"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "rememberKey"
-  ): TypedContractMethod<[privateKey: BigNumberish], [string], "nonpayable">;
-  getFunction(
-    nameOrSignature: "rememberKey(uint256)"
   ): TypedContractMethod<[privateKey: BigNumberish], [string], "nonpayable">;
   getFunction(
     nameOrSignature: "removeDir"
@@ -4644,35 +3267,16 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "removeDir(string,bool)"
-  ): TypedContractMethod<
-    [path: string, recursive: boolean],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "removeFile"
-  ): TypedContractMethod<[path: string], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "removeFile(string)"
   ): TypedContractMethod<[path: string], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "resetNonce"
   ): TypedContractMethod<[account: AddressLike], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "resetNonce(address)"
-  ): TypedContractMethod<[account: AddressLike], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "resumeGasMetering"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "resumeGasMetering()"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "revertTo"
-  ): TypedContractMethod<[snapshotId: BigNumberish], [boolean], "nonpayable">;
-  getFunction(
-    nameOrSignature: "revertTo(uint256)"
   ): TypedContractMethod<[snapshotId: BigNumberish], [boolean], "nonpayable">;
   getFunction(
     nameOrSignature: "revokePersistent(address[])"
@@ -4682,9 +3286,6 @@ export interface Vm extends BaseContract {
   ): TypedContractMethod<[account: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "roll"
-  ): TypedContractMethod<[newHeight: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "roll(uint256)"
   ): TypedContractMethod<[newHeight: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "rollFork(bytes32)"
@@ -4710,25 +3311,13 @@ export interface Vm extends BaseContract {
     nameOrSignature: "rpcUrl"
   ): TypedContractMethod<[rpcAlias: string], [string], "view">;
   getFunction(
-    nameOrSignature: "rpcUrl(string)"
-  ): TypedContractMethod<[rpcAlias: string], [string], "view">;
-  getFunction(
     nameOrSignature: "rpcUrlStructs"
-  ): TypedContractMethod<[], [VmSafe.RpcStructOutput[]], "view">;
-  getFunction(
-    nameOrSignature: "rpcUrlStructs()"
   ): TypedContractMethod<[], [VmSafe.RpcStructOutput[]], "view">;
   getFunction(
     nameOrSignature: "rpcUrls"
   ): TypedContractMethod<[], [[string, string][]], "view">;
   getFunction(
-    nameOrSignature: "rpcUrls()"
-  ): TypedContractMethod<[], [[string, string][]], "view">;
-  getFunction(
     nameOrSignature: "selectFork"
-  ): TypedContractMethod<[forkId: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "selectFork(uint256)"
   ): TypedContractMethod<[forkId: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "serializeAddress(string,string,address[])"
@@ -4832,17 +3421,7 @@ export interface Vm extends BaseContract {
     nameOrSignature: "setEnv"
   ): TypedContractMethod<[name: string, value: string], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "setEnv(string,string)"
-  ): TypedContractMethod<[name: string, value: string], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "setNonce"
-  ): TypedContractMethod<
-    [account: AddressLike, newNonce: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "setNonce(address,uint64)"
   ): TypedContractMethod<
     [account: AddressLike, newNonce: BigNumberish],
     [void],
@@ -4856,21 +3435,7 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "setNonceUnsafe(address,uint64)"
-  ): TypedContractMethod<
-    [account: AddressLike, newNonce: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "sign"
-  ): TypedContractMethod<
-    [privateKey: BigNumberish, digest: BytesLike],
-    [[bigint, string, string] & { v: bigint; r: string; s: string }],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "sign(uint256,bytes32)"
   ): TypedContractMethod<
     [privateKey: BigNumberish, digest: BytesLike],
     [[bigint, string, string] & { v: bigint; r: string; s: string }],
@@ -4880,13 +3445,7 @@ export interface Vm extends BaseContract {
     nameOrSignature: "skip"
   ): TypedContractMethod<[skipTest: boolean], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "skip(bool)"
-  ): TypedContractMethod<[skipTest: boolean], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "snapshot"
-  ): TypedContractMethod<[], [bigint], "nonpayable">;
-  getFunction(
-    nameOrSignature: "snapshot()"
   ): TypedContractMethod<[], [bigint], "nonpayable">;
   getFunction(
     nameOrSignature: "startBroadcast()"
@@ -4911,23 +3470,10 @@ export interface Vm extends BaseContract {
     nameOrSignature: "stopBroadcast"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "stopBroadcast()"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "stopPrank"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "stopPrank()"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "store"
-  ): TypedContractMethod<
-    [target: AddressLike, slot: BytesLike, value: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "store(address,bytes32,bytes32)"
   ): TypedContractMethod<
     [target: AddressLike, slot: BytesLike, value: BytesLike],
     [void],
@@ -4965,25 +3511,13 @@ export interface Vm extends BaseContract {
     nameOrSignature: "txGasPrice"
   ): TypedContractMethod<[newGasPrice: BigNumberish], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "txGasPrice(uint256)"
-  ): TypedContractMethod<[newGasPrice: BigNumberish], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "warp"
-  ): TypedContractMethod<[newTimestamp: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "warp(uint256)"
   ): TypedContractMethod<[newTimestamp: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "writeFile"
   ): TypedContractMethod<[path: string, data: string], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "writeFile(string,string)"
-  ): TypedContractMethod<[path: string, data: string], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "writeFileBinary"
-  ): TypedContractMethod<[path: string, data: BytesLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "writeFileBinary(string,bytes)"
   ): TypedContractMethod<[path: string, data: BytesLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "writeJson(string,string,string)"
@@ -4997,9 +3531,6 @@ export interface Vm extends BaseContract {
   ): TypedContractMethod<[json: string, path: string], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "writeLine"
-  ): TypedContractMethod<[path: string, data: string], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "writeLine(string,string)"
   ): TypedContractMethod<[path: string, data: string], [void], "nonpayable">;
 
   filters: {};

@@ -25,13 +25,9 @@ export interface ISmartInvoiceFactoryInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "create"
-      | "create(address,uint256[],bytes,bytes32)"
       | "createDeterministic"
-      | "createDeterministic(address,uint256[],bytes,bytes32,bytes32)"
       | "predictDeterministicAddress"
-      | "predictDeterministicAddress(bytes32,bytes32)"
       | "resolutionRateOf"
-      | "resolutionRateOf(address)"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -39,15 +35,7 @@ export interface ISmartInvoiceFactoryInterface extends Interface {
     values: [AddressLike, BigNumberish[], BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "create(address,uint256[],bytes,bytes32)",
-    values: [AddressLike, BigNumberish[], BytesLike, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "createDeterministic",
-    values: [AddressLike, BigNumberish[], BytesLike, BytesLike, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "createDeterministic(address,uint256[],bytes,bytes32,bytes32)",
     values: [AddressLike, BigNumberish[], BytesLike, BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
@@ -55,29 +43,13 @@ export interface ISmartInvoiceFactoryInterface extends Interface {
     values: [BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "predictDeterministicAddress(bytes32,bytes32)",
-    values: [BytesLike, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "resolutionRateOf",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "resolutionRateOf(address)",
     values: [AddressLike]
   ): string;
 
   decodeFunctionResult(functionFragment: "create", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "create(address,uint256[],bytes,bytes32)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "createDeterministic",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "createDeterministic(address,uint256[],bytes,bytes32,bytes32)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -85,15 +57,7 @@ export interface ISmartInvoiceFactoryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "predictDeterministicAddress(bytes32,bytes32)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "resolutionRateOf",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "resolutionRateOf(address)",
     data: BytesLike
   ): Result;
 }
@@ -152,30 +116,7 @@ export interface ISmartInvoiceFactory extends BaseContract {
     "nonpayable"
   >;
 
-  "create(address,uint256[],bytes,bytes32)": TypedContractMethod<
-    [
-      _recipient: AddressLike,
-      _amounts: BigNumberish[],
-      _data: BytesLike,
-      _type: BytesLike
-    ],
-    [string],
-    "nonpayable"
-  >;
-
   createDeterministic: TypedContractMethod<
-    [
-      _recipient: AddressLike,
-      _amounts: BigNumberish[],
-      _data: BytesLike,
-      _type: BytesLike,
-      _salt: BytesLike
-    ],
-    [string],
-    "nonpayable"
-  >;
-
-  "createDeterministic(address,uint256[],bytes,bytes32,bytes32)": TypedContractMethod<
     [
       _recipient: AddressLike,
       _amounts: BigNumberish[],
@@ -193,19 +134,7 @@ export interface ISmartInvoiceFactory extends BaseContract {
     "nonpayable"
   >;
 
-  "predictDeterministicAddress(bytes32,bytes32)": TypedContractMethod<
-    [_type: BytesLike, _salt: BytesLike],
-    [string],
-    "nonpayable"
-  >;
-
   resolutionRateOf: TypedContractMethod<
-    [_resolver: AddressLike],
-    [bigint],
-    "view"
-  >;
-
-  "resolutionRateOf(address)": TypedContractMethod<
     [_resolver: AddressLike],
     [bigint],
     "view"
@@ -217,18 +146,6 @@ export interface ISmartInvoiceFactory extends BaseContract {
 
   getFunction(
     nameOrSignature: "create"
-  ): TypedContractMethod<
-    [
-      _recipient: AddressLike,
-      _amounts: BigNumberish[],
-      _data: BytesLike,
-      _type: BytesLike
-    ],
-    [string],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "create(address,uint256[],bytes,bytes32)"
   ): TypedContractMethod<
     [
       _recipient: AddressLike,
@@ -253,19 +170,6 @@ export interface ISmartInvoiceFactory extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "createDeterministic(address,uint256[],bytes,bytes32,bytes32)"
-  ): TypedContractMethod<
-    [
-      _recipient: AddressLike,
-      _amounts: BigNumberish[],
-      _data: BytesLike,
-      _type: BytesLike,
-      _salt: BytesLike
-    ],
-    [string],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "predictDeterministicAddress"
   ): TypedContractMethod<
     [_type: BytesLike, _salt: BytesLike],
@@ -273,17 +177,7 @@ export interface ISmartInvoiceFactory extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "predictDeterministicAddress(bytes32,bytes32)"
-  ): TypedContractMethod<
-    [_type: BytesLike, _salt: BytesLike],
-    [string],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "resolutionRateOf"
-  ): TypedContractMethod<[_resolver: AddressLike], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "resolutionRateOf(address)"
   ): TypedContractMethod<[_resolver: AddressLike], [bigint], "view">;
 
   filters: {};

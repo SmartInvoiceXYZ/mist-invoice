@@ -20,19 +20,11 @@ import type {
 } from "./common";
 
 export interface ScriptInterface extends Interface {
-  getFunction(nameOrSignature: "IS_SCRIPT" | "IS_SCRIPT()"): FunctionFragment;
+  getFunction(nameOrSignature: "IS_SCRIPT"): FunctionFragment;
 
   encodeFunctionData(functionFragment: "IS_SCRIPT", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "IS_SCRIPT()",
-    values?: undefined
-  ): string;
 
   decodeFunctionResult(functionFragment: "IS_SCRIPT", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "IS_SCRIPT()",
-    data: BytesLike
-  ): Result;
 }
 
 export interface Script extends BaseContract {
@@ -80,17 +72,12 @@ export interface Script extends BaseContract {
 
   IS_SCRIPT: TypedContractMethod<[], [boolean], "view">;
 
-  "IS_SCRIPT()": TypedContractMethod<[], [boolean], "view">;
-
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
     nameOrSignature: "IS_SCRIPT"
-  ): TypedContractMethod<[], [boolean], "view">;
-  getFunction(
-    nameOrSignature: "IS_SCRIPT()"
   ): TypedContractMethod<[], [boolean], "view">;
 
   filters: {};

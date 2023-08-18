@@ -20,25 +20,13 @@ import type {
 } from "../common";
 
 export interface DeployScriptInterface extends Interface {
-  getFunction(
-    nameOrSignature: "IS_SCRIPT" | "IS_SCRIPT()" | "run" | "run()"
-  ): FunctionFragment;
+  getFunction(nameOrSignature: "IS_SCRIPT" | "run"): FunctionFragment;
 
   encodeFunctionData(functionFragment: "IS_SCRIPT", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "IS_SCRIPT()",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "run", values?: undefined): string;
-  encodeFunctionData(functionFragment: "run()", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "IS_SCRIPT", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "IS_SCRIPT()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "run", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "run()", data: BytesLike): Result;
 }
 
 export interface DeployScript extends BaseContract {
@@ -86,11 +74,7 @@ export interface DeployScript extends BaseContract {
 
   IS_SCRIPT: TypedContractMethod<[], [boolean], "view">;
 
-  "IS_SCRIPT()": TypedContractMethod<[], [boolean], "view">;
-
   run: TypedContractMethod<[], [void], "nonpayable">;
-
-  "run()": TypedContractMethod<[], [void], "nonpayable">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -100,13 +84,7 @@ export interface DeployScript extends BaseContract {
     nameOrSignature: "IS_SCRIPT"
   ): TypedContractMethod<[], [boolean], "view">;
   getFunction(
-    nameOrSignature: "IS_SCRIPT()"
-  ): TypedContractMethod<[], [boolean], "view">;
-  getFunction(
     nameOrSignature: "run"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "run()"
   ): TypedContractMethod<[], [void], "nonpayable">;
 
   filters: {};

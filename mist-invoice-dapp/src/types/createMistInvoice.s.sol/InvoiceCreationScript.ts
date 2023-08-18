@@ -21,24 +21,34 @@ import type {
 
 export interface InvoiceCreationScriptInterface extends Interface {
   getFunction(
-    nameOrSignature: "IS_SCRIPT" | "IS_SCRIPT()" | "run" | "run()"
+    nameOrSignature:
+      | "IS_SCRIPT"
+      | "getLineaDummyData"
+      | "getSepoliaDummyData"
+      | "run"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "IS_SCRIPT", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "IS_SCRIPT()",
+    functionFragment: "getLineaDummyData",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getSepoliaDummyData",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "run", values?: undefined): string;
-  encodeFunctionData(functionFragment: "run()", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "IS_SCRIPT", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "IS_SCRIPT()",
+    functionFragment: "getLineaDummyData",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getSepoliaDummyData",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "run", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "run()", data: BytesLike): Result;
 }
 
 export interface InvoiceCreationScript extends BaseContract {
@@ -86,11 +96,11 @@ export interface InvoiceCreationScript extends BaseContract {
 
   IS_SCRIPT: TypedContractMethod<[], [boolean], "view">;
 
-  "IS_SCRIPT()": TypedContractMethod<[], [boolean], "view">;
+  getLineaDummyData: TypedContractMethod<[], [string], "view">;
+
+  getSepoliaDummyData: TypedContractMethod<[], [string], "view">;
 
   run: TypedContractMethod<[], [void], "nonpayable">;
-
-  "run()": TypedContractMethod<[], [void], "nonpayable">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -100,13 +110,13 @@ export interface InvoiceCreationScript extends BaseContract {
     nameOrSignature: "IS_SCRIPT"
   ): TypedContractMethod<[], [boolean], "view">;
   getFunction(
-    nameOrSignature: "IS_SCRIPT()"
-  ): TypedContractMethod<[], [boolean], "view">;
+    nameOrSignature: "getLineaDummyData"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "getSepoliaDummyData"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "run"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "run()"
   ): TypedContractMethod<[], [void], "nonpayable">;
 
   filters: {};

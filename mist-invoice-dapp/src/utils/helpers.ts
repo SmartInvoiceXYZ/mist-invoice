@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 import { getAddress } from "@ethersproject/address";
 import { Contract, Interface } from "ethers";
 
@@ -189,10 +190,10 @@ export type TokenData = {
 };
 
 export const formatTokenData = (object: any) => {
-  let tokenObject = {} as Record<string, Record<string, TokenData>>;
+  const tokenObject = {} as Record<string, Record<string, TokenData>>;
 
   for (const [key, value] of Object.entries(object)) {
-    let tokenDetails = {} as Record<string, TokenData>;
+    const tokenDetails = {} as Record<string, TokenData>;
 
     for (const { tokenContract, decimals, symbol, image } of Object.values(
       value as TokenData[],
@@ -213,10 +214,10 @@ export const formatTokenData = (object: any) => {
 export const formatTokens = (
   object: Record<string, Record<string, TokenData>>,
 ) => {
-  let tokenObject = {} as Record<string, string[]>;
+  const tokenObject = {} as Record<string, string[]>;
   for (const [key, value] of Object.entries(object)) {
-    let tokenArray = [];
-    for (let tokenAddress of Object.keys(value)) {
+    const tokenArray = [];
+    for (const tokenAddress of Object.keys(value)) {
       tokenArray.push(tokenAddress);
     }
     tokenObject[key] = tokenArray;

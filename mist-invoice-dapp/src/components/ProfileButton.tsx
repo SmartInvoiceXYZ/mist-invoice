@@ -12,8 +12,13 @@ import React from "react";
 import { theme } from "../theme";
 import { getAccountString, getNetworkLabel } from "../utils";
 
+type Profile = {
+  name: string;
+  imageUrl: string;
+};
+
 export type ProfileButtonProps = {
-  profile?: any;
+  profile?: Profile;
   account: string;
   chainId: number;
   disconnect: () => Promise<void>;

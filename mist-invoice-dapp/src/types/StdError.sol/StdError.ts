@@ -23,23 +23,14 @@ export interface StdErrorInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "arithmeticError"
-      | "arithmeticError()"
       | "assertionError"
-      | "assertionError()"
       | "divisionError"
-      | "divisionError()"
       | "encodeStorageError"
-      | "encodeStorageError()"
       | "enumConversionError"
-      | "enumConversionError()"
       | "indexOOBError"
-      | "indexOOBError()"
       | "memOverflowError"
-      | "memOverflowError()"
       | "popError"
-      | "popError()"
       | "zeroVarError"
-      | "zeroVarError()"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -47,15 +38,7 @@ export interface StdErrorInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "arithmeticError()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "assertionError",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "assertionError()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -63,15 +46,7 @@ export interface StdErrorInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "divisionError()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "encodeStorageError",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "encodeStorageError()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -79,36 +54,16 @@ export interface StdErrorInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "enumConversionError()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "indexOOBError",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "indexOOBError()",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "memOverflowError",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "memOverflowError()",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "popError", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "popError()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "zeroVarError",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "zeroVarError()",
     values?: undefined
   ): string;
 
@@ -117,15 +72,7 @@ export interface StdErrorInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "arithmeticError()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "assertionError",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "assertionError()",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -133,15 +80,7 @@ export interface StdErrorInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "divisionError()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "encodeStorageError",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "encodeStorageError()",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -149,33 +88,16 @@ export interface StdErrorInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "enumConversionError()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "indexOOBError",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "indexOOBError()",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "memOverflowError",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "memOverflowError()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "popError", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "popError()", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "zeroVarError",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "zeroVarError()",
     data: BytesLike
   ): Result;
 }
@@ -225,39 +147,21 @@ export interface StdError extends BaseContract {
 
   arithmeticError: TypedContractMethod<[], [string], "view">;
 
-  "arithmeticError()": TypedContractMethod<[], [string], "view">;
-
   assertionError: TypedContractMethod<[], [string], "view">;
-
-  "assertionError()": TypedContractMethod<[], [string], "view">;
 
   divisionError: TypedContractMethod<[], [string], "view">;
 
-  "divisionError()": TypedContractMethod<[], [string], "view">;
-
   encodeStorageError: TypedContractMethod<[], [string], "view">;
-
-  "encodeStorageError()": TypedContractMethod<[], [string], "view">;
 
   enumConversionError: TypedContractMethod<[], [string], "view">;
 
-  "enumConversionError()": TypedContractMethod<[], [string], "view">;
-
   indexOOBError: TypedContractMethod<[], [string], "view">;
-
-  "indexOOBError()": TypedContractMethod<[], [string], "view">;
 
   memOverflowError: TypedContractMethod<[], [string], "view">;
 
-  "memOverflowError()": TypedContractMethod<[], [string], "view">;
-
   popError: TypedContractMethod<[], [string], "view">;
 
-  "popError()": TypedContractMethod<[], [string], "view">;
-
   zeroVarError: TypedContractMethod<[], [string], "view">;
-
-  "zeroVarError()": TypedContractMethod<[], [string], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -267,55 +171,28 @@ export interface StdError extends BaseContract {
     nameOrSignature: "arithmeticError"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "arithmeticError()"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "assertionError"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "assertionError()"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "divisionError"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "divisionError()"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "encodeStorageError"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "encodeStorageError()"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "enumConversionError"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "enumConversionError()"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "indexOOBError"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "indexOOBError()"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "memOverflowError"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "memOverflowError()"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "popError"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "popError()"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "zeroVarError"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "zeroVarError()"
   ): TypedContractMethod<[], [string], "view">;
 
   filters: {};

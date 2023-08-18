@@ -25,15 +25,10 @@ export interface ISmartInvoiceInstantInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "depositTokens"
-      | "depositTokens(address,uint256)"
       | "getTotalDue"
-      | "getTotalDue()"
       | "init"
-      | "init(address,uint256[],bytes)"
       | "withdraw"
-      | "withdraw()"
       | "withdrawTokens"
-      | "withdrawTokens(address)"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -41,36 +36,16 @@ export interface ISmartInvoiceInstantInterface extends Interface {
     values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositTokens(address,uint256)",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getTotalDue",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getTotalDue()",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "init",
     values: [AddressLike, BigNumberish[], BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "init(address,uint256[],bytes)",
-    values: [AddressLike, BigNumberish[], BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "withdraw()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "withdrawTokens",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdrawTokens(address)",
     values: [AddressLike]
   ): string;
 
@@ -79,30 +54,13 @@ export interface ISmartInvoiceInstantInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositTokens(address,uint256)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getTotalDue",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "getTotalDue()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "init(address,uint256[],bytes)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "withdraw()", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawTokens",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "withdrawTokens(address)",
     data: BytesLike
   ): Result;
 }
@@ -156,15 +114,7 @@ export interface ISmartInvoiceInstant extends BaseContract {
     "nonpayable"
   >;
 
-  "depositTokens(address,uint256)": TypedContractMethod<
-    [_token: AddressLike, _amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
   getTotalDue: TypedContractMethod<[], [bigint], "view">;
-
-  "getTotalDue()": TypedContractMethod<[], [bigint], "view">;
 
   init: TypedContractMethod<
     [_recipient: AddressLike, _amounts: BigNumberish[], _data: BytesLike],
@@ -172,23 +122,9 @@ export interface ISmartInvoiceInstant extends BaseContract {
     "nonpayable"
   >;
 
-  "init(address,uint256[],bytes)": TypedContractMethod<
-    [_recipient: AddressLike, _amounts: BigNumberish[], _data: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
   withdraw: TypedContractMethod<[], [void], "nonpayable">;
 
-  "withdraw()": TypedContractMethod<[], [void], "nonpayable">;
-
   withdrawTokens: TypedContractMethod<
-    [_token: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
-  "withdrawTokens(address)": TypedContractMethod<
     [_token: AddressLike],
     [void],
     "nonpayable"
@@ -206,17 +142,7 @@ export interface ISmartInvoiceInstant extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "depositTokens(address,uint256)"
-  ): TypedContractMethod<
-    [_token: AddressLike, _amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "getTotalDue"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "getTotalDue()"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "init"
@@ -226,23 +152,10 @@ export interface ISmartInvoiceInstant extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "init(address,uint256[],bytes)"
-  ): TypedContractMethod<
-    [_recipient: AddressLike, _amounts: BigNumberish[], _data: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "withdraw()"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "withdrawTokens"
-  ): TypedContractMethod<[_token: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "withdrawTokens(address)"
   ): TypedContractMethod<[_token: AddressLike], [void], "nonpayable">;
 
   filters: {};

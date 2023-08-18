@@ -72,37 +72,21 @@ export interface IMulticall3Interface extends Interface {
   getFunction(
     nameOrSignature:
       | "aggregate"
-      | "aggregate((address,bytes)[])"
       | "aggregate3"
-      | "aggregate3((address,bool,bytes)[])"
       | "aggregate3Value"
-      | "aggregate3Value((address,bool,uint256,bytes)[])"
       | "blockAndAggregate"
-      | "blockAndAggregate((address,bytes)[])"
       | "getBasefee"
-      | "getBasefee()"
       | "getBlockHash"
-      | "getBlockHash(uint256)"
       | "getBlockNumber"
-      | "getBlockNumber()"
       | "getChainId"
-      | "getChainId()"
       | "getCurrentBlockCoinbase"
-      | "getCurrentBlockCoinbase()"
       | "getCurrentBlockDifficulty"
-      | "getCurrentBlockDifficulty()"
       | "getCurrentBlockGasLimit"
-      | "getCurrentBlockGasLimit()"
       | "getCurrentBlockTimestamp"
-      | "getCurrentBlockTimestamp()"
       | "getEthBalance"
-      | "getEthBalance(address)"
       | "getLastBlockHash"
-      | "getLastBlockHash()"
       | "tryAggregate"
-      | "tryAggregate(bool,(address,bytes)[])"
       | "tryBlockAndAggregate"
-      | "tryBlockAndAggregate(bool,(address,bytes)[])"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -110,15 +94,7 @@ export interface IMulticall3Interface extends Interface {
     values: [IMulticall3.CallStruct[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "aggregate((address,bytes)[])",
-    values: [IMulticall3.CallStruct[]]
-  ): string;
-  encodeFunctionData(
     functionFragment: "aggregate3",
-    values: [IMulticall3.Call3Struct[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "aggregate3((address,bool,bytes)[])",
     values: [IMulticall3.Call3Struct[]]
   ): string;
   encodeFunctionData(
@@ -126,15 +102,7 @@ export interface IMulticall3Interface extends Interface {
     values: [IMulticall3.Call3ValueStruct[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "aggregate3Value((address,bool,uint256,bytes)[])",
-    values: [IMulticall3.Call3ValueStruct[]]
-  ): string;
-  encodeFunctionData(
     functionFragment: "blockAndAggregate",
-    values: [IMulticall3.CallStruct[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "blockAndAggregate((address,bytes)[])",
     values: [IMulticall3.CallStruct[]]
   ): string;
   encodeFunctionData(
@@ -142,23 +110,11 @@ export interface IMulticall3Interface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getBasefee()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "getBlockHash",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "getBlockHash(uint256)",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getBlockNumber",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getBlockNumber()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -166,15 +122,7 @@ export interface IMulticall3Interface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getChainId()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "getCurrentBlockCoinbase",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getCurrentBlockCoinbase()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -182,15 +130,7 @@ export interface IMulticall3Interface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getCurrentBlockDifficulty()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "getCurrentBlockGasLimit",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getCurrentBlockGasLimit()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -198,15 +138,7 @@ export interface IMulticall3Interface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getCurrentBlockTimestamp()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "getEthBalance",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getEthBalance(address)",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
@@ -214,84 +146,36 @@ export interface IMulticall3Interface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getLastBlockHash()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "tryAggregate",
-    values: [boolean, IMulticall3.CallStruct[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tryAggregate(bool,(address,bytes)[])",
     values: [boolean, IMulticall3.CallStruct[]]
   ): string;
   encodeFunctionData(
     functionFragment: "tryBlockAndAggregate",
     values: [boolean, IMulticall3.CallStruct[]]
   ): string;
-  encodeFunctionData(
-    functionFragment: "tryBlockAndAggregate(bool,(address,bytes)[])",
-    values: [boolean, IMulticall3.CallStruct[]]
-  ): string;
 
   decodeFunctionResult(functionFragment: "aggregate", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "aggregate((address,bytes)[])",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "aggregate3", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "aggregate3((address,bool,bytes)[])",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "aggregate3Value",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "aggregate3Value((address,bool,uint256,bytes)[])",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "blockAndAggregate",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "blockAndAggregate((address,bytes)[])",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "getBasefee", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getBasefee()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getBlockHash",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getBlockHash(uint256)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "getBlockNumber",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "getBlockNumber()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "getChainId", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getChainId()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getCurrentBlockCoinbase",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getCurrentBlockCoinbase()",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -299,15 +183,7 @@ export interface IMulticall3Interface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getCurrentBlockDifficulty()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getCurrentBlockGasLimit",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getCurrentBlockGasLimit()",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -315,15 +191,7 @@ export interface IMulticall3Interface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getCurrentBlockTimestamp()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getEthBalance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getEthBalance(address)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -331,23 +199,11 @@ export interface IMulticall3Interface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getLastBlockHash()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "tryAggregate",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "tryAggregate(bool,(address,bytes)[])",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "tryBlockAndAggregate",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tryBlockAndAggregate(bool,(address,bytes)[])",
     data: BytesLike
   ): Result;
 }
@@ -401,31 +257,13 @@ export interface IMulticall3 extends BaseContract {
     "payable"
   >;
 
-  "aggregate((address,bytes)[])": TypedContractMethod<
-    [calls: IMulticall3.CallStruct[]],
-    [[bigint, string[]] & { blockNumber: bigint; returnData: string[] }],
-    "payable"
-  >;
-
   aggregate3: TypedContractMethod<
     [calls: IMulticall3.Call3Struct[]],
     [IMulticall3.ResultStructOutput[]],
     "payable"
   >;
 
-  "aggregate3((address,bool,bytes)[])": TypedContractMethod<
-    [calls: IMulticall3.Call3Struct[]],
-    [IMulticall3.ResultStructOutput[]],
-    "payable"
-  >;
-
   aggregate3Value: TypedContractMethod<
-    [calls: IMulticall3.Call3ValueStruct[]],
-    [IMulticall3.ResultStructOutput[]],
-    "payable"
-  >;
-
-  "aggregate3Value((address,bool,uint256,bytes)[])": TypedContractMethod<
     [calls: IMulticall3.Call3ValueStruct[]],
     [IMulticall3.ResultStructOutput[]],
     "payable"
@@ -443,21 +281,7 @@ export interface IMulticall3 extends BaseContract {
     "payable"
   >;
 
-  "blockAndAggregate((address,bytes)[])": TypedContractMethod<
-    [calls: IMulticall3.CallStruct[]],
-    [
-      [bigint, string, IMulticall3.ResultStructOutput[]] & {
-        blockNumber: bigint;
-        blockHash: string;
-        returnData: IMulticall3.ResultStructOutput[];
-      }
-    ],
-    "payable"
-  >;
-
   getBasefee: TypedContractMethod<[], [bigint], "view">;
-
-  "getBasefee()": TypedContractMethod<[], [bigint], "view">;
 
   getBlockHash: TypedContractMethod<
     [blockNumber: BigNumberish],
@@ -465,47 +289,21 @@ export interface IMulticall3 extends BaseContract {
     "view"
   >;
 
-  "getBlockHash(uint256)": TypedContractMethod<
-    [blockNumber: BigNumberish],
-    [string],
-    "view"
-  >;
-
   getBlockNumber: TypedContractMethod<[], [bigint], "view">;
-
-  "getBlockNumber()": TypedContractMethod<[], [bigint], "view">;
 
   getChainId: TypedContractMethod<[], [bigint], "view">;
 
-  "getChainId()": TypedContractMethod<[], [bigint], "view">;
-
   getCurrentBlockCoinbase: TypedContractMethod<[], [string], "view">;
-
-  "getCurrentBlockCoinbase()": TypedContractMethod<[], [string], "view">;
 
   getCurrentBlockDifficulty: TypedContractMethod<[], [bigint], "view">;
 
-  "getCurrentBlockDifficulty()": TypedContractMethod<[], [bigint], "view">;
-
   getCurrentBlockGasLimit: TypedContractMethod<[], [bigint], "view">;
-
-  "getCurrentBlockGasLimit()": TypedContractMethod<[], [bigint], "view">;
 
   getCurrentBlockTimestamp: TypedContractMethod<[], [bigint], "view">;
 
-  "getCurrentBlockTimestamp()": TypedContractMethod<[], [bigint], "view">;
-
   getEthBalance: TypedContractMethod<[addr: AddressLike], [bigint], "view">;
 
-  "getEthBalance(address)": TypedContractMethod<
-    [addr: AddressLike],
-    [bigint],
-    "view"
-  >;
-
   getLastBlockHash: TypedContractMethod<[], [string], "view">;
-
-  "getLastBlockHash()": TypedContractMethod<[], [string], "view">;
 
   tryAggregate: TypedContractMethod<
     [requireSuccess: boolean, calls: IMulticall3.CallStruct[]],
@@ -513,25 +311,7 @@ export interface IMulticall3 extends BaseContract {
     "payable"
   >;
 
-  "tryAggregate(bool,(address,bytes)[])": TypedContractMethod<
-    [requireSuccess: boolean, calls: IMulticall3.CallStruct[]],
-    [IMulticall3.ResultStructOutput[]],
-    "payable"
-  >;
-
   tryBlockAndAggregate: TypedContractMethod<
-    [requireSuccess: boolean, calls: IMulticall3.CallStruct[]],
-    [
-      [bigint, string, IMulticall3.ResultStructOutput[]] & {
-        blockNumber: bigint;
-        blockHash: string;
-        returnData: IMulticall3.ResultStructOutput[];
-      }
-    ],
-    "payable"
-  >;
-
-  "tryBlockAndAggregate(bool,(address,bytes)[])": TypedContractMethod<
     [requireSuccess: boolean, calls: IMulticall3.CallStruct[]],
     [
       [bigint, string, IMulticall3.ResultStructOutput[]] & {
@@ -555,13 +335,6 @@ export interface IMulticall3 extends BaseContract {
     "payable"
   >;
   getFunction(
-    nameOrSignature: "aggregate((address,bytes)[])"
-  ): TypedContractMethod<
-    [calls: IMulticall3.CallStruct[]],
-    [[bigint, string[]] & { blockNumber: bigint; returnData: string[] }],
-    "payable"
-  >;
-  getFunction(
     nameOrSignature: "aggregate3"
   ): TypedContractMethod<
     [calls: IMulticall3.Call3Struct[]],
@@ -569,21 +342,7 @@ export interface IMulticall3 extends BaseContract {
     "payable"
   >;
   getFunction(
-    nameOrSignature: "aggregate3((address,bool,bytes)[])"
-  ): TypedContractMethod<
-    [calls: IMulticall3.Call3Struct[]],
-    [IMulticall3.ResultStructOutput[]],
-    "payable"
-  >;
-  getFunction(
     nameOrSignature: "aggregate3Value"
-  ): TypedContractMethod<
-    [calls: IMulticall3.Call3ValueStruct[]],
-    [IMulticall3.ResultStructOutput[]],
-    "payable"
-  >;
-  getFunction(
-    nameOrSignature: "aggregate3Value((address,bool,uint256,bytes)[])"
   ): TypedContractMethod<
     [calls: IMulticall3.Call3ValueStruct[]],
     [IMulticall3.ResultStructOutput[]],
@@ -603,77 +362,34 @@ export interface IMulticall3 extends BaseContract {
     "payable"
   >;
   getFunction(
-    nameOrSignature: "blockAndAggregate((address,bytes)[])"
-  ): TypedContractMethod<
-    [calls: IMulticall3.CallStruct[]],
-    [
-      [bigint, string, IMulticall3.ResultStructOutput[]] & {
-        blockNumber: bigint;
-        blockHash: string;
-        returnData: IMulticall3.ResultStructOutput[];
-      }
-    ],
-    "payable"
-  >;
-  getFunction(
     nameOrSignature: "getBasefee"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "getBasefee()"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "getBlockHash"
   ): TypedContractMethod<[blockNumber: BigNumberish], [string], "view">;
   getFunction(
-    nameOrSignature: "getBlockHash(uint256)"
-  ): TypedContractMethod<[blockNumber: BigNumberish], [string], "view">;
-  getFunction(
     nameOrSignature: "getBlockNumber"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "getBlockNumber()"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "getChainId"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
-    nameOrSignature: "getChainId()"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
     nameOrSignature: "getCurrentBlockCoinbase"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "getCurrentBlockCoinbase()"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "getCurrentBlockDifficulty"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
-    nameOrSignature: "getCurrentBlockDifficulty()"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
     nameOrSignature: "getCurrentBlockGasLimit"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "getCurrentBlockGasLimit()"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "getCurrentBlockTimestamp"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
-    nameOrSignature: "getCurrentBlockTimestamp()"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
     nameOrSignature: "getEthBalance"
   ): TypedContractMethod<[addr: AddressLike], [bigint], "view">;
   getFunction(
-    nameOrSignature: "getEthBalance(address)"
-  ): TypedContractMethod<[addr: AddressLike], [bigint], "view">;
-  getFunction(
     nameOrSignature: "getLastBlockHash"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "getLastBlockHash()"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "tryAggregate"
@@ -683,27 +399,7 @@ export interface IMulticall3 extends BaseContract {
     "payable"
   >;
   getFunction(
-    nameOrSignature: "tryAggregate(bool,(address,bytes)[])"
-  ): TypedContractMethod<
-    [requireSuccess: boolean, calls: IMulticall3.CallStruct[]],
-    [IMulticall3.ResultStructOutput[]],
-    "payable"
-  >;
-  getFunction(
     nameOrSignature: "tryBlockAndAggregate"
-  ): TypedContractMethod<
-    [requireSuccess: boolean, calls: IMulticall3.CallStruct[]],
-    [
-      [bigint, string, IMulticall3.ResultStructOutput[]] & {
-        blockNumber: bigint;
-        blockHash: string;
-        returnData: IMulticall3.ResultStructOutput[];
-      }
-    ],
-    "payable"
-  >;
-  getFunction(
-    nameOrSignature: "tryBlockAndAggregate(bool,(address,bytes)[])"
   ): TypedContractMethod<
     [requireSuccess: boolean, calls: IMulticall3.CallStruct[]],
     [

@@ -93,17 +93,11 @@ export interface IMISTPoolInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "deposit"
-      | "deposit((uint256,address,(uint256,bytes,(uint8,address,uint256,uint256))[]),bytes)"
       | "getNonce"
-      | "getNonce(address)"
       | "getNullifyingKey"
-      | "getNullifyingKey()"
       | "transfer"
-      | "transfer(bytes,bytes,(uint256,uint256,address,uint8,(uint8,address,uint256,uint256)))"
       | "verifyBalanceOf"
-      | "verifyBalanceOf(address,uint256,uint256,uint256,uint256[],bytes)"
       | "withdraw"
-      | "withdraw(bytes,bytes,(uint256,uint256,address,uint8,(uint8,address,uint256,uint256)))"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -111,15 +105,7 @@ export interface IMISTPoolInterface extends Interface {
     values: [DepositDataStruct, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "deposit((uint256,address,(uint256,bytes,(uint8,address,uint256,uint256))[]),bytes)",
-    values: [DepositDataStruct, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getNonce",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getNonce(address)",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
@@ -127,30 +113,11 @@ export interface IMISTPoolInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getNullifyingKey()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "transfer",
     values: [BytesLike, BytesLike, ExtDataStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "transfer(bytes,bytes,(uint256,uint256,address,uint8,(uint8,address,uint256,uint256)))",
-    values: [BytesLike, BytesLike, ExtDataStruct]
-  ): string;
-  encodeFunctionData(
     functionFragment: "verifyBalanceOf",
-    values: [
-      AddressLike,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish[],
-      BytesLike
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "verifyBalanceOf(address,uint256,uint256,uint256,uint256[],bytes)",
     values: [
       AddressLike,
       BigNumberish,
@@ -164,47 +131,19 @@ export interface IMISTPoolInterface extends Interface {
     functionFragment: "withdraw",
     values: [BytesLike, BytesLike, ExtDataStruct]
   ): string;
-  encodeFunctionData(
-    functionFragment: "withdraw(bytes,bytes,(uint256,uint256,address,uint8,(uint8,address,uint256,uint256)))",
-    values: [BytesLike, BytesLike, ExtDataStruct]
-  ): string;
 
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "deposit((uint256,address,(uint256,bytes,(uint8,address,uint256,uint256))[]),bytes)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getNonce(address)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "getNullifyingKey",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "getNullifyingKey()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "transfer(bytes,bytes,(uint256,uint256,address,uint8,(uint8,address,uint256,uint256)))",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "verifyBalanceOf",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "verifyBalanceOf(address,uint256,uint256,uint256,uint256[],bytes)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "withdraw(bytes,bytes,(uint256,uint256,address,uint8,(uint8,address,uint256,uint256)))",
-    data: BytesLike
-  ): Result;
 }
 
 export interface IMISTPool extends BaseContract {
@@ -256,31 +195,11 @@ export interface IMISTPool extends BaseContract {
     "nonpayable"
   >;
 
-  "deposit((uint256,address,(uint256,bytes,(uint8,address,uint256,uint256))[]),bytes)": TypedContractMethod<
-    [depositData: DepositDataStruct, signature: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
   getNonce: TypedContractMethod<[account: AddressLike], [bigint], "view">;
-
-  "getNonce(address)": TypedContractMethod<
-    [account: AddressLike],
-    [bigint],
-    "view"
-  >;
 
   getNullifyingKey: TypedContractMethod<[], [bigint], "view">;
 
-  "getNullifyingKey()": TypedContractMethod<[], [bigint], "view">;
-
   transfer: TypedContractMethod<
-    [proof: BytesLike, inputs: BytesLike, extData: ExtDataStruct],
-    [void],
-    "nonpayable"
-  >;
-
-  "transfer(bytes,bytes,(uint256,uint256,address,uint8,(uint8,address,uint256,uint256)))": TypedContractMethod<
     [proof: BytesLike, inputs: BytesLike, extData: ExtDataStruct],
     [void],
     "nonpayable"
@@ -299,26 +218,7 @@ export interface IMISTPool extends BaseContract {
     "view"
   >;
 
-  "verifyBalanceOf(address,uint256,uint256,uint256,uint256[],bytes)": TypedContractMethod<
-    [
-      token: AddressLike,
-      minAmount: BigNumberish,
-      root: BigNumberish,
-      registry: BigNumberish,
-      nullifiers: BigNumberish[],
-      proof: BytesLike
-    ],
-    [boolean],
-    "view"
-  >;
-
   withdraw: TypedContractMethod<
-    [proof: BytesLike, inputs: BytesLike, extData: ExtDataStruct],
-    [void],
-    "nonpayable"
-  >;
-
-  "withdraw(bytes,bytes,(uint256,uint256,address,uint8,(uint8,address,uint256,uint256)))": TypedContractMethod<
     [proof: BytesLike, inputs: BytesLike, extData: ExtDataStruct],
     [void],
     "nonpayable"
@@ -336,33 +236,13 @@ export interface IMISTPool extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "deposit((uint256,address,(uint256,bytes,(uint8,address,uint256,uint256))[]),bytes)"
-  ): TypedContractMethod<
-    [depositData: DepositDataStruct, signature: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "getNonce"
-  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "getNonce(address)"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "getNullifyingKey"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
-    nameOrSignature: "getNullifyingKey()"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
     nameOrSignature: "transfer"
-  ): TypedContractMethod<
-    [proof: BytesLike, inputs: BytesLike, extData: ExtDataStruct],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "transfer(bytes,bytes,(uint256,uint256,address,uint8,(uint8,address,uint256,uint256)))"
   ): TypedContractMethod<
     [proof: BytesLike, inputs: BytesLike, extData: ExtDataStruct],
     [void],
@@ -383,28 +263,7 @@ export interface IMISTPool extends BaseContract {
     "view"
   >;
   getFunction(
-    nameOrSignature: "verifyBalanceOf(address,uint256,uint256,uint256,uint256[],bytes)"
-  ): TypedContractMethod<
-    [
-      token: AddressLike,
-      minAmount: BigNumberish,
-      root: BigNumberish,
-      registry: BigNumberish,
-      nullifiers: BigNumberish[],
-      proof: BytesLike
-    ],
-    [boolean],
-    "view"
-  >;
-  getFunction(
     nameOrSignature: "withdraw"
-  ): TypedContractMethod<
-    [proof: BytesLike, inputs: BytesLike, extData: ExtDataStruct],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "withdraw(bytes,bytes,(uint256,uint256,address,uint8,(uint8,address,uint256,uint256)))"
   ): TypedContractMethod<
     [proof: BytesLike, inputs: BytesLike, extData: ExtDataStruct],
     [void],

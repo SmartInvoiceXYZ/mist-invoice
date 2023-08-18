@@ -67,14 +67,15 @@ describe("Web3Context", () => {
 
   it.skip("should connect to web3", async () => {
     // arrange
-    let handlers: Record<string, any> = {};
+    type Handler = {accountsChanged: (accounts: string[]) => void, chainChanged: (chainId: number) => void}
+    const handlers: Record<string, Handler> = {};
 
     (SafeAppWeb3Modal as jest.Mock).mockImplementation(() => ({
       requestProvider: () =>
         new Promise(() => ({
           safe: false,
         })),
-      on: (event: string, handler: any) => {
+      on: (event: string, handler: Handler) => {
         handlers[event] = handler;
       },
     }));
@@ -92,7 +93,9 @@ describe("Web3Context", () => {
     });
     await waitForElementToBeRemoved(screen.queryByTestId("div:loader"));
     await act(async () => {
-      handlers.accountsChanged(["0x123"]);
+      for (const event in handlers) {
+       handlers[event].accountsChanged(["0x123"]); 
+      }
     }); // handlers.chainChanged();
 
     // assert

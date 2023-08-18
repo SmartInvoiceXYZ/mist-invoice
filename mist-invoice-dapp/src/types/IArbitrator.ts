@@ -27,29 +27,19 @@ export interface IArbitratorInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "appeal"
-      | "appeal(uint256,bytes)"
       | "appealCost"
-      | "appealCost(uint256,bytes)"
       | "appealPeriod"
-      | "appealPeriod(uint256)"
       | "arbitrationCost"
-      | "arbitrationCost(bytes)"
       | "createDispute"
-      | "createDispute(uint256,bytes)"
       | "currentRuling"
-      | "currentRuling(uint256)"
       | "disputeStatus"
-      | "disputeStatus(uint256)"
   ): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic:
       | "AppealDecision"
-      | "AppealDecision(uint256,address)"
       | "AppealPossible"
-      | "AppealPossible(uint256,address)"
       | "DisputeCreation"
-      | "DisputeCreation(uint256,address)"
   ): EventFragment;
 
   encodeFunctionData(
@@ -57,23 +47,11 @@ export interface IArbitratorInterface extends Interface {
     values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "appeal(uint256,bytes)",
-    values: [BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "appealCost",
     values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "appealCost(uint256,bytes)",
-    values: [BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "appealPeriod",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "appealPeriod(uint256)",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -81,15 +59,7 @@ export interface IArbitratorInterface extends Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "arbitrationCost(bytes)",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "createDispute",
-    values: [BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "createDispute(uint256,bytes)",
     values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
@@ -97,34 +67,14 @@ export interface IArbitratorInterface extends Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "currentRuling(uint256)",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "disputeStatus",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "disputeStatus(uint256)",
     values: [BigNumberish]
   ): string;
 
   decodeFunctionResult(functionFragment: "appeal", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "appeal(uint256,bytes)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "appealCost", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "appealCost(uint256,bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "appealPeriod",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "appealPeriod(uint256)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -132,15 +82,7 @@ export interface IArbitratorInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "arbitrationCost(bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "createDispute",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "createDispute(uint256,bytes)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -148,15 +90,7 @@ export interface IArbitratorInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "currentRuling(uint256)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "disputeStatus",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "disputeStatus(uint256)",
     data: BytesLike
   ): Result;
 }
@@ -249,19 +183,7 @@ export interface IArbitrator extends BaseContract {
     "payable"
   >;
 
-  "appeal(uint256,bytes)": TypedContractMethod<
-    [_disputeID: BigNumberish, _extraData: BytesLike],
-    [void],
-    "payable"
-  >;
-
   appealCost: TypedContractMethod<
-    [_disputeID: BigNumberish, _extraData: BytesLike],
-    [bigint],
-    "view"
-  >;
-
-  "appealCost(uint256,bytes)": TypedContractMethod<
     [_disputeID: BigNumberish, _extraData: BytesLike],
     [bigint],
     "view"
@@ -273,19 +195,7 @@ export interface IArbitrator extends BaseContract {
     "view"
   >;
 
-  "appealPeriod(uint256)": TypedContractMethod<
-    [_disputeID: BigNumberish],
-    [[bigint, bigint] & { start: bigint; end: bigint }],
-    "view"
-  >;
-
   arbitrationCost: TypedContractMethod<
-    [_extraData: BytesLike],
-    [bigint],
-    "view"
-  >;
-
-  "arbitrationCost(bytes)": TypedContractMethod<
     [_extraData: BytesLike],
     [bigint],
     "view"
@@ -297,31 +207,13 @@ export interface IArbitrator extends BaseContract {
     "payable"
   >;
 
-  "createDispute(uint256,bytes)": TypedContractMethod<
-    [_choices: BigNumberish, _extraData: BytesLike],
-    [bigint],
-    "payable"
-  >;
-
   currentRuling: TypedContractMethod<
     [_disputeID: BigNumberish],
     [bigint],
     "view"
   >;
 
-  "currentRuling(uint256)": TypedContractMethod<
-    [_disputeID: BigNumberish],
-    [bigint],
-    "view"
-  >;
-
   disputeStatus: TypedContractMethod<
-    [_disputeID: BigNumberish],
-    [bigint],
-    "view"
-  >;
-
-  "disputeStatus(uint256)": TypedContractMethod<
     [_disputeID: BigNumberish],
     [bigint],
     "view"
@@ -339,21 +231,7 @@ export interface IArbitrator extends BaseContract {
     "payable"
   >;
   getFunction(
-    nameOrSignature: "appeal(uint256,bytes)"
-  ): TypedContractMethod<
-    [_disputeID: BigNumberish, _extraData: BytesLike],
-    [void],
-    "payable"
-  >;
-  getFunction(
     nameOrSignature: "appealCost"
-  ): TypedContractMethod<
-    [_disputeID: BigNumberish, _extraData: BytesLike],
-    [bigint],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "appealCost(uint256,bytes)"
   ): TypedContractMethod<
     [_disputeID: BigNumberish, _extraData: BytesLike],
     [bigint],
@@ -367,17 +245,7 @@ export interface IArbitrator extends BaseContract {
     "view"
   >;
   getFunction(
-    nameOrSignature: "appealPeriod(uint256)"
-  ): TypedContractMethod<
-    [_disputeID: BigNumberish],
-    [[bigint, bigint] & { start: bigint; end: bigint }],
-    "view"
-  >;
-  getFunction(
     nameOrSignature: "arbitrationCost"
-  ): TypedContractMethod<[_extraData: BytesLike], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "arbitrationCost(bytes)"
   ): TypedContractMethod<[_extraData: BytesLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "createDispute"
@@ -387,23 +255,10 @@ export interface IArbitrator extends BaseContract {
     "payable"
   >;
   getFunction(
-    nameOrSignature: "createDispute(uint256,bytes)"
-  ): TypedContractMethod<
-    [_choices: BigNumberish, _extraData: BytesLike],
-    [bigint],
-    "payable"
-  >;
-  getFunction(
     nameOrSignature: "currentRuling"
   ): TypedContractMethod<[_disputeID: BigNumberish], [bigint], "view">;
   getFunction(
-    nameOrSignature: "currentRuling(uint256)"
-  ): TypedContractMethod<[_disputeID: BigNumberish], [bigint], "view">;
-  getFunction(
     nameOrSignature: "disputeStatus"
-  ): TypedContractMethod<[_disputeID: BigNumberish], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "disputeStatus(uint256)"
   ): TypedContractMethod<[_disputeID: BigNumberish], [bigint], "view">;
 
   getEvent(
@@ -414,13 +269,6 @@ export interface IArbitrator extends BaseContract {
     AppealDecisionEvent.OutputObject
   >;
   getEvent(
-    key: "AppealDecision(uint256,address)"
-  ): TypedContractEvent<
-    AppealDecision_uint256_address_Event.InputTuple,
-    AppealDecision_uint256_address_Event.OutputTuple,
-    AppealDecision_uint256_address_Event.OutputObject
-  >;
-  getEvent(
     key: "AppealPossible"
   ): TypedContractEvent<
     AppealPossibleEvent.InputTuple,
@@ -428,25 +276,11 @@ export interface IArbitrator extends BaseContract {
     AppealPossibleEvent.OutputObject
   >;
   getEvent(
-    key: "AppealPossible(uint256,address)"
-  ): TypedContractEvent<
-    AppealPossible_uint256_address_Event.InputTuple,
-    AppealPossible_uint256_address_Event.OutputTuple,
-    AppealPossible_uint256_address_Event.OutputObject
-  >;
-  getEvent(
     key: "DisputeCreation"
   ): TypedContractEvent<
     DisputeCreationEvent.InputTuple,
     DisputeCreationEvent.OutputTuple,
     DisputeCreationEvent.OutputObject
-  >;
-  getEvent(
-    key: "DisputeCreation(uint256,address)"
-  ): TypedContractEvent<
-    DisputeCreation_uint256_address_Event.InputTuple,
-    DisputeCreation_uint256_address_Event.OutputTuple,
-    DisputeCreation_uint256_address_Event.OutputObject
   >;
 
   filters: {

@@ -27,39 +27,20 @@ export interface IERC20Interface extends Interface {
   getFunction(
     nameOrSignature:
       | "allowance"
-      | "allowance(address,address)"
       | "approve"
-      | "approve(address,uint256)"
       | "balanceOf"
-      | "balanceOf(address)"
       | "decimals"
-      | "decimals()"
       | "name"
-      | "name()"
       | "symbol"
-      | "symbol()"
       | "totalSupply"
-      | "totalSupply()"
       | "transfer"
-      | "transfer(address,uint256)"
       | "transferFrom"
-      | "transferFrom(address,address,uint256)"
   ): FunctionFragment;
 
-  getEvent(
-    nameOrSignatureOrTopic:
-      | "Approval"
-      | "Approval(address,address,uint256)"
-      | "Transfer"
-      | "Transfer(address,address,uint256)"
-  ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Approval" | "Transfer"): EventFragment;
 
   encodeFunctionData(
     functionFragment: "allowance",
-    values: [AddressLike, AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "allowance(address,address)",
     values: [AddressLike, AddressLike]
   ): string;
   encodeFunctionData(
@@ -67,32 +48,14 @@ export interface IERC20Interface extends Interface {
     values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "approve(address,uint256)",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "balanceOf",
     values: [AddressLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "balanceOf(address)",
-    values: [AddressLike]
-  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "decimals()",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(functionFragment: "name()", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
-  encodeFunctionData(functionFragment: "symbol()", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "totalSupply()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -100,58 +63,23 @@ export interface IERC20Interface extends Interface {
     values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "transfer(address,uint256)",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "transferFrom",
-    values: [AddressLike, AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferFrom(address,address,uint256)",
     values: [AddressLike, AddressLike, BigNumberish]
   ): string;
 
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "allowance(address,address)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "approve(address,uint256)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "balanceOf(address)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "decimals()", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "name()", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "symbol()", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "totalSupply()",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "transfer(address,uint256)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "transferFrom",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferFrom(address,address,uint256)",
     data: BytesLike
   ): Result;
 }
@@ -241,19 +169,7 @@ export interface IERC20 extends BaseContract {
     "view"
   >;
 
-  "allowance(address,address)": TypedContractMethod<
-    [owner: AddressLike, spender: AddressLike],
-    [bigint],
-    "view"
-  >;
-
   approve: TypedContractMethod<
-    [spender: AddressLike, value: BigNumberish],
-    [boolean],
-    "nonpayable"
-  >;
-
-  "approve(address,uint256)": TypedContractMethod<
     [spender: AddressLike, value: BigNumberish],
     [boolean],
     "nonpayable"
@@ -261,27 +177,13 @@ export interface IERC20 extends BaseContract {
 
   balanceOf: TypedContractMethod<[owner: AddressLike], [bigint], "view">;
 
-  "balanceOf(address)": TypedContractMethod<
-    [owner: AddressLike],
-    [bigint],
-    "view"
-  >;
-
   decimals: TypedContractMethod<[], [bigint], "view">;
-
-  "decimals()": TypedContractMethod<[], [bigint], "view">;
 
   name: TypedContractMethod<[], [string], "view">;
 
-  "name()": TypedContractMethod<[], [string], "view">;
-
   symbol: TypedContractMethod<[], [string], "view">;
 
-  "symbol()": TypedContractMethod<[], [string], "view">;
-
   totalSupply: TypedContractMethod<[], [bigint], "view">;
-
-  "totalSupply()": TypedContractMethod<[], [bigint], "view">;
 
   transfer: TypedContractMethod<
     [to: AddressLike, value: BigNumberish],
@@ -289,19 +191,7 @@ export interface IERC20 extends BaseContract {
     "nonpayable"
   >;
 
-  "transfer(address,uint256)": TypedContractMethod<
-    [to: AddressLike, value: BigNumberish],
-    [boolean],
-    "nonpayable"
-  >;
-
   transferFrom: TypedContractMethod<
-    [from: AddressLike, to: AddressLike, value: BigNumberish],
-    [boolean],
-    "nonpayable"
-  >;
-
-  "transferFrom(address,address,uint256)": TypedContractMethod<
     [from: AddressLike, to: AddressLike, value: BigNumberish],
     [boolean],
     "nonpayable"
@@ -319,21 +209,7 @@ export interface IERC20 extends BaseContract {
     "view"
   >;
   getFunction(
-    nameOrSignature: "allowance(address,address)"
-  ): TypedContractMethod<
-    [owner: AddressLike, spender: AddressLike],
-    [bigint],
-    "view"
-  >;
-  getFunction(
     nameOrSignature: "approve"
-  ): TypedContractMethod<
-    [spender: AddressLike, value: BigNumberish],
-    [boolean],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "approve(address,uint256)"
   ): TypedContractMethod<
     [spender: AddressLike, value: BigNumberish],
     [boolean],
@@ -343,31 +219,16 @@ export interface IERC20 extends BaseContract {
     nameOrSignature: "balanceOf"
   ): TypedContractMethod<[owner: AddressLike], [bigint], "view">;
   getFunction(
-    nameOrSignature: "balanceOf(address)"
-  ): TypedContractMethod<[owner: AddressLike], [bigint], "view">;
-  getFunction(
     nameOrSignature: "decimals"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "decimals()"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "name"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "name()"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "symbol"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "symbol()"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "totalSupply"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "totalSupply()"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "transfer"
@@ -377,21 +238,7 @@ export interface IERC20 extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "transfer(address,uint256)"
-  ): TypedContractMethod<
-    [to: AddressLike, value: BigNumberish],
-    [boolean],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "transferFrom"
-  ): TypedContractMethod<
-    [from: AddressLike, to: AddressLike, value: BigNumberish],
-    [boolean],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "transferFrom(address,address,uint256)"
   ): TypedContractMethod<
     [from: AddressLike, to: AddressLike, value: BigNumberish],
     [boolean],
@@ -406,25 +253,11 @@ export interface IERC20 extends BaseContract {
     ApprovalEvent.OutputObject
   >;
   getEvent(
-    key: "Approval(address,address,uint256)"
-  ): TypedContractEvent<
-    Approval_address_address_uint256_Event.InputTuple,
-    Approval_address_address_uint256_Event.OutputTuple,
-    Approval_address_address_uint256_Event.OutputObject
-  >;
-  getEvent(
     key: "Transfer"
   ): TypedContractEvent<
     TransferEvent.InputTuple,
     TransferEvent.OutputTuple,
     TransferEvent.OutputObject
-  >;
-  getEvent(
-    key: "Transfer(address,address,uint256)"
-  ): TypedContractEvent<
-    Transfer_address_address_uint256_Event.InputTuple,
-    Transfer_address_address_uint256_Event.OutputTuple,
-    Transfer_address_address_uint256_Event.OutputObject
   >;
 
   filters: {

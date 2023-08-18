@@ -49,21 +49,13 @@ export interface MistInvoiceEscrowWrapperInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "INVOICE_FACTORY"
-      | "INVOICE_FACTORY()"
       | "createInvoice"
-      | "createInvoice((bytes,bytes,bytes,bytes,bytes),uint256[],bytes,bytes32)"
       | "mistPool"
-      | "mistPool()"
       | "privateDeposit"
-      | "privateDeposit(address)"
       | "privateDispute"
-      | "privateDispute(address,bytes32,bytes)"
       | "privateRelease"
-      | "privateRelease(address,bytes,uint256)"
       | "privateWithdraw"
-      | "privateWithdraw(address,bytes)"
       | "resolve"
-      | "resolve(address,uint256,uint256,bytes32)"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -71,20 +63,7 @@ export interface MistInvoiceEscrowWrapperInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "INVOICE_FACTORY()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "createInvoice",
-    values: [
-      MistInvoiceEscrowWrapper.MistDataStruct,
-      BigNumberish[],
-      BytesLike,
-      BytesLike
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "createInvoice((bytes,bytes,bytes,bytes,bytes),uint256[],bytes,bytes32)",
     values: [
       MistInvoiceEscrowWrapper.MistDataStruct,
       BigNumberish[],
@@ -94,15 +73,7 @@ export interface MistInvoiceEscrowWrapperInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "mistPool", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "mistPool()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "privateDeposit",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "privateDeposit(address)",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
@@ -110,15 +81,7 @@ export interface MistInvoiceEscrowWrapperInterface extends Interface {
     values: [AddressLike, BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "privateDispute(address,bytes32,bytes)",
-    values: [AddressLike, BytesLike, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "privateRelease",
-    values: [AddressLike, BytesLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "privateRelease(address,bytes,uint256)",
     values: [AddressLike, BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
@@ -126,15 +89,7 @@ export interface MistInvoiceEscrowWrapperInterface extends Interface {
     values: [AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "privateWithdraw(address,bytes)",
-    values: [AddressLike, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "resolve",
-    values: [AddressLike, BigNumberish, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "resolve(address,uint256,uint256,bytes32)",
     values: [AddressLike, BigNumberish, BigNumberish, BytesLike]
   ): string;
 
@@ -143,25 +98,12 @@ export interface MistInvoiceEscrowWrapperInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "INVOICE_FACTORY()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "createInvoice",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "createInvoice((bytes,bytes,bytes,bytes,bytes),uint256[],bytes,bytes32)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "mistPool", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "mistPool()", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "privateDeposit",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "privateDeposit(address)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -169,30 +111,14 @@ export interface MistInvoiceEscrowWrapperInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "privateDispute(address,bytes32,bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "privateRelease",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "privateRelease(address,bytes,uint256)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "privateWithdraw",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "privateWithdraw(address,bytes)",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "resolve", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "resolve(address,uint256,uint256,bytes32)",
-    data: BytesLike
-  ): Result;
 }
 
 export interface MistInvoiceEscrowWrapper extends BaseContract {
@@ -240,20 +166,7 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
 
   INVOICE_FACTORY: TypedContractMethod<[], [string], "view">;
 
-  "INVOICE_FACTORY()": TypedContractMethod<[], [string], "view">;
-
   createInvoice: TypedContractMethod<
-    [
-      _mistData: MistInvoiceEscrowWrapper.MistDataStruct,
-      _amounts: BigNumberish[],
-      _data: BytesLike,
-      _type: BytesLike
-    ],
-    [string],
-    "nonpayable"
-  >;
-
-  "createInvoice((bytes,bytes,bytes,bytes,bytes),uint256[],bytes,bytes32)": TypedContractMethod<
     [
       _mistData: MistInvoiceEscrowWrapper.MistDataStruct,
       _amounts: BigNumberish[],
@@ -266,15 +179,7 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
 
   mistPool: TypedContractMethod<[], [string], "view">;
 
-  "mistPool()": TypedContractMethod<[], [string], "view">;
-
   privateDeposit: TypedContractMethod<
-    [_invoiceAddr: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
-  "privateDeposit(address)": TypedContractMethod<
     [_invoiceAddr: AddressLike],
     [void],
     "nonpayable"
@@ -286,19 +191,7 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
     "nonpayable"
   >;
 
-  "privateDispute(address,bytes32,bytes)": TypedContractMethod<
-    [_invoiceAddr: AddressLike, _details: BytesLike, _proof: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
   privateRelease: TypedContractMethod<
-    [_invoiceAddr: AddressLike, _proof: BytesLike, _milestone: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  "privateRelease(address,bytes,uint256)": TypedContractMethod<
     [_invoiceAddr: AddressLike, _proof: BytesLike, _milestone: BigNumberish],
     [void],
     "nonpayable"
@@ -310,24 +203,7 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
     "nonpayable"
   >;
 
-  "privateWithdraw(address,bytes)": TypedContractMethod<
-    [_invoiceAddr: AddressLike, _proof: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
   resolve: TypedContractMethod<
-    [
-      _invoiceAddr: AddressLike,
-      _clientAward: BigNumberish,
-      _providerAward: BigNumberish,
-      _details: BytesLike
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  "resolve(address,uint256,uint256,bytes32)": TypedContractMethod<
     [
       _invoiceAddr: AddressLike,
       _clientAward: BigNumberish,
@@ -346,22 +222,7 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
     nameOrSignature: "INVOICE_FACTORY"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "INVOICE_FACTORY()"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "createInvoice"
-  ): TypedContractMethod<
-    [
-      _mistData: MistInvoiceEscrowWrapper.MistDataStruct,
-      _amounts: BigNumberish[],
-      _data: BytesLike,
-      _type: BytesLike
-    ],
-    [string],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "createInvoice((bytes,bytes,bytes,bytes,bytes),uint256[],bytes,bytes32)"
   ): TypedContractMethod<
     [
       _mistData: MistInvoiceEscrowWrapper.MistDataStruct,
@@ -376,23 +237,10 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
     nameOrSignature: "mistPool"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "mistPool()"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "privateDeposit"
   ): TypedContractMethod<[_invoiceAddr: AddressLike], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "privateDeposit(address)"
-  ): TypedContractMethod<[_invoiceAddr: AddressLike], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "privateDispute"
-  ): TypedContractMethod<
-    [_invoiceAddr: AddressLike, _details: BytesLike, _proof: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "privateDispute(address,bytes32,bytes)"
   ): TypedContractMethod<
     [_invoiceAddr: AddressLike, _details: BytesLike, _proof: BytesLike],
     [void],
@@ -406,13 +254,6 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "privateRelease(address,bytes,uint256)"
-  ): TypedContractMethod<
-    [_invoiceAddr: AddressLike, _proof: BytesLike, _milestone: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "privateWithdraw"
   ): TypedContractMethod<
     [_invoiceAddr: AddressLike, _proof: BytesLike],
@@ -420,26 +261,7 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "privateWithdraw(address,bytes)"
-  ): TypedContractMethod<
-    [_invoiceAddr: AddressLike, _proof: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "resolve"
-  ): TypedContractMethod<
-    [
-      _invoiceAddr: AddressLike,
-      _clientAward: BigNumberish,
-      _providerAward: BigNumberish,
-      _details: BytesLike
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "resolve(address,uint256,uint256,bytes32)"
   ): TypedContractMethod<
     [
       _invoiceAddr: AddressLike,

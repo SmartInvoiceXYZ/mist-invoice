@@ -4,11 +4,11 @@ import { search } from "../graphql";
 import { ChainId, logError } from "../utils";
 import { Web3Context } from "./Web3Context";
 
-export type SearchContextType = {};
+export type SearchContextType = Record<string, never>;
 
 export const SearchContext = createContext<SearchContextType>({});
 
-export const SearchContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
+export const SearchContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const { chainId } = useContext(Web3Context);

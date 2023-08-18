@@ -23,11 +23,7 @@ import type {
 
 export interface StdStorageSafeInterface extends Interface {
   getEvent(
-    nameOrSignatureOrTopic:
-      | "SlotFound"
-      | "SlotFound(address,bytes4,bytes32,uint256)"
-      | "WARNING_UninitedSlot"
-      | "WARNING_UninitedSlot(address,uint256)"
+    nameOrSignatureOrTopic: "SlotFound" | "WARNING_UninitedSlot"
   ): EventFragment;
 }
 
@@ -124,25 +120,11 @@ export interface StdStorageSafe extends BaseContract {
     SlotFoundEvent.OutputObject
   >;
   getEvent(
-    key: "SlotFound(address,bytes4,bytes32,uint256)"
-  ): TypedContractEvent<
-    SlotFound_address_bytes4_bytes32_uint256_Event.InputTuple,
-    SlotFound_address_bytes4_bytes32_uint256_Event.OutputTuple,
-    SlotFound_address_bytes4_bytes32_uint256_Event.OutputObject
-  >;
-  getEvent(
     key: "WARNING_UninitedSlot"
   ): TypedContractEvent<
     WARNING_UninitedSlotEvent.InputTuple,
     WARNING_UninitedSlotEvent.OutputTuple,
     WARNING_UninitedSlotEvent.OutputObject
-  >;
-  getEvent(
-    key: "WARNING_UninitedSlot(address,uint256)"
-  ): TypedContractEvent<
-    WARNING_UninitedSlot_address_uint256_Event.InputTuple,
-    WARNING_UninitedSlot_address_uint256_Event.OutputTuple,
-    WARNING_UninitedSlot_address_uint256_Event.OutputObject
   >;
 
   filters: {

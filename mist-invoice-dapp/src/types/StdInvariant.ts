@@ -36,21 +36,13 @@ export interface StdInvariantInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "excludeArtifacts"
-      | "excludeArtifacts()"
       | "excludeContracts"
-      | "excludeContracts()"
       | "excludeSenders"
-      | "excludeSenders()"
       | "targetArtifactSelectors"
-      | "targetArtifactSelectors()"
       | "targetArtifacts"
-      | "targetArtifacts()"
       | "targetContracts"
-      | "targetContracts()"
       | "targetSelectors"
-      | "targetSelectors()"
       | "targetSenders"
-      | "targetSenders()"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -58,15 +50,7 @@ export interface StdInvariantInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "excludeArtifacts()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "excludeContracts",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "excludeContracts()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -74,15 +58,7 @@ export interface StdInvariantInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "excludeSenders()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "targetArtifactSelectors",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "targetArtifactSelectors()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -90,15 +66,7 @@ export interface StdInvariantInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "targetArtifacts()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "targetContracts",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "targetContracts()",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -106,15 +74,7 @@ export interface StdInvariantInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "targetSelectors()",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "targetSenders",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "targetSenders()",
     values?: undefined
   ): string;
 
@@ -123,15 +83,7 @@ export interface StdInvariantInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "excludeArtifacts()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "excludeContracts",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "excludeContracts()",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -139,15 +91,7 @@ export interface StdInvariantInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "excludeSenders()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "targetArtifactSelectors",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "targetArtifactSelectors()",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -155,15 +99,7 @@ export interface StdInvariantInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "targetArtifacts()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "targetContracts",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "targetContracts()",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -171,15 +107,7 @@ export interface StdInvariantInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "targetSelectors()",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "targetSenders",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "targetSenders()",
     data: BytesLike
   ): Result;
 }
@@ -229,15 +157,9 @@ export interface StdInvariant extends BaseContract {
 
   excludeArtifacts: TypedContractMethod<[], [string[]], "view">;
 
-  "excludeArtifacts()": TypedContractMethod<[], [string[]], "view">;
-
   excludeContracts: TypedContractMethod<[], [string[]], "view">;
 
-  "excludeContracts()": TypedContractMethod<[], [string[]], "view">;
-
   excludeSenders: TypedContractMethod<[], [string[]], "view">;
-
-  "excludeSenders()": TypedContractMethod<[], [string[]], "view">;
 
   targetArtifactSelectors: TypedContractMethod<
     [],
@@ -245,19 +167,9 @@ export interface StdInvariant extends BaseContract {
     "view"
   >;
 
-  "targetArtifactSelectors()": TypedContractMethod<
-    [],
-    [StdInvariant.FuzzSelectorStructOutput[]],
-    "view"
-  >;
-
   targetArtifacts: TypedContractMethod<[], [string[]], "view">;
 
-  "targetArtifacts()": TypedContractMethod<[], [string[]], "view">;
-
   targetContracts: TypedContractMethod<[], [string[]], "view">;
-
-  "targetContracts()": TypedContractMethod<[], [string[]], "view">;
 
   targetSelectors: TypedContractMethod<
     [],
@@ -265,15 +177,7 @@ export interface StdInvariant extends BaseContract {
     "view"
   >;
 
-  "targetSelectors()": TypedContractMethod<
-    [],
-    [StdInvariant.FuzzSelectorStructOutput[]],
-    "view"
-  >;
-
   targetSenders: TypedContractMethod<[], [string[]], "view">;
-
-  "targetSenders()": TypedContractMethod<[], [string[]], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -283,49 +187,25 @@ export interface StdInvariant extends BaseContract {
     nameOrSignature: "excludeArtifacts"
   ): TypedContractMethod<[], [string[]], "view">;
   getFunction(
-    nameOrSignature: "excludeArtifacts()"
-  ): TypedContractMethod<[], [string[]], "view">;
-  getFunction(
     nameOrSignature: "excludeContracts"
-  ): TypedContractMethod<[], [string[]], "view">;
-  getFunction(
-    nameOrSignature: "excludeContracts()"
   ): TypedContractMethod<[], [string[]], "view">;
   getFunction(
     nameOrSignature: "excludeSenders"
   ): TypedContractMethod<[], [string[]], "view">;
   getFunction(
-    nameOrSignature: "excludeSenders()"
-  ): TypedContractMethod<[], [string[]], "view">;
-  getFunction(
     nameOrSignature: "targetArtifactSelectors"
-  ): TypedContractMethod<[], [StdInvariant.FuzzSelectorStructOutput[]], "view">;
-  getFunction(
-    nameOrSignature: "targetArtifactSelectors()"
   ): TypedContractMethod<[], [StdInvariant.FuzzSelectorStructOutput[]], "view">;
   getFunction(
     nameOrSignature: "targetArtifacts"
   ): TypedContractMethod<[], [string[]], "view">;
   getFunction(
-    nameOrSignature: "targetArtifacts()"
-  ): TypedContractMethod<[], [string[]], "view">;
-  getFunction(
     nameOrSignature: "targetContracts"
-  ): TypedContractMethod<[], [string[]], "view">;
-  getFunction(
-    nameOrSignature: "targetContracts()"
   ): TypedContractMethod<[], [string[]], "view">;
   getFunction(
     nameOrSignature: "targetSelectors"
   ): TypedContractMethod<[], [StdInvariant.FuzzSelectorStructOutput[]], "view">;
   getFunction(
-    nameOrSignature: "targetSelectors()"
-  ): TypedContractMethod<[], [StdInvariant.FuzzSelectorStructOutput[]], "view">;
-  getFunction(
     nameOrSignature: "targetSenders"
-  ): TypedContractMethod<[], [string[]], "view">;
-  getFunction(
-    nameOrSignature: "targetSenders()"
   ): TypedContractMethod<[], [string[]], "view">;
 
   filters: {};

@@ -20,13 +20,11 @@ import type {
 } from "./common";
 
 export interface IWRAPPEDInterface extends Interface {
-  getFunction(nameOrSignature: "deposit" | "deposit()"): FunctionFragment;
+  getFunction(nameOrSignature: "deposit"): FunctionFragment;
 
   encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
-  encodeFunctionData(functionFragment: "deposit()", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "deposit()", data: BytesLike): Result;
 }
 
 export interface IWRAPPED extends BaseContract {
@@ -74,17 +72,12 @@ export interface IWRAPPED extends BaseContract {
 
   deposit: TypedContractMethod<[], [void], "payable">;
 
-  "deposit()": TypedContractMethod<[], [void], "payable">;
-
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
     nameOrSignature: "deposit"
-  ): TypedContractMethod<[], [void], "payable">;
-  getFunction(
-    nameOrSignature: "deposit()"
   ): TypedContractMethod<[], [void], "payable">;
 
   filters: {};

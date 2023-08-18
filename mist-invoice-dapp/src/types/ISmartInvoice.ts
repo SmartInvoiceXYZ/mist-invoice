@@ -22,24 +22,14 @@ import type {
 } from "./common";
 
 export interface ISmartInvoiceInterface extends Interface {
-  getFunction(
-    nameOrSignature: "init" | "init(address,uint256[],bytes)"
-  ): FunctionFragment;
+  getFunction(nameOrSignature: "init"): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "init",
     values: [AddressLike, BigNumberish[], BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "init(address,uint256[],bytes)",
-    values: [AddressLike, BigNumberish[], BytesLike]
-  ): string;
 
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "init(address,uint256[],bytes)",
-    data: BytesLike
-  ): Result;
 }
 
 export interface ISmartInvoice extends BaseContract {
@@ -91,25 +81,12 @@ export interface ISmartInvoice extends BaseContract {
     "nonpayable"
   >;
 
-  "init(address,uint256[],bytes)": TypedContractMethod<
-    [_recipient: AddressLike, _amounts: BigNumberish[], _data: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
     nameOrSignature: "init"
-  ): TypedContractMethod<
-    [_recipient: AddressLike, _amounts: BigNumberish[], _data: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "init(address,uint256[],bytes)"
   ): TypedContractMethod<
     [_recipient: AddressLike, _amounts: BigNumberish[], _data: BytesLike],
     [void],
