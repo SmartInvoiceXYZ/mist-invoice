@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Styles = styled.div`
   display: block;
@@ -7,7 +7,7 @@ export const Styles = styled.div`
   .tableWrap {
     display: block;
     max-width: 100%;
-    ${'' /* overflow-x: scroll; */}
+    ${"" /* overflow-x: scroll; */}
     overflow-y: hidden;
     background-color: white;
   }

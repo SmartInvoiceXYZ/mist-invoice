@@ -1,5 +1,4 @@
-import gql from "fake-tag";
-
+import { gql } from "urql";
 import { ChainId, isAddress } from "../utils";
 import { clients } from "./client";
 import { InvoiceDetails } from "./fragments";

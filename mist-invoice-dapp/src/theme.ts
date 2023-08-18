@@ -1,9 +1,6 @@
 import chakraTheme from "@chakra-ui/theme";
 import { css } from "@emotion/react";
 
-import CalendarHover from "./assets/calendar-hover.svg";
-import Calendar from "./assets/calendar.svg";
-
 export const theme = {
   ...chakraTheme,
   initialColorMode: "light",
@@ -65,7 +62,7 @@ export const globalStyles = css`
   input[type="date"]::-webkit-calendar-picker-indicator {
     opacity: 1;
     display: block;
-    background: url(${Calendar}) no-repeat;
+    background: url(/assets/calendar.svg)) no-repeat;
     background-size: contain !important;
     width: 14px;
     height: 14px;
@@ -73,7 +70,7 @@ export const globalStyles = css`
     cursor: pointer;
     transition: background 0.25s;
     &:hover {
-      background: url(${CalendarHover}) no-repeat;
+      background: url(/assets/calendar-hover.svg) no-repeat;
       background-size: contain;
     }
     &:hover,

@@ -6,22 +6,22 @@ import {
   Button,
   useBreakpointValue,
   Flex,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import React, { useContext, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
-import { SearchContext, SearchContextProvider } from '../context/SearchContext';
-import { Web3Context } from '../context/Web3Context';
-import { useFetchTokensViaIPFS } from '../hooks/useFetchTokensViaIPFS';
-import { InvoiceDashboardTable } from '../components/InvoiceDashboardTable';
-import { networkNames } from '../utils/constants';
+import React, { useContext, useEffect } from "react";
+import { withRouter } from "react-router-dom";
+import { SearchContext, SearchContextProvider } from "../context/SearchContext";
+import { Web3Context } from "../context/Web3Context";
+import { useFetchTokensViaIPFS } from "../hooks/useFetchTokensViaIPFS";
+import { InvoiceDashboardTable } from "../components/InvoiceDashboardTable";
+import { networkNames } from "../utils/constants";
 
 const InvoicesInner = ({ history }) => {
   const { setSearch, result, loading } = useContext(SearchContext);
   const [{ tokenData }] = useFetchTokensViaIPFS();
   const { account, chainId } = useContext(Web3Context);
 
-  const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md', md: 'lg' });
+  const buttonSize = useBreakpointValue({ base: "sm", sm: "md", md: "lg" });
 
   useEffect(() => {
     if (account) {
@@ -34,7 +34,7 @@ const InvoicesInner = ({ history }) => {
       paddingY={16}
       flex={
         result && result.length > 0 && tokenData !== undefined
-          ? '1 0 100%'
+          ? "1 0 100%"
           : null
       }
     >
@@ -69,9 +69,9 @@ const InvoicesInner = ({ history }) => {
             size={buttonSize}
             minW="250px"
             paddingY={6}
-            _hover={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
-            _active={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
-            onClick={() => history.push('/create')}
+            _hover={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
+            _active={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
+            onClick={() => history.push("/create")}
           >
             Create Invoice
           </Button>
@@ -81,7 +81,7 @@ const InvoicesInner = ({ history }) => {
   );
 };
 
-const InvoicesWithProvider = props => (
+const InvoicesWithProvider = (props) => (
   <SearchContextProvider>
     <InvoicesInner {...props} />
   </SearchContextProvider>

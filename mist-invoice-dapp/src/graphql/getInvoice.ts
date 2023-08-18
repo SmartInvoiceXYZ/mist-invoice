@@ -1,5 +1,4 @@
-import gql from "fake-tag";
-
+import { gql } from "urql";
 import { ChainId } from "../utils";
 import { isAddress } from "../utils/helpers";
 import { clients } from "./client";

@@ -1,9 +1,10 @@
-import type { Config } from "@jest/types";
-import { defaults } from "jest-config";
+import type { JestConfigWithTsJest } from "ts-jest";
 
-const config: Config.InitialOptions = {
+const jestConfig: JestConfigWithTsJest = {
+  preset: "ts-jest",
+  testEnvironment: "node",
   coveragePathIgnorePatterns: [
-    ...defaults.coveragePathIgnorePatterns,
+    "node_modules",
     "src/utils/constants.ts",
     "src/index.tsx",
     "src/reportWebVitals.ts",
@@ -18,4 +19,4 @@ const config: Config.InitialOptions = {
   },
 };
 
-export default config;
+export default jestConfig;

@@ -7,6 +7,7 @@ import {
 import { useContext } from "react";
 
 import { SafeAppWeb3Modal } from "@gnosis.pm/safe-apps-web3modal";
+import React from "react";
 import { Web3Context, Web3ContextProvider } from "./Web3Context";
 
 jest.mock("@gnosis.pm/safe-apps-web3modal");

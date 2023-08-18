@@ -1,4 +1,4 @@
-import gql from "fake-tag";
+import { gql } from "urql";
 
 export const InvoiceDetails = gql`
   fragment InvoiceDetails on Invoice {

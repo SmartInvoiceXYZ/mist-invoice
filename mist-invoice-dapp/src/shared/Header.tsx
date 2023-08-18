@@ -11,10 +11,9 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
-import logo from "../assets/smart-invoice/normal.svg";
 import { ProfileButton, StyledButton } from "../components";
 import { Web3Context } from "../context";
 import { HamburgerIcon } from "../icons/HamburgerIcon";
@@ -77,7 +76,12 @@ export const Header = () => {
       <Box width={250}>
         <RouterLink to="/invoices">
           <Flex cursor="pointer">
-            <Image src={logo} alt="Smart Invoice" width={220} height={34.84} />
+            <Image
+              src="/assets/smart-invoice/normal.svg"
+              alt="Smart Invoice"
+              width={220}
+              height={34.84}
+            />
           </Flex>
         </RouterLink>
       </Box>
