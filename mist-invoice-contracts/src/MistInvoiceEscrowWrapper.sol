@@ -8,6 +8,10 @@ import "./interfaces/IMistPool.sol";
 import "./interfaces/IERC20.sol";
 
 contract MistInvoiceEscrowWrapper {
+    uint256 constant SNARK_SCALAR_FIELD = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
+    uint256 public constant CLIENT_SIGNAL = uint256(keccak256("client")) / SNARK_SCALAR_FIELD;
+    uint256 public constant PROVIDER_SIGNAL = uint256(keccak256("provider")) / SNARK_SCALAR_FIELD;
+
     address public immutable INVOICE_FACTORY;
     IMISTPool public mistPool;
 
@@ -15,18 +19,12 @@ contract MistInvoiceEscrowWrapper {
 
     // TODO how many bytes?
     struct MistSecret {
-        bytes32 merkleRoot;
+        bytes32 merkleRoot; // contains client and provider addresses
         bytes32 providerHash;
         bytes32 clientHash;
-        bytes encData;
-    }
-
-    struct MistData {
-        bytes32 merkleRoot;
-        bytes32 clientRandom;
-        bytes32 providerRandom;
-        bytes32 clientKey;
-        bytes32 providerKey;
+        bytes encData; // symmetric key for encrypted invoice _details, client address and random, provider address and random
+        bytes encClientKey;
+        bytes encProviderKey;
     }
 
     constructor(address _invoiceFactory, address _mistPool) {
@@ -35,29 +33,19 @@ contract MistInvoiceEscrowWrapper {
     }
 
     function createInvoice(
-        MistData calldata _mistData,
+        MistSecret calldata _mistData,
         uint256[] calldata _amounts,
         bytes calldata _data,
         bytes32 _type
     ) external returns (address invoice) {
         require(_mistData.merkleRoot.length != 0, "merkle root required");
 
-        bytes32 providerHash =
-            keccak256(abi.encodePacked(_mistData.providerRandom, address(this), _mistData.providerKey));
-
-        bytes32 clientHash = keccak256(abi.encodePacked(_mistData.clientRandom, address(this), _mistData.clientKey));
-
-        bytes memory mistEncData =
-            bytes(abi.encodePacked(providerHash, clientHash, _mistData.clientKey, _mistData.providerKey));
-
-        MistSecret memory meta = MistSecret(_mistData.merkleRoot, providerHash, clientHash, mistEncData);
-
         // create new invoice
         ISmartInvoiceFactory factory = ISmartInvoiceFactory(INVOICE_FACTORY);
         invoice = factory.create(address(this), _amounts, _data, _type);
 
         // add meta to mapping for invoice address
-        mistSecrets[invoice] = meta;
+        mistSecrets[invoice] = _mistData;
 
         // return invoice address
         return invoice;
@@ -129,5 +117,9 @@ contract MistInvoiceEscrowWrapper {
         // TODO update mapping
         // TODO call deposit on MIST pool
         // mistPool.deposit(owed)
+    }
+
+    function _verify(bytes calldata _proof, bytes32 _root, bytes32 _signalHash, bytes32 _hash) internal pure {
+        // TODO verify proof
     }
 }
