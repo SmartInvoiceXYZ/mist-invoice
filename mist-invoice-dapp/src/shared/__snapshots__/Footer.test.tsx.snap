@@ -15,7 +15,7 @@ exports[`Footer should render 1`] = `
         <img
           alt="Smart Invoice"
           class="chakra-image css-lu3yos"
-          src="white.svg"
+          src="/assets/smart-invoice/white.svg"
         />
       </a>
       <div

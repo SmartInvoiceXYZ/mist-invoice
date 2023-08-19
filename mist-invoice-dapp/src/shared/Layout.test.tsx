@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+import React from "react";
 import { MemoryRouter } from "react-router-dom";
 import { Web3ContextProvider } from "../context";
 import { Layout } from "./Layout";

@@ -1,5 +1,5 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 
 import { Container } from "../components/Container";
 import { Loader } from "../components/Loader";
