@@ -1,12 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MistContext should render 1`] = `
+exports[`MistContext should render generated data 1`] = `
 <DocumentFragment>
   <div>
     <div
       data-testid="div:data"
     >
       No data
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`MistContext should render saved data 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      data-testid="div:data"
+    >
+      <p
+        data-testid="p:account"
+      >
+        Account: 0xC552C45a61dc22DB0014CFEf092d30B5A8E6327B
+      </p>
+      <p
+        data-testid="p:merkle-root"
+      >
+        Merkle Root: 0xmerkleroot
+      </p>
+      <p
+        data-testid="p:client-random"
+      >
+        Client Random: 8528452483152123247191891081171641881597591641951241769513519060211258239118
+      </p>
+      <p
+        data-testid="p:client-key"
+      >
+        Client Key: 0xclientkey
+      </p>
+      <p
+        data-testid="p:provider-random"
+      >
+        Provider Random: 243218195368216212329173213819213721313893253023137214239162141174669321142124952
+      </p>
+      <p
+        data-testid="p:provider-key"
+      >
+        Provider Random: 0xproviderkey
+      </p>
     </div>
   </div>
 </DocumentFragment>

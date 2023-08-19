@@ -5,11 +5,11 @@ import skiffCrypto from "@skiff-org/skiff-crypto";
 import { BytesLike } from "ethers";
 import randombytes from "randombytes";
 import { useIndexedDB } from "react-indexed-db-hook";
-import { logError } from "../utils";
+import { logDebug, logError } from "../utils";
 import { Web3Context } from "./Web3Context";
 
 export type MistData = {
-  merkleRoot: BytesLike;
+  merkleRoot?: BytesLike;
   clientRandom: BytesLike;
   providerRandom: BytesLike;
   clientKey: BytesLike;
@@ -39,29 +39,28 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
 
   const providerAddress = process.env.MIST_PROVIDER_ADDRESS || "";
 
-  const generateTree = (clientRandom: BytesLike, providerRandom: BytesLike) => {
+  useEffect(() => {
+    if (!account || !providerAddress || !data) return;
     const values = [
-      [account, clientRandom],
-      [providerAddress, providerRandom]
+      [account, data.clientRandom],
+      [providerAddress, data.providerRandom]
     ];
 
     const _tree = StandardMerkleTree.of(values, ["address", "bytes32"]);
-    return _tree;
-  };
+    setTree(_tree);
+    setData({
+      ...data,
+      merkleRoot: _tree.root
+    });
+  }, [account, providerAddress, data]);
 
   const generate = () => {
-    setLoading(true);
-
     const clientRandom = randombytes(32);
     const providerRandom = randombytes(32);
     const clientKey = skiffCrypto.generateSymmetricKey();
     const providerKey = skiffCrypto.generateSymmetricKey();
 
-    const _tree = generateTree(clientRandom, providerRandom);
-    setTree(_tree);
-
     const generated = {
-      merkleRoot: _tree.root,
       clientRandom,
       providerRandom,
       clientKey,
@@ -79,10 +78,10 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
       try {
         getByID<MistData>(account).then((res) => {
           if (res) {
+            logDebug("Using existing data");
             setData(res);
-            const _tree = generateTree(res.clientRandom, res.providerRandom);
-            setTree(_tree);
           } else {
+            logDebug("Generating new data");
             res = generate();
             add(res, account).then(() => {
               setData(res);
