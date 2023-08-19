@@ -237,7 +237,7 @@ contract Verifier {
         );                                      
         
     }
-    function verify(uint[] memory input, Proof memory proof) internal view returns (uint) {
+    function _verify(uint[] memory input, Proof memory proof) internal view returns (uint) {
         uint256 snark_scalar_field = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
         VerifyingKey memory vk = verifyingKey();
         require(input.length + 1 == vk.IC.length,"verifier-bad-input");
@@ -271,10 +271,27 @@ contract Verifier {
         for(uint i = 0; i < input.length; i++){
             inputValues[i] = input[i];
         }
-        if (verify(inputValues, proof) == 0) {
+        if (_verify(inputValues, proof) == 0) {
             return true;
         } else {
             return false;
         }
+    }
+
+    function verify(
+        Proof calldata proof,
+        uint256 root,
+        uint256[4] calldata digest,
+        uint256 signal
+    ) public view returns (bool) {
+        uint256[] memory inputs = new uint256[](6);
+        inputs[0] = root;
+        inputs[1] = digest[0];
+        inputs[2] = digest[1];
+        inputs[3] = digest[2];
+        inputs[4] = digest[3];
+        inputs[5] = signal;
+
+        return _verify(inputs, proof) == 0;
     }
 }
