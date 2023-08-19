@@ -9,17 +9,26 @@ contract DeployScript is Script {
     function run() external {
         //read env variables and choose EOA for transaction signing
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        address deployerAddress = vm.envAddress("PUBLIC_KEY");
+
+        string memory network = vm.envString("NETWORK");
+
+        address MIST_POOL;
+        address SMART_INVOICE_FACTORY;
+
+        if (keccak256(bytes(network)) == keccak256(bytes("sepolia"))) {
+            MIST_POOL = vm.envAddress("SEPOLIA_MIST_POOL");
+            SMART_INVOICE_FACTORY = vm.envAddress("SEPOLIA_SMART_INVOICE_FACTORY");
+        } else if (keccak256(bytes(network)) == keccak256(bytes("linea"))) {
+            MIST_POOL = vm.envAddress("LINEA_GOERLI_MIST_POOL");
+            SMART_INVOICE_FACTORY = vm.envAddress("LINEA_GOERLI_SMART_INVOICE_FACTORY");
+        } else {
+            revert("Invalid network selection");
+        }
 
         vm.startBroadcast(deployerPrivateKey);
-        // THIS IS THE SEPOLIA MIST POOL, NEEDS TO BE UPDATED TO LINEA-GOERLI
-        address MIST_POOL = 0x6bA81b91c72755459CfdF3c5ad25eFe636DCd493;
-
-        // verified
-        address LINEA_GOERLI_SMART_INVOICE_FACTORY = 0xa9c2372FdFA2ef145A0d13784C74DE96f0e3eaff;
 
         // deploy mist invoice escrow
-        MistInvoiceEscrowWrapper mistWrapper = new MistInvoiceEscrowWrapper(LINEA_GOERLI_SMART_INVOICE_FACTORY, MIST_POOL);
+        MistInvoiceEscrowWrapper mistWrapper = new MistInvoiceEscrowWrapper(SMART_INVOICE_FACTORY, MIST_POOL);
 
         console.log("MistInvoiceEscrowWrapper Address: %s", address(mistWrapper));
 

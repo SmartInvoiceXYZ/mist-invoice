@@ -15,19 +15,18 @@ contract MistInvoiceEscrowWrapper {
 
     // TODO how many bytes?
     struct MistSecret {
-        bytes merkleRoot;
-        bytes encClientRandInt;
-        bytes encProviderRandInt;
-        bytes encClientKey;
-        bytes encProviderKey;
+        bytes32 merkleRoot;
+        bytes32 providerHash;
+        bytes32 clientHash;
+        bytes encData;
     }
 
     struct MistData {
-        bytes merkleRoot;
-        bytes clientRandom;
-        bytes providerRandom;
-        bytes clientKey;
-        bytes providerKey;
+        bytes32 merkleRoot;
+        bytes32 clientRandom;
+        bytes32 providerRandom;
+        bytes32 clientKey;
+        bytes32 providerKey;
     }
 
     constructor(address _invoiceFactory, address _mistPool) {
@@ -35,25 +34,28 @@ contract MistInvoiceEscrowWrapper {
         mistPool = IMISTPool(_mistPool);
     }
 
-    function createInvoice(MistData calldata _mistData, uint256[] calldata _amounts, bytes calldata _data, bytes32 _type)
-        external
-        returns (address invoice)
-    {
+    function createInvoice(
+        MistData calldata _mistData,
+        uint256[] calldata _amounts,
+        bytes calldata _data,
+        bytes32 _type
+    ) external returns (address invoice) {
         require(_mistData.merkleRoot.length != 0, "merkle root required");
-        // TODO check other inputs
 
-        // TODO set tracking for client and provider
-        MistSecret memory meta = MistSecret(
-            _mistData.merkleRoot,
-            _mistData.clientRandom,
-            _mistData.providerRandom,
-            _mistData.clientKey,
-            _mistData.providerKey
-        );
-        
+        bytes32 providerHash =
+            keccak256(abi.encodePacked(_mistData.providerRandom, address(this), _mistData.providerKey));
+
+        bytes32 clientHash = keccak256(abi.encodePacked(_mistData.clientRandom, address(this), _mistData.clientKey));
+
+        bytes memory mistEncData =
+            bytes(abi.encodePacked(providerHash, clientHash, _mistData.clientKey, _mistData.providerKey));
+
+        MistSecret memory meta = MistSecret(_mistData.merkleRoot, providerHash, clientHash, mistEncData);
+
         // create new invoice
         ISmartInvoiceFactory factory = ISmartInvoiceFactory(INVOICE_FACTORY);
-        invoice = factory.create(address(mistPool), _amounts, _data, _type);
+        invoice = factory.create(address(this), _amounts, _data, _type);
+
         // add meta to mapping for invoice address
         mistSecrets[invoice] = meta;
 
@@ -93,7 +95,6 @@ contract MistInvoiceEscrowWrapper {
     // TODO other resolve arguments needed
     function resolve(address _invoiceAddr, uint256 _clientAward, uint256 _providerAward, bytes32 _details) external {
         require(_invoiceAddr != address(0), "valid invoice required");
-        // TODO check arbitration address msg.sender
         // TODO calculate client, provider, arb splits; update mappings
         ISmartInvoiceEscrow escrow = ISmartInvoiceEscrow(_invoiceAddr);
         IERC20 token = IERC20(escrow.token());
@@ -129,5 +130,4 @@ contract MistInvoiceEscrowWrapper {
         // TODO call deposit on MIST pool
         // mistPool.deposit(owed)
     }
-
 }

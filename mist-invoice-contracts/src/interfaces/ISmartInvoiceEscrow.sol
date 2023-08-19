@@ -5,7 +5,6 @@ pragma solidity ^0.8.0;
 import "./ISmartInvoice.sol";
 
 interface ISmartInvoiceEscrow is ISmartInvoice {
-
     // automatic getters
     function client() external returns (address);
     function provider() external returns (address);
