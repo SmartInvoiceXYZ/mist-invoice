@@ -15,6 +15,13 @@ jest.mock("./shared/Layout", () => ({
     return <div test-id="div:layout">{children}</div>;
   }
 }));
+jest.mock("react-indexed-db-hook", () => ({
+  initDB: jest.fn(),
+  useIndexedDB: jest.fn().mockImplementation(() => ({
+    getByID: jest.fn(),
+    add: jest.fn()
+  }))
+}));
 
 it("App renders", () => {
   const view = render(<App />);

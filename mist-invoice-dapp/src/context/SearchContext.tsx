@@ -1,15 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { search } from "../graphql";
 import { ChainId, logError } from "../utils";
 import { Web3Context } from "./Web3Context";
 
-export type SearchContextType = Record<string, never>;
+export type SearchContextType = {
+  search?: string;
+  setSearch: (search: string) => void;
+  fetching?: boolean;
+  result?: any;
+  loading?: boolean;
+};
 
-export const SearchContext = createContext<SearchContextType>({});
+export const SearchContext = createContext<SearchContextType>({
+  setSearch: () => {}
+});
 
 export const SearchContextProvider: React.FC<React.PropsWithChildren> = ({
-  children,
+  children
 }) => {
   const { chainId } = useContext(Web3Context);
   const [fetching, setFetching] = useState(false);

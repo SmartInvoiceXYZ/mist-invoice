@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MistContext should render 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      data-testid="div:data"
+    >
+      No data
+    </div>
+  </div>
+</DocumentFragment>
+`;
