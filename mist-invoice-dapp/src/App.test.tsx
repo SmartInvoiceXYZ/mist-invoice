@@ -4,9 +4,17 @@ import App from "./App";
 
 jest.mock("./pages/Home", () => () => <div>Home</div>);
 jest.mock("./pages/SelectInvoiceType", () => () => (
-  <div>SelectInvoiceType</div>
+  <div test-id="div:select-invoice-type">SelectInvoiceType</div>
 ));
-jest.mock("./shared/Layout", () => (children: React.ReactElement) => <div test-id="div:layout">{children}</div>);
+const mockLayout = jest.fn();
+jest.mock("./shared/Layout", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Layout: (props: any) => {
+    mockLayout(props);
+    const { children } = props;
+    return <div test-id="div:layout">{children}</div>;
+  }
+}));
 
 it("App renders", () => {
   const view = render(<App />);

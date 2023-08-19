@@ -20,7 +20,7 @@ exports[`Layout should render 1`] = `
             <img
               alt="Smart Invoice"
               class="chakra-image css-12aolnz"
-              src="normal.svg"
+              src="/assets/smart-invoice/normal.svg"
             />
           </div>
         </a>
@@ -105,7 +105,7 @@ exports[`Layout should render 1`] = `
           <img
             alt="Smart Invoice"
             class="chakra-image css-lu3yos"
-            src="white.svg"
+            src="/assets/smart-invoice/white.svg"
           />
         </a>
         <div

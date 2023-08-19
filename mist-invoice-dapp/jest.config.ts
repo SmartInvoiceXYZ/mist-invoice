@@ -18,6 +18,9 @@ const jestConfig: JestConfigWithTsJest = {
     },
   },   
   "setupFilesAfterEnv": ["./src/setupTests.ts"],
+  "transform": {
+    "node_modules/preact/.+\\.(j|t)sx?$": "ts-jest"
+  },
   "transformIgnorePatterns": [
     "node_modules/(?!preact)",
   ],

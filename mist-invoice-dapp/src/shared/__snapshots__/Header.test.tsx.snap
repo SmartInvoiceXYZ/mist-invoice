@@ -17,7 +17,7 @@ exports[`Header should render 1`] = `
           <img
             alt="Smart Invoice"
             class="chakra-image css-12aolnz"
-            src="normal.svg"
+            src="/assets/smart-invoice/normal.svg"
           />
         </div>
       </a>
