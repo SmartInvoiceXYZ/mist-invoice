@@ -1,4 +1,5 @@
 import { createIcon } from "@chakra-ui/icon";
+import React from "react";
 
 export const WalletFilledIcon = createIcon({
   displayName: "WalletFilledIcon",
@@ -10,5 +11,5 @@ export const WalletFilledIcon = createIcon({
       fill="currentColor"
     />
   ),
-  viewBox: "0 0 28 28",
+  viewBox: "0 0 28 28"
 });

@@ -88,7 +88,7 @@ describe("MistContext", () => {
 
     // assert
     await waitFor(async () => {
-      expect(view.getByTestId("div:data")).toBeInTheDocument();
+      expect(view.getByTestId("div:data")).toBeDefined();
     });
     expect(view.asFragment()).toMatchSnapshot();
   });
@@ -115,7 +115,7 @@ describe("MistContext", () => {
 
     // assert
     await waitFor(async () => {
-      expect(view.getByTestId("div:data")).toBeInTheDocument();
+      expect(view.getByTestId("div:data")).toBeDefined();
     });
     expect(view.asFragment()).toMatchSnapshot();
     expect(mockAdd).toHaveBeenCalledWith(

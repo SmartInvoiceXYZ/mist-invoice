@@ -3,6 +3,7 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/extend-expect";
 import { TextEncoder } from "util";
 
 global.TextEncoder = TextEncoder;
@@ -12,6 +13,6 @@ global.matchMedia =
     return {
       matches: false,
       addListener: function () {},
-      removeListener: function () {},
+      removeListener: function () {}
     };
   };
