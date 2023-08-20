@@ -1,13 +1,18 @@
 module.exports = {
   env: {
-    PUBLIC_URL: "",
+    PUBLIC_URL: ""
   },
-  // experimental: {
-  //   craCompat: true,
-  // },
+  experimental: {
+    // craCompat: true,
+  },
   // Remove this to leverage Next.js' static image handling
   // read more here: https://nextjs.org/docs/api-reference/next/image
   images: {
-    disableStaticImages: false,
+    disableStaticImages: false
   },
+  // reactStrictMode: true,
+  webpack: function (config, options) {
+    config.experiments = { asyncWebAssembly: true };
+    return config;
+  }
 };

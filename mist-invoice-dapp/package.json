@@ -68,6 +68,11 @@
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,md}\""
   },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false
+  },
   "browserslist": {
     "production": [
       ">0.2%",

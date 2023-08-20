@@ -14,9 +14,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true
   },
-  "include": ["src/**/*.ts", "node_modules/@types"],
+  "include": ["src/**/*.ts", "node_modules/@types", "jest.setup.ts"],
   "exclude": ["node_modules/@types/node"]
 }
