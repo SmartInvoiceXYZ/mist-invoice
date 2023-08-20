@@ -110,5 +110,20 @@ export const CONFIG = {
         },
       },
     },
+    59140: {
+      SUBGRAPH: "https://graph-query.goerli.linea.build/subgraphs/name/SmartInvoiceXYZ/smart-invoice-linea-goerli/graphql",
+      WRAPPED_NATIVE_TOKEN:
+        "0x2C1b868d6596a18e32E61B901E4060C872647b6C".toLowerCase(),
+      INVOICE_FACTORY:
+        "0xa9c2372FdFA2ef145A0d13784C74DE96f0e3eaff".toLowerCase(),
+      RESOLVERS: {
+        ["0x1206b51217271FC3ffCa57d0678121983ce0390E".toLowerCase()]: { //this is just a placeholder
+          name: "LexDAO",
+          // logoUrl: LexDAOLogo,
+          termsUrl:
+            "https://github.com/lexDAO/Arbitration/blob/master/rules/ToU.md#lexdao-resolver",
+        },
+      },
+    },
   },
 };

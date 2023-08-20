@@ -21,6 +21,7 @@ export const chainIds = {
   matic: 137,
   hardhat: 31337,
   mumbai: 80001,
+  lineaGoerli: 59140
 } as const;
 
 export type Chain = keyof typeof chainIds;
@@ -35,6 +36,7 @@ export const hexChainIds = {
   hardhat: "0x7a69",
   matic: "0x89",
   mumbai: "0x13881",
+  lineaGoerli: "0xe6ec"
 };
 
 export const networkLabels = {
@@ -49,6 +51,7 @@ export const networkLabels = {
   137: "Matic",
   31337: "Hardhat",
   80001: "Mumbai",
+  59140: "Linea Goerli"
 };
 
 export const networkNames = {
@@ -60,6 +63,7 @@ export const networkNames = {
   137: "Polygon Mainnet",
   31337: "Hardhat",
   80001: "Mumbai Testnet",
+  59140: "Linea Goerli Testnet"
 };
 
 export const rpcUrls = {
@@ -71,6 +75,7 @@ export const rpcUrls = {
   137: `https://polygon-mainnet.infura.io/v3/${INFURA_ID}`,
   80001: `https://polygon-mumbai.infura.io/v3/${INFURA_ID}`,
   31337: "http://localhost:8545",
+  59140: "https://rpc.goerli.linea.build"
 };
 
 export const explorerUrls = {
@@ -82,6 +87,7 @@ export const explorerUrls = {
   137: "https://polygonscan.com",
   80001: "https://mumbai.polygonscan.com",
   31337: "",
+  59140: "https://explorer.goerli.linea.build"
 };
 
 export const nativeSymbols = {
@@ -93,6 +99,7 @@ export const nativeSymbols = {
   137: "MATIC",
   31337: "ETH",
   80001: "MATIC",
+  59140: "ETH"
 };
 
 export const graphUrls = {
@@ -104,6 +111,8 @@ export const graphUrls = {
   137: `https://api.thegraph.com/subgraphs/name/${NETWORK_CONFIG[137].SUBGRAPH}`,
   31337: `https://api.thegraph.com/subgraphs/name/${NETWORK_CONFIG[31337].SUBGRAPH}`,
   80001: `https://api.thegraph.com/subgraphs/name/${NETWORK_CONFIG[80001].SUBGRAPH}`,
+  59140: `${NETWORK_CONFIG[59140].SUBGRAPH}`
+
 };
 
 export const resolvers = {
@@ -115,6 +124,7 @@ export const resolvers = {
   137: Object.keys(NETWORK_CONFIG[137].RESOLVERS),
   31337: Object.keys(NETWORK_CONFIG[31337].RESOLVERS),
   80001: Object.keys(NETWORK_CONFIG[80001].RESOLVERS),
+  59140: Object.keys(NETWORK_CONFIG[59140].RESOLVERS)
 };
 
 export const resolverInfo = {
@@ -132,6 +142,7 @@ export const resolverInfo = {
   137: NETWORK_CONFIG[137].RESOLVERS,
   31337: NETWORK_CONFIG[31337].RESOLVERS,
   80001: NETWORK_CONFIG[80001].RESOLVERS,
+  59140: NETWORK_CONFIG[59140].RESOLVERS
 };
 
 export const wrappedNativeToken = {
@@ -143,6 +154,7 @@ export const wrappedNativeToken = {
   137: NETWORK_CONFIG[137].WRAPPED_NATIVE_TOKEN,
   31337: NETWORK_CONFIG[31337].WRAPPED_NATIVE_TOKEN,
   80001: NETWORK_CONFIG[80001].WRAPPED_NATIVE_TOKEN,
+  59140: NETWORK_CONFIG[59140].WRAPPED_NATIVE_TOKEN
 };
 
 export const invoiceFactory = {
@@ -154,6 +166,7 @@ export const invoiceFactory = {
   137: NETWORK_CONFIG[137].INVOICE_FACTORY,
   31337: NETWORK_CONFIG[31337].INVOICE_FACTORY,
   80001: NETWORK_CONFIG[80001].INVOICE_FACTORY,
+  59140: NETWORK_CONFIG[59140].INVOICE_FACTORY
 };
 
 export const SUPPORTED_NETWORKS = Object.keys(NETWORK_CONFIG).map(

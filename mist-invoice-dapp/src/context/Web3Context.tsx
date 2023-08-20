@@ -14,6 +14,7 @@ import { theme } from "../theme";
 import { ChainId, SUPPORTED_NETWORKS } from "../utils/constants";
 import { getRpcUrl, logError } from "../utils/helpers";
 
+
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
@@ -24,6 +25,7 @@ const providerOptions = {
         42: getRpcUrl(42),
         100: getRpcUrl(100),
         137: getRpcUrl(137),
+        59140: getRpcUrl(59140),
       },
     },
   },
