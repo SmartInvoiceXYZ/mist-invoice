@@ -7,6 +7,7 @@ import "./interfaces/ISmartInvoiceEscrow.sol";
 import "./interfaces/IMistPool.sol";
 import "./interfaces/IERC20.sol";
 import "./Verifier.sol";
+import "./libraries/PoolStructs.sol";
 
 contract MistInvoiceEscrowWrapper is Verifier {
     uint256 constant SNARK_SCALAR_FIELD = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
@@ -61,8 +62,9 @@ contract MistInvoiceEscrowWrapper is Verifier {
     }
 
     // TODO is reentrency guard needed?
-    function privateRelease(address _invoiceAddr, uint256 _milestone, uint256[4] calldata _digest, Proof calldata _proof) external {
+    function privateRelease(address _invoiceAddr, uint256 _milestone, bytes calldata _encNote, uint256[4] calldata _digest, Proof calldata _proof) external {
         require(_invoiceAddr != address(0), "invalid invoice required");
+        require(_encNote.length > 0, "encrypted note required");
         // TODO verify proof
         require(verify(_proof, mistSecrets[_invoiceAddr].merkleRoot, _digest, CLIENT_SIGNAL), "invalid proof");
         // TODO call release on _invoiceAddr
@@ -74,6 +76,23 @@ contract MistInvoiceEscrowWrapper is Verifier {
         // TODO save amount to provider data
         uint256 providerOwed = postBalance - preBalance;
         // TODO deposit to MIST pool
+        PreCommitment[] memory preCommitments = new PreCommitment[](1);
+        preCommitments[0] = PreCommitment({
+            receiverHash: mistSecrets[_invoiceAddr].providerHash,
+            encryptedNote: _encNote,
+            tokenData: TokenData({
+                standard: TokenStandard.ERC20,
+                token: address(token),
+                identifier: 0,
+                amount: providerOwed
+            })
+        });
+        DepositData memory depositData = DepositData({
+            nonce: mistPool.getNonce(address(this)),
+            sender: address(this),
+            preCommitments: preCommitments
+        });
+        mistPool.deposit(depositData, bytes(""));
     }
 
     function privateDispute(address _invoiceAddr, bytes32 _details, uint256[4] calldata _digest, ROLE _role, Proof calldata _proof) external {
@@ -91,8 +110,9 @@ contract MistInvoiceEscrowWrapper is Verifier {
     }
 
     // TODO other resolve arguments needed
-    function resolve(address _invoiceAddr, uint256 _clientAward, uint256 _providerAward, bytes32 _details) external {
+    function resolve(address _invoiceAddr, uint256 _clientAward, uint256 _providerAward, bytes32 _details, bytes[2] calldata _encNotes) external {
         require(_invoiceAddr != address(0), "valid invoice required");
+        require(_encNotes[0].length > 0 && _encNotes[1].length > 0, "encrypted notes required");
         // TODO calculate client, provider, arb splits; update mappings
         ISmartInvoiceEscrow escrow = ISmartInvoiceEscrow(_invoiceAddr);
         IERC20 token = IERC20(escrow.token());
@@ -103,17 +123,43 @@ contract MistInvoiceEscrowWrapper is Verifier {
         );
         uint256 postBalance = token.balanceOf(address(this));
         // TODO save amount to provider data
-        uint256 totalOwed = postBalance - preBalance;
-        uint256 forClient = _clientAward / (_clientAward + _providerAward) * totalOwed;
-        uint256 forProvider = _providerAward / (_clientAward + _providerAward) * totalOwed;
+        // uint256 totalOwed = postBalance - preBalance;
+        uint256 forClient = _clientAward / (_clientAward + _providerAward) * (postBalance - preBalance);
+        uint256 forProvider = _providerAward / (_clientAward + _providerAward) * (postBalance - preBalance);
         // TODO deposit to MIST pool for client + provider
-        // mistPool.deposit(forClient)
-        // mistPool.deposit(forProvider)
+        PreCommitment[] memory preCommitments = new PreCommitment[](2);
+        preCommitments[0] = PreCommitment({
+            receiverHash: mistSecrets[_invoiceAddr].clientHash,
+            encryptedNote: _encNotes[0],
+            tokenData: TokenData({
+                standard: TokenStandard.ERC20,
+                token: address(token),
+                identifier: 0,
+                amount: forClient
+            })
+        });
+        preCommitments[1] = PreCommitment({
+            receiverHash: mistSecrets[_invoiceAddr].providerHash,
+            encryptedNote: _encNotes[1],
+            tokenData: TokenData({
+                standard: TokenStandard.ERC20,
+                token: address(token),
+                identifier: 0,
+                amount: forProvider
+            })
+        });
+        DepositData memory depositData = DepositData({
+            nonce: mistPool.getNonce(address(this)),
+            sender: address(this),
+            preCommitments: preCommitments
+        });
+        mistPool.deposit(depositData, bytes(""));
     }
 
     // Only works for primary token, withdrawTokens is not implemented for hackathon
-    function privateWithdraw(address _invoiceAddr, uint256[4] calldata _digest, Proof calldata _proof) external {
+    function privateWithdraw(address _invoiceAddr, uint256[4] calldata _digest, Proof calldata _proof, bytes calldata _encNote) external {
         require(_invoiceAddr != address(0), "valid invoice required");
+        require(_encNote.length > 0, "encrypted note required");
         // TODO verify withdraw enabled
         // TODO verify proof of client
         require(verify(_proof, mistSecrets[_invoiceAddr].clientHash, _digest, CLIENT_SIGNAL), "invalid proof");
@@ -128,5 +174,22 @@ contract MistInvoiceEscrowWrapper is Verifier {
         // TODO update mapping
         // TODO call deposit on MIST pool
         // mistPool.deposit(owed)
+        PreCommitment[] memory preCommitments = new PreCommitment[](1);
+        preCommitments[0] = PreCommitment({
+            receiverHash: mistSecrets[_invoiceAddr].providerHash,
+            encryptedNote: _encNote,
+            tokenData: TokenData({
+                standard: TokenStandard.ERC20,
+                token: address(token),
+                identifier: 0,
+                amount: owed
+            })
+        });
+        DepositData memory depositData = DepositData({
+            nonce: mistPool.getNonce(address(this)),
+            sender: address(this),
+            preCommitments: preCommitments
+        });
+        mistPool.deposit(depositData, bytes(""));
     }
 }
