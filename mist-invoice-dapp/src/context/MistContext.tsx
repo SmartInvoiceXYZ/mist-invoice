@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
-import skiffCrypto from "@skiff-org/skiff-crypto";
-import { BytesLike } from "ethers";
+import { TransferType, UTXONote } from "@usemist/sdk";
+import { IncrementalMerkleTree, MerkleProof } from "@zk-kit/incremental-merkle-tree";
+import { BytesLike, ethers, getBigInt, keccak256 } from "ethers";
+import { poseidon2 } from "poseidon-lite";
 import randombytes from "randombytes";
 import { useIndexedDB } from "react-indexed-db-hook";
 import { logDebug, logError } from "../utils";
@@ -16,10 +17,22 @@ export type MistData = {
   providerKey: BytesLike;
 };
 
+export type MistSecret = {
+  merkleRoot?: bigint;
+  providerHash: bigint;
+  clientHash: bigint;
+  encData: BytesLike[];
+};
+
+export const SNARK_SCALAR_FIELD = 21888242871839275222246405745257275088548364400416034343698204186575808495617n;
+export const CLIENT_SIGNAL = getBigInt(keccak256("client")) % SNARK_SCALAR_FIELD;
+export const PROVIDER_SIGNAL = getBigInt(keccak256("provider")) % SNARK_SCALAR_FIELD;
+export const NULLIFYING_KEY = getBigInt(keccak256("nullifier")) % SNARK_SCALAR_FIELD;
+
 export type MistContextType = {
   data?: MistData;
   loading: boolean;
-  getClientProof: () => BytesLike[] | undefined;
+  getClientProof: () => MerkleProof | undefined;
 };
 
 export const MistContext = createContext<MistContextType>({
@@ -33,8 +46,8 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
   const { getByID, add } = useIndexedDB(process.env.MIST_DB_NAME || "");
   const { account } = useContext(Web3Context);
   const [data, setData] = useState<MistData>();
-  const [tree, setTree] =
-    useState<StandardMerkleTree<(BytesLike | undefined)[]>>();
+  const [secret, setSecret] = useState<MistSecret>();
+  const [tree, setTree] = useState<IncrementalMerkleTree>();
   const [loading, setLoading] = useState(false);
 
   const providerAddress = process.env.MIST_PROVIDER_ADDRESS || "";
@@ -42,11 +55,12 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
   useEffect(() => {
     if (!account || !providerAddress || !data) return;
     const values = [
-      [account, data.clientRandom],
-      [providerAddress, data.providerRandom]
+      poseidon2([getBigInt(account), CLIENT_SIGNAL]),
+      poseidon2([getBigInt(providerAddress), PROVIDER_SIGNAL])
     ];
 
-    const _tree = StandardMerkleTree.of(values, ["address", "bytes32"]);
+    // const _tree = StandardMerkleTree.of(values, ["address", "bytes32"]);
+    const _tree = new IncrementalMerkleTree(poseidon2, 2, 0, 2, values);
     setTree(_tree);
     setData({
       ...data,
@@ -54,38 +68,71 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
     });
   }, [account, providerAddress, data]);
 
-  const generate = () => {
-    const clientRandom = randombytes(32);
-    const providerRandom = randombytes(32);
-    const clientKey = skiffCrypto.generateSymmetricKey();
-    const providerKey = skiffCrypto.generateSymmetricKey();
+  const generate = async () => {
+    // const clientRandom = randombytes(32);
+    // const providerRandom = randombytes(32);
+    // const clientKey = skiffCrypto.generateSymmetricKey();
+    // const providerKey = skiffCrypto.generateSymmetricKey();
+    
+    const random = getBigInt(randombytes(32).toString("hex"));
+    const tokenAddress = "0x..."
+    const amounts = [100, 200, 300, 400, 500]; // dummy values
+    // Contains bytes[] of encrypted note, clientKey and providerKey for each amount
+    const encData = await Promise.all(amounts.map(async (amount) => {
+      const note = new UTXONote({
+        sender: account || "",
+        receiver: providerAddress,
+        amount: BigInt(amount),
+        token: tokenAddress,
+        identifier: BigInt(0),
+        random,
+        transferType: TransferType.Deposit,
+        nullifyingKey: NULLIFYING_KEY
+      })
+      return await note.encryptPacked('goerli');
+    }));
+    const clientId = getBigInt(keccak256(ethers.AbiCoder.defaultAbiCoder().encode(["address"],[account])));
+    const providerId = getBigInt(keccak256(ethers.AbiCoder.defaultAbiCoder().encode(["address"],[providerAddress])));
+    const clientHash = poseidon2([poseidon2([clientId, NULLIFYING_KEY]), random]);
+    const providerHash = poseidon2([poseidon2([providerId, NULLIFYING_KEY]), random]);
 
-    const generated = {
-      clientRandom,
-      providerRandom,
-      clientKey,
-      providerKey
-    };
+    const newSecret = {
+      providerHash,
+      clientHash,
+      encData
+    }
 
-    setData(generated);
+    setSecret(newSecret);
+    return secret;
 
-    return generated;
+    // const generated = {
+    //   clientRandom,
+    //   providerRandom,
+    //   clientKey,
+    //   providerKey
+    // };
+
+    // setData(generated);
+
+    // return generated;
   };
 
   useEffect(() => {
     if (account) {
       setLoading(true);
       try {
-        getByID<MistData>(account).then((res) => {
+        getByID<MistSecret>(account).then((res) => {
           if (res) {
             logDebug("Using existing data");
-            setData(res);
+            setSecret(res);
+            // setData(res);
           } else {
             logDebug("Generating new data");
-            res = generate();
-            add(res, account).then(() => {
-              setData(res);
-            });
+            genAddRes();
+            // res = generate()
+            // add(res, account).then(() => {
+            //   setData(res);
+            // });
           }
         });
       } catch (e) {
@@ -98,9 +145,16 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
     }
   }, [account]);
 
+  async function genAddRes() {
+    let res = await generate()
+    add(res, account).then(() => {
+      setSecret(res);
+    });
+  }
+
   const getClientProof = () => {
     if (account && tree && data) {
-      const proof = tree.getProof([account, data.clientRandom]);
+      const proof = tree.createProof(tree.indexOf(poseidon2([getBigInt(account), CLIENT_SIGNAL])));
       return proof;
     }
     return undefined;
