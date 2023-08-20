@@ -1,6 +1,7 @@
 {
   "license": "UNLICENSED",
   "scripts": {
+    "build": "forge build & yarn typechain",
     "lint": "yarn lint:sol && yarn prettier:check",
     "lint:sol": "forge fmt --check && yarn solhint \"{script,src,test}/**/*.sol\"",
     "prettier:check": "yarn prettier --check \"**/*.{json,md,svg,yml}\"",
@@ -9,14 +10,16 @@
     "fork-sepolia": "anvil --fork-url https://gateway.tenderly.co/public/sepolia  --block-base-fee-per-gas 30000000000 --chain-id 31137",
     "deploy-local-wrapper": "forge script script/deployMistInvoiceEscrowWrapper.s.sol --fork-url http://localhost:8545 --broadcast --ffi --legacy",
     "create-local-linea": "forge script script/createMistInvoice.s.sol --fork-url http://localhost:8545 --broadcast --ffi --legacy",
-    "create-local-sepolia": "forge script script/createMistInvoice.s.sol --fork-url http://localhost:8545 --broadcast --ffi"
-    
+    "create-local-sepolia": "forge script script/createMistInvoice.s.sol --fork-url http://localhost:8545 --broadcast --ffi",
+    "typechain": "typechain --target=ethers-v6 --out-dir=src/types \"out/**/*.json\""
   },
   "devDependencies": {
+    "@typechain/ethers-v6": "^0.4.3",
     "prettier": "^3.0.0",
-    "solhint": "^3.4.1"
+    "solhint": "^3.4.1",
+    "typechain": "^8.3.1",
+    "typescript": "^5.1.6"
   },
   "name": "mist-invoice",
   "description": "A privacy layer on top of smart invoice."
 }
-
