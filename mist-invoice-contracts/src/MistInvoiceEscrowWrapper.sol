@@ -32,9 +32,7 @@ contract MistInvoiceEscrowWrapper is Verifier {
         uint256 merkleRoot; // contains client and provider addresses
         uint256 providerHash;
         uint256 clientHash;
-        bytes encData; // symmetric key for encrypted invoice _details, client address and random, provider address and random
-        bytes encClientKey;
-        bytes encProviderKey;
+        bytes[] encData; // abi.encode(tuple(string encryptedData, string encryptedSenderKey, string encryptedReceiverKey))
     }
 
     constructor(address _invoiceFactory, address _mistPool) {
@@ -71,12 +69,10 @@ contract MistInvoiceEscrowWrapper is Verifier {
     function privateRelease(
         address _invoiceAddr,
         uint256 _milestone,
-        bytes calldata _encNote,
         uint256[4] calldata _digest,
         Proof calldata _proof
     ) external {
         require(_invoiceAddr != address(0), "invalid invoice required");
-        require(_encNote.length > 0, "encrypted note required");
         // TODO verify proof
         require(
             verify(
@@ -90,23 +86,29 @@ contract MistInvoiceEscrowWrapper is Verifier {
         // TODO call release on _invoiceAddr
         ISmartInvoiceEscrow escrow = ISmartInvoiceEscrow(_invoiceAddr);
         IERC20 token = IERC20(escrow.token());
-        uint256 preBalance = token.balanceOf(address(this));
+        // uint256 preBalance = token.balanceOf(address(this));
+        uint256 currentMilestone = escrow.milestone();
         escrow.release(_milestone);
-        uint256 postBalance = token.balanceOf(address(this));
+        // uint256 postBalance = token.balanceOf(address(this));
         // TODO save amount to provider data
-        uint256 providerOwed = postBalance - preBalance;
+        // uint256 providerOwed = postBalance - preBalance;
         // TODO deposit to MIST pool
-        PreCommitment[] memory preCommitments = new PreCommitment[](1);
-        preCommitments[0] = PreCommitment({
-            receiverHash: mistSecrets[_invoiceAddr].providerHash,
-            encryptedNote: _encNote,
-            tokenData: TokenData({
-                standard: TokenStandard.ERC20,
-                token: address(token),
-                identifier: 0,
-                amount: providerOwed
-            })
-        });
+        uint256 length = _milestone - currentMilestone + 1;
+        PreCommitment[] memory preCommitments = new PreCommitment[](length);
+        for (uint256 i = 0; i < length; i++) {
+            preCommitments[i] = PreCommitment({
+                receiverHash: mistSecrets[_invoiceAddr].providerHash,
+                encryptedNote: mistSecrets[_invoiceAddr].encData[
+                    i + currentMilestone
+                ],
+                tokenData: TokenData({
+                    standard: TokenStandard.ERC20,
+                    token: address(token),
+                    identifier: 0,
+                    amount: escrow.amounts()[i + currentMilestone]
+                })
+            });
+        }
         DepositData memory depositData = DepositData({
             nonce: mistPool.getNonce(address(this)),
             sender: address(this),
@@ -132,7 +134,7 @@ contract MistInvoiceEscrowWrapper is Verifier {
             require(
                 verify(
                     _proof,
-                    mistSecrets[_invoiceAddr].clientHash,
+                    mistSecrets[_invoiceAddr].merkleRoot,
                     _digest,
                     CLIENT_SIGNAL
                 ),
@@ -142,7 +144,7 @@ contract MistInvoiceEscrowWrapper is Verifier {
             require(
                 verify(
                     _proof,
-                    mistSecrets[_invoiceAddr].providerHash,
+                    mistSecrets[_invoiceAddr].merkleRoot,
                     _digest,
                     PROVIDER_SIGNAL
                 ),
@@ -231,7 +233,7 @@ contract MistInvoiceEscrowWrapper is Verifier {
         require(
             verify(
                 _proof,
-                mistSecrets[_invoiceAddr].clientHash,
+                mistSecrets[_invoiceAddr].merkleRoot,
                 _digest,
                 CLIENT_SIGNAL
             ),
@@ -250,7 +252,7 @@ contract MistInvoiceEscrowWrapper is Verifier {
         // mistPool.deposit(owed)
         PreCommitment[] memory preCommitments = new PreCommitment[](1);
         preCommitments[0] = PreCommitment({
-            receiverHash: mistSecrets[_invoiceAddr].providerHash,
+            receiverHash: mistSecrets[_invoiceAddr].clientHash,
             encryptedNote: _encNote,
             tokenData: TokenData({
                 standard: TokenStandard.ERC20,
