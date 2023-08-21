@@ -9,8 +9,7 @@ import {
 import { formatUnits, Transaction } from 'ethers';
 import React, { useContext, useEffect, useState } from 'react';
 
-import { Web3Context } from '../../context/Web3Context';
-import { InvoiceResult } from '@/graphql/subgraph';
+import { Web3Context } from '../context/Web3Context';
 import {
   Chain,
   ChainId,
@@ -20,7 +19,8 @@ import {
   logError,
   TokenData,
   withdraw,
-} from '@/utils';
+} from '../utils';
+import { InvoiceResult } from '@/graphql/subgraph';
 
 export type WithdrawFundsProps = {
   invoice: InvoiceResult;
@@ -39,11 +39,7 @@ export const WithdrawFunds: React.FC<WithdrawFundsProps> = ({
   const { chainId, provider } = useContext(Web3Context);
   const { network, address, token } = invoice;
 
-  // const { decimals, symbol } = getTokenInfo(chainId, token, tokenData);
   const [transaction, setTransaction] = useState<Transaction>();
-  const [invalid, setInvalid] = useState(false);
-  const [buttonSize, setButtonSize] = useState('md');
-  // const buttonSize = useBreakpointValue({ base: 'md', md: 'lg' });
 
   const [tokenInfo, setTokenInfo] = useState({ decimals: 0, symbol: '' });
 
@@ -55,33 +51,32 @@ export const WithdrawFunds: React.FC<WithdrawFundsProps> = ({
     }
   }, [chainId, token, tokenData]);
 
-  useEffect(() => {
-    if (!loading && provider && balance > 0) {
-      setInvalid(false);
-    } else {
-      setInvalid(true);
-    }
-  }, [network, balance, address, provider, close]);
+  const [buttonSize, setButtonSize] = useState<'md' | 'lg'>('md');
+  // const buttonSize = useBreakpointValue({ base: 'md', md: 'lg' });
 
-  const send = async () => {
-    try {
-      if (!provider) return;
-      setLoading(true);
-      const tx = await withdraw(provider, address);
-      setTransaction(tx);
-      await tx.wait();
-      window.location.href = `/invoice/${getHexChainId(
-        network as Chain,
-      )}/${address}/instant`;
-      setLoading(false);
-    } catch (withdrawError) {
-      close();
-      logError({ withdrawError });
-    }
-  };
+  useEffect(() => {
+    const send = async () => {
+      if (!loading && provider && balance >= 0) {
+        try {
+          setLoading(true);
+          const tx = await withdraw(provider, address);
+          setTransaction(tx);
+          await tx.wait();
+          window.location.href = `/invoice/${getHexChainId(
+            network as Chain,
+          )}/${address}`;
+          setLoading(false);
+        } catch (withdrawError) {
+          close();
+          logError({ withdrawError });
+        }
+      }
+    };
+    send();
+  }, [network, balance, address, provider, loading, close]);
 
   return (
-    <VStack w="100%" spacing="1rem" color="black">
+    <VStack w="100%" spacing="1rem">
       <Heading
         fontWeight="normal"
         mb="1rem"
@@ -92,22 +87,14 @@ export const WithdrawFunds: React.FC<WithdrawFundsProps> = ({
       </Heading>
       <Text textAlign="center" fontSize="sm" mb="1rem">
         Follow the instructions in your wallet to withdraw remaining funds from
-        the invoice.
+        the escrow.
       </Text>
-      <VStack
-        my="2rem"
-        px="5rem"
-        py="1rem"
-        bg="white"
-        border="1px"
-        borderColor="blue.1"
-        borderRadius="0.5rem"
-      >
-        <Text color="blue.1" fontSize="0.875rem" textAlign="center">
+      <VStack my="2rem" px="5rem" py="1rem" bg="black" borderRadius="0.5rem">
+        <Text color="red.500" fontSize="0.875rem" textAlign="center">
           Amount To Be Withdrawn
         </Text>
         <Text
-          color="blue.dark"
+          color="white"
           fontSize="1rem"
           fontWeight="bold"
           textAlign="center"
@@ -116,44 +103,30 @@ export const WithdrawFunds: React.FC<WithdrawFundsProps> = ({
         }`}</Text>
       </VStack>
       {chainId && transaction?.hash && (
-        <Text color="black" textAlign="center" fontSize="sm">
+        <Text color="white" textAlign="center" fontSize="sm">
           Follow your transaction{' '}
           <Link
             href={getTxLink(chainId, transaction.hash)}
             isExternal
-            color="blue.1"
+            color="red.500"
             textDecoration="underline"
           >
             here
           </Link>
         </Text>
       )}
-      {!invalid && (
-        <Button
-          onClick={send}
-          backgroundColor="blue.1"
-          _hover={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
-          _active={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
-          color="white"
-          textTransform="uppercase"
-          size={buttonSize}
-          fontFamily="mono"
-          fontWeight="normal"
-          w="100%"
-          isLoading={loading}
-        >
-          Confirm
-        </Button>
-      )}
-      <Link
+      <Button
         onClick={close}
-        color="blue.1"
-        // size={buttonSize}
+        variant="outline"
+        colorScheme="red"
+        textTransform="uppercase"
+        size={buttonSize}
         fontFamily="mono"
         fontWeight="normal"
+        w="100%"
       >
-        Cancel
-      </Link>
+        Close
+      </Button>
     </VStack>
   );
 };

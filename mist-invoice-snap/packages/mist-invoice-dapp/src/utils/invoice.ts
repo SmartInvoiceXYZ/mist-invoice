@@ -5,7 +5,7 @@ import {
   Contract,
   Interface,
   Provider,
-  Transaction,
+  TransactionResponse,
   isAddress,
 } from 'ethers';
 
@@ -55,7 +55,7 @@ export const getResolutionRateFromFactory = async (
 
 export const awaitInvoiceAddress = async (
   ethersProvider: Provider,
-  tx: Transaction,
+  tx: TransactionResponse,
 ) => {
   // await tx.wait(1);
   const abi = new Interface([
@@ -115,8 +115,8 @@ export const lock = async (
 export const resolve = async (
   ethersProvider: BrowserProvider,
   address: string,
-  clientAward: number,
-  providerAward: number,
+  clientAward: bigint,
+  providerAward: bigint,
   detailsHash: BytesLike, // 32 bits hex
 ) => {
   const abi = new Interface([
@@ -127,25 +127,30 @@ export const resolve = async (
   return contract.resolve(clientAward, providerAward, detailsHash);
 };
 
-// export const addMilestones = async (ethersProvider, address, amounts) => {
-//   const abi = new Interface([
-//     "function addMilestones(uint256[] calldata _milestones) external",
-//   ]);
-//   const contract = new Contract(address, abi, ethersProvider.getSigner());
-//   return contract.addMilestones(amounts);
-// };
-// export const addMilestonesWithDetails = async (
-//   ethersProvider,
-//   address,
-//   amounts,
-//   details
-// ) => {
-//   const abi = new Interface([
-//     "function addMilestones(uint256[] calldata _milestones, bytes32 _details) external",
-//   ]);
-//   const contract = new Contract(address, abi, ethersProvider.getSigner());
-//   return contract.addMilestones(amounts, details);
-// };
+export const addMilestones = async (
+  ethersProvider: BrowserProvider,
+  address: string,
+  amounts: bigint[],
+) => {
+  const abi = new Interface([
+    'function addMilestones(uint256[] calldata _milestones) external',
+  ]);
+  const contract = new Contract(address, abi, await ethersProvider.getSigner());
+  return contract.addMilestones(amounts);
+};
+
+export const addMilestonesWithDetails = async (
+  ethersProvider: BrowserProvider,
+  address: string,
+  amounts: bigint[],
+  details: BytesLike,
+) => {
+  const abi = new Interface([
+    'function addMilestones(uint256[] calldata _milestones, bytes32 _details) external',
+  ]);
+  const contract = new Contract(address, abi, await ethersProvider.getSigner());
+  return contract.addMilestones(amounts, details);
+};
 
 // export const verify = async (ethersProvider, address) => {
 //   const abi = new Interface(["function verify() external"]);

@@ -1,5 +1,5 @@
 import { getAddress } from '@ethersproject/address';
-import { Contract, Interface } from 'ethers';
+import { BigNumberish, Contract, Interface } from 'ethers';
 
 import {
   Chain,
@@ -239,8 +239,10 @@ export const formatTokens = (
   return tokenObject;
 };
 
-export const calculateResolutionFeePercentage = (resolutionRate: string) => {
-  const feePercentage = 1 / parseInt(resolutionRate);
+export const calculateResolutionFeePercentage = (
+  resolutionRate: BigNumberish,
+) => {
+  const feePercentage = 1 / Number(BigInt(resolutionRate).toString());
 
   return feePercentage;
 };

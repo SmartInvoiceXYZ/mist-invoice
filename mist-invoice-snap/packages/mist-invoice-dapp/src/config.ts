@@ -95,7 +95,7 @@ export const CONFIG = {
         },
       },
     },
-    31137: {
+    31337: {
       SUBGRAPH: 'subgraphs/name/SmartInvoiceXYZ/smart-invoice-linea-goerli',
       WRAPPED_NATIVE_TOKEN:
         '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'.toLowerCase(),

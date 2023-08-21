@@ -8,7 +8,7 @@
     "start": "next dev",
     "lint": "next lint",
     "test": "jest --coverage --watchAll",
-    "graphql-codegen": "codegen-graph-ts pull https://api.thegraph.com/subgraphs/name/psparacino/xdai-smart-invoices > ./src/graphql/manifest.json && codegen-graph-ts gen -s ./src/graphql/manifest.json -o ./src/graphql/subgraph.ts"
+    "graphql-codegen": "codegen-graph-ts pull https://graph-query.goerli.linea.build/subgraphs/name/SmartInvoiceXYZ/smart-invoice-linea-goerli > ./src/graphql/manifest.json && codegen-graph-ts gen -s ./src/graphql/manifest.json -o ./src/graphql/subgraph.ts"
   },
   "dependencies": {
     "@chakra-ui/icon": "^3.1.0",

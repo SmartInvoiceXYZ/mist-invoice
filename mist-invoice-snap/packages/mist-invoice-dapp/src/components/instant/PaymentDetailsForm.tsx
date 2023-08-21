@@ -17,7 +17,7 @@ import {
 export type InstantPaymentDetailsFormProps = {
   display: string;
   tokenData: any;
-  allTokens: Record<ChainId, Record<string, TokenData>>;
+  allTokens: Record<ChainId, Record<string, string>>;
 };
 
 export const InstantPaymentDetailsForm: React.FC<
