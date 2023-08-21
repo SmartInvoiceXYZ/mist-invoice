@@ -1,5 +1,5 @@
 import { SLIP10Node } from '@metamask/key-tree';
-import { EdDSASigner } from '@usemist/sdk';
+import { EdDSASigner } from './utils/EdDSASigner';
 import { Json, OnRpcRequestHandler } from '@metamask/snaps-types';
 import { panel, text } from '@metamask/snaps-ui';
 
@@ -38,7 +38,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
         },
       })
       const eddsaSlip10Node = await SLIP10Node.fromJSON(edNode);
-      const signer = new EdDSASigner(eddsaSlip10Node.privateKey as string);
+      const signer = new EdDSASigner(eddsaSlip10Node.privateKeyBytes as Uint8Array);
       await signer.init();
       return signer.scalarPubKey;
     }
@@ -55,7 +55,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
       })
 
       const eddsaSlip10Node = await SLIP10Node.fromJSON(edNode);
-      const signer = new EdDSASigner(eddsaSlip10Node.privateKey as string);
+      const signer = new EdDSASigner(eddsaSlip10Node.privateKeyBytes as Uint8Array);
       await signer.init();
 
       const result = await snap.request({

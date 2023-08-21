@@ -7,7 +7,7 @@
     "url": "https://github.com/MetaMask/template-snap-monorepo.git"
   },
   "source": {
-    "shasum": "xlzdQ1CbKhcYS4jVpmC2G8RQSS92nEiTo4Uobj2Semw=",
+    "shasum": "iGx+P8Pbir34MFmiVBU7LdiBsfsVxefQvWSRo7NF38g=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -21,7 +21,11 @@
     "snap_dialog": {},
     "snap_getBip32Entropy": [
       {
-        "path": ["m", "44'", "420'"],
+        "path": [
+          "m",
+          "44'",
+          "420'"
+        ],
         "curve": "ed25519"
       }
     ],

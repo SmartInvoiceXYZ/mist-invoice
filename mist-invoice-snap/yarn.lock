@@ -24729,7 +24729,6 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-error-boundary: ^4.0.11
-    react-indexed-db-hook: ^1.0.14
     react-is: ^18.2.0
     react-no-ssr: ^1.1.0
     react-table: ^7.8.0
@@ -27872,16 +27871,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-indexed-db-hook@npm:^1.0.14":
-  version: 1.0.14
-  resolution: "react-indexed-db-hook@npm:1.0.14"
-  peerDependencies:
-    react: ^18.2.0
-    react-dom: ^18.2.0
-  checksum: 77928e5f18dd560578d0ef0ed8bde33e28413dfb08fba8cd01a10ef77d79adb0ebea66dfb1867d53262cbaf0d94b79f33c5d0cd91f60728719346b5a23599d66
-  languageName: node
-  linkType: hard
-
 "react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -29599,8 +29588,8 @@ __metadata:
     "@metamask/snaps-ui": ^0.32.2
     "@typescript-eslint/eslint-plugin": ^5.33.0
     "@typescript-eslint/parser": ^5.33.0
-    "@usemist/sdk": ^0.1.0
     buffer: ^6.0.3
+    circomlibjs: ^0.1.7
     eslint: ^8.21.0
     eslint-config-prettier: ^8.1.0
     eslint-plugin-import: ^2.26.0
