@@ -357,7 +357,7 @@ export const TOKENS = {
         'https://firebasestorage.googleapis.com/v0/b/smart-invoice-b0db1.appspot.com/o/ROBOT.png?alt=media',
     },
   ],
-  31137: [
+  31337: [
     {
       tokenContract: '0x2c1b868d6596a18e32e61b901e4060c872647b6c',
       symbol: 'WETH',
