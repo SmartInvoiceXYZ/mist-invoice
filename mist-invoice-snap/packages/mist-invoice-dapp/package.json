@@ -20,6 +20,7 @@
     "@emotion/styled": "^11.11.0",
     "@gnosis.pm/safe-apps-sdk": "^7.8.0",
     "@gnosis.pm/safe-apps-web3modal": "^17.0.4",
+    "@lit-protocol/lit-node-client": "^2.2.49",
     "@openzeppelin/merkle-tree": "^1.0.5",
     "@synthetixio/wei": "^2.74.4",
     "@types/node": "20.5.1",
