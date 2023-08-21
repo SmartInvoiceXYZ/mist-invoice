@@ -26,15 +26,15 @@ import { StepInfo } from '../../../components/StepInfo';
 import { ChainId, INSTANT_STEPS, INVOICE_TYPES } from '../../../utils';
 import { NetworkChangeAlertModal } from '../../../components/NetworkChangeAlertModal';
 
-export const CreateInvoiceInstant = () => {
+export const CreateInvoiceEscrow = () => {
   return (
     <CreateContextProvider>
-      <CreateInvoiceInstantInner />
+      <CreateInvoiceEscrowInner />
     </CreateContextProvider>
   );
 };
 
-export const CreateInvoiceInstantInner = () => {
+export const CreateInvoiceEscrowInner = () => {
   const {
     tx,
     loading,
@@ -107,7 +107,7 @@ export const CreateInvoiceInstantInner = () => {
             w={{ base: '100%', md: 'auto' }}
           >
             <Heading fontWeight="700" fontSize={headingSize}>
-              Create an Instant Invoice
+              Create an Escrow Invoice
             </Heading>
             <Text
               color="#90A0B7"
@@ -139,7 +139,7 @@ export const CreateInvoiceInstantInner = () => {
                 display={currentStep === 1 ? 'flex' : 'none'}
                 tokenData={tokenData}
                 allTokens={allTokens}
-              />
+              />                  
               <InstantPaymentDetailsForm
                 display={currentStep === 2 ? 'flex' : 'none'}
                 tokenData={tokenData}
@@ -179,4 +179,4 @@ export const CreateInvoiceInstantInner = () => {
   );
 };
 
-export default CreateInvoiceInstant;
+export default CreateInvoiceEscrow;

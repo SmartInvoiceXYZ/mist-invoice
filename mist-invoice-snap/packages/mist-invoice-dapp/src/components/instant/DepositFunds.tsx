@@ -4,31 +4,31 @@ import {
   AlertTitle,
   Button,
   ButtonGroup,
-  Checkbox,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
-  HStack,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightAddon,
   InputRightElement,
   Link,
-  Radio,
-  RadioGroup,
   Select,
   Text,
   Tooltip,
   useBreakpointValue,
   VStack,
-} from "@chakra-ui/react";
-import { BigNumberish, Contract, formatUnits, parseUnits } from "ethers";
-import React, { useContext, useEffect, useState } from "react";
+} from '@chakra-ui/react';
+import {
+  BigNumberish,
+  Contract,
+  formatUnits,
+  parseUnits,
+  Transaction,
+} from 'ethers';
+import React, { useContext, useEffect, useState } from 'react';
 
-import { Web3Context } from "../../context/Web3Context";
-import { QuestionIcon } from "../../icons/QuestionIcon";
+import { Web3Context } from '../../context/Web3Context';
+import { QuestionIcon } from '../../icons/QuestionIcon';
 import {
   balanceOf,
   getHexChainId,
@@ -40,15 +40,20 @@ import {
   // calculateResolutionFeePercentage,
   depositTokens,
   tipTokens,
-} from "../../utils";
-import { TokenDataStruct } from "@/types/IMistPool.sol/IMISTPool";
-import { InvoiceResult } from "@/graphql/subgraph";
+  Chain,
+  ChainId,
+  TokenData,
+} from '../../utils';
+import { InvoiceResult } from '@/graphql/subgraph';
 
-const getCheckedStatus = (deposited: BigNumberish, amounts: BigNumberish[]) => {
+const getCheckedStatus = (
+  deposited: BigNumberish,
+  amounts: bigint[] | BigNumberish[],
+) => {
   let sum = BigInt(0);
   return amounts.map((a) => {
-    sum = sum + a;
-    return deposited.gte(sum);
+    sum = sum + BigInt(a);
+    return BigInt(deposited) >= sum;
   });
 };
 
@@ -61,7 +66,7 @@ export type DepositFundsProps = {
   deposited: BigNumberish;
   due: BigNumberish;
   total: BigNumberish;
-  tokenData: TokenDataStruct;
+  tokenData: Record<ChainId, Record<string, TokenData>>;
   fulfilled: boolean;
 };
 
@@ -74,39 +79,52 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
   fulfilled,
 }) => {
   const { chainId, provider, account } = useContext(Web3Context);
-  const NATIVE_TOKEN_SYMBOL = getNativeTokenSymbol(chainId);
-  const WRAPPED_NATIVE_TOKEN = getWrappedNativeToken(chainId);
   const { address, token, network, amounts, currentMilestone } = invoice;
   const [paymentType, setPaymentType] = useState(0);
-  const { decimals, symbol } = getTokenInfo(chainId, token, tokenData);
   const [amount, setAmount] = useState(BigInt(0));
-  const [amountInput, setAmountInput] = useState("");
+  const [amountInput, setAmountInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [transaction, setTransaction] = useState();
-  const buttonSize = useBreakpointValue({ base: "md", md: "lg" });
+  const [transaction, setTransaction] = useState<Transaction>();
+  const buttonSize = useBreakpointValue({ base: 'md', md: 'lg' });
   const [depositError, setDepositError] = useState(false);
   const [openTipPanel, setOpenTipPanel] = useState(false);
-  const [tipPerc, setTipPerc] = useState(0);
-  const [customTip, setCustomTip] = useState("");
+  const [tipPerc, setTipPerc] = useState<number | string>(0);
+  const [customTip, setCustomTip] = useState('');
   const [tipAmount, setTipAmount] = useState(BigInt(0));
   const [totalPayment, setTotalPayment] = useState(BigInt(0));
   const [allowance, setAllowance] = useState(BigInt(0));
+  const [nativeTokenSymbol, setNativeTokenSymbol] = useState('');
+  const [wrappedNativeToken, setWrappedNativeToken] = useState('');
+  const [tokenInfo, setTokenInfo] = useState({ decimals: 0, symbol: '' });
+
+  useEffect(() => {
+    if (chainId) {
+      if (tokenData) {
+        setTokenInfo(getTokenInfo(chainId, token, tokenData));
+      }
+
+      setNativeTokenSymbol(getNativeTokenSymbol(chainId));
+      setWrappedNativeToken(getWrappedNativeToken(chainId));
+    }
+  }, [chainId, tokenData]);
 
   const defaultTipPercs = [10, 15, 18];
 
   const deposit = async () => {
-    setTransaction();
-    if (!totalPayment || !provider) return;
-    if (formatUnits(totalPayment, decimals) > formatUnits(balance, decimals))
+    setTransaction(undefined);
+    if (!totalPayment || !provider || !balance) return;
+    if (
+      formatUnits(totalPayment, tokenInfo.decimals) >
+      formatUnits(balance, tokenInfo.decimals)
+    )
       return setDepositError(true);
 
     try {
       setLoading(true);
       let tx;
       if (paymentType === 1) {
-        tx = await provider
-          .getSigner()
-          .sendTransaction({ to: address, value: totalPayment });
+        const signer = await provider.getSigner();
+        tx = await signer.sendTransaction({ to: address, value: totalPayment });
       } else {
         if (fulfilled) {
           tx = await tipTokens(provider, address, token, totalPayment);
@@ -115,9 +133,9 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
         }
       }
       setTransaction(tx);
-      await tx.wait();
+      // await tx.wait();
       window.location.href = `/invoice/${getHexChainId(
-        network
+        network as Chain,
       )}/${address}/instant`;
     } catch (depositError) {
       setLoading(false);
@@ -126,17 +144,18 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
   };
 
   const approve = async () => {
-    setTransaction();
+    setTransaction(undefined);
     if (!totalPayment || !provider) return;
     try {
       setLoading(true);
       let tx;
       const approvalAmount = BigInt(2) ** BigInt(256);
       const abi = [
-        "function approve(address spender, uint256 amount) public virtual override returns (bool)",
-        "function allowance(address owner, address spender) external view returns (uint256)",
+        'function approve(address spender, uint256 amount) public virtual override returns (bool)',
+        'function allowance(address owner, address spender) external view returns (uint256)',
       ];
-      const tokenContract = new Contract(token, abi, provider.getSigner());
+      const signer = await provider.getSigner();
+      const tokenContract = new Contract(token, abi, signer);
       tx = await tokenContract.approve(invoice.address, approvalAmount);
       setTransaction(tx);
       await tx.wait();
@@ -147,14 +166,17 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
     setLoading(false);
   };
 
-  const isWRAPPED = token.toLowerCase() === WRAPPED_NATIVE_TOKEN;
-  const initialStatus = getCheckedStatus(deposited, amounts);
+  const isWRAPPED = token.toLowerCase() === wrappedNativeToken.toLowerCase();
+  const initialStatus = getCheckedStatus(
+    deposited,
+    amounts.map((wei) => wei.toBig()),
+  );
   const [checked, setChecked] = useState(initialStatus);
 
-  const [balance, setBalance] = useState();
+  const [balance, setBalance] = useState<bigint>();
 
   useEffect(() => {
-    if (tipAmount.gt(0)) {
+    if (tipAmount > 0) {
       const v = BigInt(amount) + tipAmount;
       setTotalPayment(v);
     } else {
@@ -163,26 +185,33 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
   }, [amount, tipAmount]);
 
   useEffect(() => {
-    try {
-      if (paymentType === 0) {
-        balanceOf(provider, token, account).then(setBalance);
-        const abi = [
-          "function allowance(address owner, address spender) external view returns (uint256)",
-        ];
-        const tokenContract = new Contract(token, abi, provider.getSigner());
-        tokenContract.allowance(account, invoice.address).then(setAllowance);
-      } else {
-        provider.getBalance(account).then(setBalance);
+    async function getAllowance() {
+      try {
+        if (!provider || !account) return;
+        if (paymentType === 0) {
+          balanceOf(provider, token, account).then(setBalance);
+          const abi = [
+            'function allowance(address owner, address spender) external view returns (uint256)',
+          ];
+          const newLocal = await provider.getSigner();
+          const tokenContract = new Contract(token, abi, newLocal);
+          tokenContract.allowance(account, invoice.address).then(setAllowance);
+        } else {
+          provider.getBalance(account).then(setBalance);
+        }
+      } catch (balanceError) {
+        logError({ balanceError });
       }
-    } catch (balanceError) {
-      logError({ balanceError });
     }
+    getAllowance();
   }, [paymentType, token, provider, account, invoice.address]);
 
   useEffect(() => {
     if (
       depositError &&
-      formatUnits(balance, decimals) > formatUnits(totalPayment, decimals)
+      balance &&
+      formatUnits(balance, tokenInfo.decimals) >
+        formatUnits(totalPayment, tokenInfo.decimals)
     ) {
       setDepositError(false);
     }
@@ -197,21 +226,21 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
         textAlign="center"
         color="black"
       >
-        {fulfilled ? "Add Tip" : "Pay Invoice"}
+        {fulfilled ? 'Add Tip' : 'Pay Invoice'}
       </Heading>
       {depositError ? (
         <Flex>
           <Alert bg="none" margin="0 auto" textAlign="center" padding="0">
             <AlertIcon color="red.500" />
             <AlertTitle fontSize="sm" color="red.500">
-              Not enough available {symbol} for this deposit
+              Not enough available {tokenInfo.symbol} for this deposit
             </AlertTitle>
           </Alert>
         </Flex>
       ) : null}
 
       <Text textAlign="center" color="black">
-        How much will you be {fulfilled ? "tipping" : "depositing"} today?
+        How much will you be {fulfilled ? 'tipping' : 'depositing'} today?
       </Text>
       <VStack spacing="0.5rem" align="stretch" color="black" mb="1rem">
         <Flex justify="space-between" w="100%">
@@ -219,7 +248,7 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
           <Flex>
             {paymentType === 1 && (
               <Tooltip
-                label={`Your ${NATIVE_TOKEN_SYMBOL} will be automagically wrapped to ${symbol} tokens`}
+                label={`Your ${nativeTokenSymbol} will be automagically wrapped to ${tokenInfo.symbol} tokens`}
                 placement="auto-start"
               >
                 <QuestionIcon ml="1rem" boxSize="0.75rem" />
@@ -233,16 +262,16 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
               <Text
                 color="blue.1"
                 mb={0}
-                _hover={{ textDecoration: "underline" }}
+                _hover={{ textDecoration: 'underline' }}
                 cursor="pointer"
                 textAlign="right"
                 onClick={() => {
                   const newAmount = due;
                   if (newAmount) {
-                    setAmount(newAmount);
+                    setAmount(BigInt(newAmount));
                     const newAmountInput = formatUnits(
                       newAmount,
-                      decimals
+                      tokenInfo.decimals,
                     ).toString();
                     setAmountInput(newAmountInput);
                   } else {
@@ -266,18 +295,26 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
               const newAmountInput = e.target.value;
               setAmountInput(newAmountInput);
               if (newAmountInput) {
-                const newAmount = parseUnits(newAmountInput, decimals);
+                const newAmount = parseUnits(
+                  newAmountInput,
+                  tokenInfo.decimals,
+                );
                 setAmount(newAmount);
-                setChecked(getCheckedStatus(deposited.add(newAmount), amounts));
+                setChecked(
+                  getCheckedStatus(
+                    BigInt(deposited) + newAmount,
+                    amounts.map((wei) => wei.toBig()),
+                  ),
+                );
               } else {
                 setAmount(BigInt(0));
                 setChecked(initialStatus);
               }
             }}
             placeholder="Amount to Deposit"
-            pr={isWRAPPED ? "6.5rem" : "4rem"}
+            pr={isWRAPPED ? '6.5rem' : '4rem'}
           />
-          <InputRightElement w={isWRAPPED ? "6.5rem" : "4rem"}>
+          <InputRightElement w={isWRAPPED ? '6.5rem' : '4rem'}>
             {isWRAPPED ? (
               <Select
                 onChange={(e) => setPaymentType(Number(e.target.value))}
@@ -289,20 +326,21 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
                 borderColor="lightgrey"
                 borderLeftRadius={0}
               >
-                <option value="0">{symbol}</option>
-                <option value="1">{NATIVE_TOKEN_SYMBOL}</option>
+                <option value="0">{tokenInfo.symbol}</option>
+                <option value="1">{nativeTokenSymbol}</option>
               </Select>
             ) : (
-              symbol
+              tokenInfo.symbol
             )}
           </InputRightElement>
         </InputGroup>
-        {due && !fulfilled && (
+        {due !== undefined && !fulfilled && (
           <Text fontSize={12} mt={0}>
-            Total Due: {`${formatUnits(due, decimals)} ${symbol}`}
+            Total Due:{' '}
+            {`${formatUnits(due, tokenInfo.decimals)} ${tokenInfo.symbol}`}
           </Text>
         )}
-        {amount.gt(due) && !fulfilled && (
+        {amount > BigInt(due) && !fulfilled && (
           <Alert bg="none">
             <AlertIcon color="red.500" />
             <AlertTitle fontSize="sm">
@@ -310,7 +348,7 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
             </AlertTitle>
           </Alert>
         )}
-        {!openTipPanel && amount.eq(due) && !fulfilled && (
+        {!openTipPanel && amount === BigInt(due) && !fulfilled && (
           <Text
             textAlign="center"
             color="blue.1"
@@ -336,7 +374,7 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
                   width={100}
                   minHeight={50}
                   onClick={() => {
-                    setCustomTip("");
+                    setCustomTip('');
                     setTipAmount(BigInt(0));
                     setOpenTipPanel(false);
                   }}
@@ -347,15 +385,15 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
                   <Button
                     value={t}
                     borderColor="blue.1"
-                    backgroundColor={tipPerc === t && "blue.1"}
-                    color={tipPerc === t && "white"}
+                    backgroundColor={tipPerc === t ? 'blue.1' : undefined}
+                    color={tipPerc === t ? 'white' : undefined}
                     _hover={{
                       backgroundColor:
-                        tipPerc === t && "rgba(61, 136, 248, 0.7)",
+                        tipPerc === t && 'rgba(61, 136, 248, 0.7)',
                     }}
                     _active={{
                       backgroundColor:
-                        tipPerc === t && "rgba(61, 136, 248, 0.7)",
+                        tipPerc === t && 'rgba(61, 136, 248, 0.7)',
                     }}
                     borderWidth={1}
                     flexDir="column"
@@ -376,7 +414,7 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
                     <Text>
                       {formatUnits(
                         (BigInt(total) * BigInt(t)) / BigInt(100),
-                        decimals
+                        tokenInfo.decimals,
                       )}
                     </Text>
                     {/* <Text fontSize={10}>{symbol}</Text> */}
@@ -385,15 +423,17 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
                 <Button
                   value="custom"
                   borderColor="blue.1"
-                  backgroundColor={tipPerc === "custom" && "blue.1"}
-                  color={tipPerc === "custom" && "white"}
+                  backgroundColor={tipPerc === 'custom' ? 'blue.1' : undefined}
+                  color={tipPerc === 'custom' ? 'white' : undefined}
                   _hover={{
                     backgroundColor:
-                      tipPerc === "custom" && "rgba(61, 136, 248, 0.7)",
+                      tipPerc === 'custom'
+                        ? 'rgba(61, 136, 248, 0.7)'
+                        : undefined,
                   }}
                   _active={{
                     backgroundColor:
-                      tipPerc === "custom" && "rgba(61, 136, 248, 0.7)",
+                      tipPerc === 'custom' && 'rgba(61, 136, 248, 0.7)',
                   }}
                   borderWidth={1}
                   width={100}
@@ -402,7 +442,7 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
                     const v = e.currentTarget.value;
                     setTipPerc(v);
                     if (customTip && !isNaN(Number(customTip))) {
-                      const p = parseUnits(customTip, decimals);
+                      const p = parseUnits(customTip, tokenInfo.decimals);
                       setTipAmount(p);
                     } else {
                       setTipAmount(BigInt(0));
@@ -412,7 +452,7 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
                   Custom
                 </Button>
               </ButtonGroup>
-              {tipPerc === "custom" && (
+              {tipPerc === 'custom' && (
                 <InputGroup maxWidth={300}>
                   <Input
                     type="number"
@@ -421,13 +461,13 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
                       const v = e.currentTarget.value;
                       setCustomTip(v);
                       if (v && !isNaN(Number(v))) {
-                        const p = parseUnits(v, decimals);
+                        const p = parseUnits(v, tokenInfo.decimals);
                         setTipAmount(p);
                       } else {
                         setTipAmount(BigInt(0));
                       }
                     }}
-                    placeholder={"Enter tip amount"}
+                    placeholder={'Enter tip amount'}
                     color="#323C47"
                     borderColor="lightgrey"
                     textAlign="right"
@@ -440,7 +480,7 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
                     borderLeftRadius={0}
                   >
                     <Text>
-                      {paymentType === 1 ? NATIVE_TOKEN_SYMBOL : symbol}
+                      {paymentType === 1 ? nativeTokenSymbol : tokenInfo.symbol}
                     </Text>
                   </InputRightAddon>
                 </InputGroup>
@@ -450,41 +490,43 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
         </VStack>
       )}
       <Flex color="black" justify="space-between" w="100%" fontSize="sm">
-        {deposited && (
+        {deposited !== undefined && (
           <VStack align="flex-start">
             <Text fontWeight="bold">Total Paid</Text>
-            <Text>{`${formatUnits(deposited, decimals)} ${symbol}`}</Text>
+            <Text>{`${formatUnits(deposited, tokenInfo.decimals)} ${
+              tokenInfo.symbol
+            }`}</Text>
           </VStack>
         )}
-        {totalPayment && (
+        {totalPayment !== undefined && (
           <VStack color="black">
             <Text fontWeight="bold">Total Payment</Text>
             <Heading size="lg">
-              {formatUnits(totalPayment, decimals)}{" "}
-              {paymentType === 1 ? NATIVE_TOKEN_SYMBOL : symbol}
+              {formatUnits(totalPayment, tokenInfo.decimals)}{' '}
+              {paymentType === 1 ? nativeTokenSymbol : tokenInfo.symbol}
             </Heading>
           </VStack>
         )}
-        {balance && (
+        {balance !== undefined && (
           <VStack align="flex-end">
             <Text fontWeight="bold">Your Balance</Text>
             <Text>
-              {`${formatUnits(balance, decimals)} ${
-                paymentType === 0 ? symbol : NATIVE_TOKEN_SYMBOL
+              {`${formatUnits(balance, tokenInfo.decimals)} ${
+                paymentType === 0 ? tokenInfo.symbol : nativeTokenSymbol
               }`}
             </Text>
           </VStack>
         )}
       </Flex>
-      {paymentType === 0 && allowance.lt(totalPayment) && (
+      {paymentType === 0 && allowance < totalPayment && (
         <Button
           onClick={approve}
           isLoading={loading}
-          _hover={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
-          _active={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
+          _hover={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
+          _active={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
           color="white"
           backgroundColor="blue.4"
-          isDisabled={amount.lte(0)}
+          isDisabled={amount <= 0}
           textTransform="uppercase"
           size={buttonSize}
           fontFamily="mono"
@@ -497,12 +539,12 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
       <Button
         onClick={deposit}
         isLoading={loading}
-        _hover={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
-        _active={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
+        _hover={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
+        _active={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
         color="white"
         backgroundColor="blue.1"
         isDisabled={
-          amount.lte(0) || (allowance.lt(totalPayment) && paymentType === 0)
+          amount <= 0 || (allowance < totalPayment && paymentType === 0)
         }
         textTransform="uppercase"
         size={buttonSize}
@@ -514,9 +556,13 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
       </Button>
       {transaction && (
         <Text color="black" textAlign="center" fontSize="sm">
-          Follow your transaction{" "}
+          Follow your transaction{' '}
           <Link
-            href={getTxLink(chainId, transaction.hash)}
+            href={
+              chainId && transaction?.hash
+                ? getTxLink(chainId, transaction.hash)
+                : undefined
+            }
             isExternal
             color="blue.1"
             textDecoration="underline"

@@ -1,22 +1,24 @@
-"use client";
+'use client';
 import {
   Button,
   Flex,
   Heading,
   Text,
   useBreakpointValue,
-} from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+} from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-import { useWeb3 } from "../context";
-import { logError } from "../utils";
+import { useWeb3 } from '../context';
+import { logError } from '../utils';
 
 const Home = () => {
   const { connectAccount, account } = useWeb3();
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
-  const [buttonSize, setButtonSize] = useState("lg");
+  const [buttonSize, setButtonSize] = useState('lg');
+
+  console.log('Home');
 
   // const _buttonSize = useBreakpointValue({ base: "sm", sm: "md", md: "lg" });
   // setButtonSize(_buttonSize);
@@ -24,7 +26,7 @@ const Home = () => {
   useEffect(() => {
     if (window) {
       toggleMobileMode();
-      window.addEventListener("resize", toggleMobileMode);
+      window.addEventListener('resize', toggleMobileMode);
     }
   });
 
@@ -38,11 +40,11 @@ const Home = () => {
 
   const createInvoice = async () => {
     if (account) {
-      router.push("/create");
+      router.push('/create');
     } else {
       try {
         await connectAccount();
-        router.push("/create");
+        router.push('/create');
       } catch {
         logError("Couldn't connect web3 wallet");
       }
@@ -51,11 +53,11 @@ const Home = () => {
 
   const viewInvoices = async () => {
     if (account) {
-      router.push("/invoices");
+      router.push('/invoices');
     } else {
       try {
         await connectAccount();
-        router.push("/invoices");
+        router.push('/invoices');
       } catch {
         logError("Couldn't connect web3 wallet");
       }
@@ -76,7 +78,7 @@ const Home = () => {
         How do you want to get started?
       </Text>
       <Flex
-        direction={isMobile ? "column" : "-moz-initial"}
+        direction={isMobile ? 'column' : '-moz-initial'}
         columnGap={10}
         rowGap={4}
         width="100%"
@@ -85,8 +87,8 @@ const Home = () => {
         paddingX={10}
       >
         <Button
-          _hover={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
-          _active={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
+          _hover={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
+          _active={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
           color="white"
           backgroundColor="blue.1"
           onClick={createInvoice}
@@ -97,8 +99,8 @@ const Home = () => {
           Create Invoice
         </Button>
         <Button
-          _hover={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
-          _active={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
+          _hover={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
+          _active={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
           color="white"
           backgroundColor="blue.1"
           onClick={viewInvoices}

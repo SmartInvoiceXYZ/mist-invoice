@@ -1,8 +1,9 @@
-import { gql } from "urql";
-import { ChainId } from "../utils";
-import { isAddress } from "../utils/helpers";
-import { clients } from "./client";
-import { InvoiceDetails } from "./fragments";
+import { gql } from 'urql';
+import { ChainId } from '../utils';
+import { isAddress } from '../utils/helpers';
+import { clients } from './client';
+import { InvoiceDetails } from './fragments';
+import { InvoiceResult } from './subgraph';
 
 const invoiceQuery = gql`
   query GetInvoice($address: ID!) {
@@ -28,5 +29,6 @@ export const getInvoice = async (chainId: ChainId, queryAddress: string) => {
     }
     return null;
   }
-  return data.invoice;
+
+  return data.invoice as InvoiceResult;
 };

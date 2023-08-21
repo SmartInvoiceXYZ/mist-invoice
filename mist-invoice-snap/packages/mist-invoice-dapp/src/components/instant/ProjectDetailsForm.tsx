@@ -8,7 +8,7 @@ import {
   OrderedTextarea,
 } from '../../components/OrderedInput';
 
-import { formatDate } from '../../utils/helpers';
+import { formatDate, logDebug, logError } from '../../utils';
 
 export type ProjectDetailsFormProps = {
   display: string;
@@ -103,12 +103,18 @@ export const ProjectDetailsForm: React.FC<ProjectDetailsFormProps> = ({
           label="Safety Valve Date"
           type="date"
           value={
-            safetyValveDate ? new Date(safetyValveDate).toLocaleString() : ''
+            safetyValveDate
+              ? new Date(safetyValveDate).toISOString().split('T')[0]
+              : ''
           }
           setValue={(v) => {
-            const date = Date.parse(v);
-            setSafetyValveDate(date);
-            setDateInvalid(date < new Date().getTime());
+            try {
+              const date = Date.parse(v);
+              setSafetyValveDate(date);
+              setDateInvalid(date < new Date().getTime());
+            } catch (e) {
+              logError(e);
+            }
           }}
           tooltip="If you do not complete this project by this date, the client can withdraw deposited funds in escrow after 00:00:00 GMT on this date. (Add extra time after the expected end date, in case things take longer to complete)."
           isInvalid={dateInvalid}

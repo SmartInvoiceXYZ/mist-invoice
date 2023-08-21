@@ -1,5 +1,5 @@
-import { getAddress } from "@ethersproject/address";
-import { Contract, Interface } from "ethers";
+import { getAddress } from '@ethersproject/address';
+import { Contract, Interface } from 'ethers';
 
 import {
   Chain,
@@ -17,25 +17,25 @@ import {
   resolvers,
   rpcUrls,
   wrappedNativeToken,
-} from ".";
+} from '.';
 
 export const getDateString = (timeInSec: `${number}` | number) => {
   const timeInSecNum =
-    typeof timeInSec === "number" ? timeInSec : parseInt(timeInSec);
+    typeof timeInSec === 'number' ? timeInSec : parseInt(timeInSec);
   if (timeInSecNum !== 0) {
     const date = new Date(timeInSecNum ? timeInSecNum * 1000 : 0);
-    const ye = new Intl.DateTimeFormat("en", {
-      year: "numeric",
+    const ye = new Intl.DateTimeFormat('en', {
+      year: 'numeric',
     }).format(date);
-    const mo = new Intl.DateTimeFormat("en", {
-      month: "long",
+    const mo = new Intl.DateTimeFormat('en', {
+      month: 'long',
     }).format(date);
-    const da = new Intl.DateTimeFormat("en", {
-      day: "2-digit",
+    const da = new Intl.DateTimeFormat('en', {
+      day: '2-digit',
     }).format(date);
     return `${mo} ${da}, ${ye}`;
   } else {
-    return "Not provided";
+    return 'Not provided';
   }
 };
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -48,7 +48,7 @@ export const isAddress = (value: string) => {
 };
 
 export const getNetworkName = (chainId: ChainId) =>
-  networkNames[chainId] || "Unknown Chain";
+  networkNames[chainId] || 'Unknown Chain';
 
 export const getGraphUrl = (chainId: ChainId) =>
   graphUrls[chainId] || graphUrls[4];
@@ -66,25 +66,23 @@ export const getResolverInfo = (chainId: ChainId, resolver: string) =>
 
 export const getTokens = (
   chainId: ChainId,
-  allTokens: Record<ChainId, Record<string, TokenData>>
+  allTokens: Record<ChainId, Record<string, TokenData>>,
 ) => allTokens[chainId] || allTokens[4];
 
 export const getTokenInfo = (
   chainId: ChainId,
   token: string,
-  tokenData: Record<ChainId, Record<string, TokenData>>
+  tokenData: Record<ChainId, Record<string, TokenData>>,
 ) => {
   const unknownToken = {
     decimals: 18,
-    symbol: "UNKNOWN",
-  };
+    symbol: 'UNKNOWN',
+  } as TokenData;
   if (tokenData) {
     const tokens = tokenData[chainId] || tokenData[4];
-    return tokens? tokens[token] : unknownToken;
-  }
-  else
-    return unknownToken;
-}
+    return tokens ? tokens[token] : unknownToken;
+  } else return unknownToken;
+};
 
 export const getWrappedNativeToken = (chainId: ChainId) =>
   wrappedNativeToken[chainId] || wrappedNativeToken[4];
@@ -106,8 +104,8 @@ export const getAddressLink = (chainId: ChainId, hash: string) =>
 // bytes64 12200000000000000000000000000000000000000000000000000000000000000000
 // which means an all zeros bytes32 was input on the contract
 export const getIpfsLink = (hash: string) =>
-  hash === "QmNLei78zWmzUdbeRB3CiUfAizWUrbeeZh5K1rhAQKCh51"
-    ? ""
+  hash === 'QmNLei78zWmzUdbeRB3CiUfAizWUrbeeZh5K1rhAQKCh51'
+    ? ''
     : `${IPFS_ENDPOINT}/ipfs/${hash}`;
 
 export const getAccountString = (account: string) => {
@@ -131,18 +129,18 @@ export const logError = (error: any) => {
 };
 
 export const logDebug = (msg: any) => {
-  if (process.env.NEXT_PUBLIC_DEBUG_LOGS === "true") {
+  if (process.env.NEXT_PUBLIC_DEBUG_LOGS === 'true') {
     // eslint-disable-next-line no-console
     console.debug(msg);
   }
 };
 
 export const copyToClipboard = (value: string) => {
-  const tempInput = document.createElement("input");
+  const tempInput = document.createElement('input');
   tempInput.value = value;
   document.body.appendChild(tempInput);
   tempInput.select();
-  document.execCommand("copy");
+  document.execCommand('copy');
   document.body.removeChild(tempInput);
 };
 
@@ -159,19 +157,19 @@ const BASE58_REGEX = /^[1-9A-HJ-NP-Za-km-z]+=*$/;
 export const isValidCID = (hash: string) => {
   return (
     (hash.length === 59 &&
-      hash.startsWith("bafy") &&
+      hash.startsWith('bafy') &&
       !!BASE32_REGEX.test(hash)) ||
-    (hash.length === 46 && hash.startsWith("Qm") && !!BASE58_REGEX.test(hash))
+    (hash.length === 46 && hash.startsWith('Qm') && !!BASE58_REGEX.test(hash))
   );
 };
 
 export const getCID = async () => {
-  return IPFS_ENDPOINT + "/ipfs/QmNLei78zWmzUdbeRB3CiUfAizWUrbeeZh5K1rhAQKCh51"; // TODO: replace with actual CID
+  return 'QmNLei78zWmzUdbeRB3CiUfAizWUrbeeZh5K1rhAQKCh51'; // TODO: replace with actual CID
 };
 
 export const isValidLink = (url: string) => {
   if (!url) return false;
-  if (url.startsWith("ipfs://")) {
+  if (url.startsWith('ipfs://')) {
     return isValidCID(url.slice(7));
   }
   return isValidURL(url);
@@ -187,10 +185,10 @@ export const isChainId = (chainId: number): chainId is ChainId =>
   chainId in chainIds;
 
 export const getNetworkLabel = (chainId?: number) =>
-  chainId && isChainId(chainId) ? networkLabels[chainId] : "unknown";
+  chainId && isChainId(chainId) ? networkLabels[chainId] : 'unknown';
 
 export const verify = async (ethersProvider: any, address: string) => {
-  const abi = new Interface(["function verify() external"]);
+  const abi = new Interface(['function verify() external']);
   const contract = new Contract(address, abi, ethersProvider.getSigner());
   return contract.verify();
 };
@@ -209,7 +207,7 @@ export const formatTokenData = (object: any) => {
     const tokenDetails = {} as Record<string, TokenData>;
 
     for (const { tokenContract, decimals, symbol, image } of Object.values(
-      value as TokenData[]
+      value as TokenData[],
     )) {
       tokenDetails[tokenContract.toLowerCase()] = {
         tokenContract: tokenContract,
@@ -225,7 +223,7 @@ export const formatTokenData = (object: any) => {
 };
 
 export const formatTokens = (
-  object: Record<string, Record<string, TokenData>>
+  object: Record<string, Record<string, TokenData>>,
 ) => {
   const tokenObject = {} as Record<string, string[]>;
   for (const [key, value] of Object.entries(object)) {
@@ -250,15 +248,15 @@ export const calculateResolutionFeePercentage = (resolutionRate: string) => {
 // };
 
 export const dateTimeToDate = (dateTime: string) => {
-  return dateTime.split(",")[0];
+  return dateTime.split(',')[0];
 };
 
 export const getAgreementLink = (projectAgreement: any) => {
   const address = projectAgreement[projectAgreement.length - 1].src;
-  if (projectAgreement[projectAgreement.length - 1].type === "ipfs") {
+  if (projectAgreement[projectAgreement.length - 1].type === 'ipfs') {
     // address.substring(7) removes ipfs:// from the beginning of the src string
     const hash = address.substring(7);
-    const link = IPFS_ENDPOINT + "/ipfs/" + hash;
+    const link = IPFS_ENDPOINT + '/ipfs/' + hash;
     return link;
   } else {
     return address;
@@ -276,5 +274,5 @@ export const formatDate = (date: string | number | Date) => {
 
   const year = d.getUTCFullYear();
 
-  return [year, month, day].join("-");
+  return [year, month, day].join('-');
 };

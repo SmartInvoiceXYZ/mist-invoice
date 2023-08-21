@@ -6,9 +6,10 @@ import {
   Divider,
   HStack,
   IconButton,
-} from "@chakra-ui/react";
-import React, {useState} from "react";
-import { BackArrowIcon } from "../icons/ArrowIcons";
+  Center,
+} from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { BackArrowIcon } from '../icons/ArrowIcons';
 
 export type StepInfoProps = {
   stepNum: number;
@@ -24,8 +25,8 @@ export const StepInfo: React.FC<StepInfoProps> = ({
   goBack,
 }) => {
   // const maxW = useBreakpointValue({ base: "100%" });
-  const [maxW, setMaxW] = useState("100%");
-  const [stepSize, setStepSize] = useState("md");
+  const [maxW, setMaxW] = useState('100%');
+  const [stepSize, setStepSize] = useState('md');
 
   // const stepSize = useBreakpointValue({
   //   base: "md",
@@ -39,6 +40,7 @@ export const StepInfo: React.FC<StepInfoProps> = ({
       <HStack width="100%" align="center" paddingY={4}>
         {stepNum !== 1 && (
           <IconButton
+            aria-label="Go back"
             icon={<BackArrowIcon width="33px" height="24px" />}
             position="absolute"
             onClick={() => goBack()}
@@ -46,16 +48,17 @@ export const StepInfo: React.FC<StepInfoProps> = ({
             zIndex={5}
           />
         )}
-        <Heading
-          position="relative"
-          color="#323C47"
-          size={stepSize}
-          align="center"
-          textAlign="center"
-          width="100%"
-        >
-          Step {stepNum}: {stepTitle}
-        </Heading>
+        <Center>
+          <Heading
+            position="relative"
+            color="#323C47"
+            size={stepSize}
+            textAlign="center"
+            width="100%"
+          >
+            Step {stepNum}: {stepTitle}
+          </Heading>
+        </Center>
       </HStack>
 
       <Divider width="100%" background="lightgrey" />

@@ -348,7 +348,7 @@ export const OrderedTextarea: React.FC<OrderedTextareaProps> = ({
       </Flex>
       <Textarea
         bg="white"
-        type={type}
+        // type={type}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
