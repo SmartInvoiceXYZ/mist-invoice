@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header should render 1`] = `
+<DocumentFragment>
+  <div
+    class="css-zzdl2l"
+  >
+    <div
+      class="css-1hskriy"
+    >
+      <a
+        href="/invoices"
+      >
+        <div
+          class="css-11dqbsu"
+        >
+          <img
+            alt="Smart Invoice"
+            class="chakra-image css-12aolnz"
+            src="/assets/smart-invoice/normal.svg"
+          />
+        </div>
+      </a>
+    </div>
+    <div
+      class="css-1a9re40"
+    >
+      <a
+        class="chakra-link css-0"
+        href="/invoices"
+      >
+        Dashboard
+      </a>
+      <a
+        class="chakra-link css-0"
+        href="https://docs.smartinvoice.xyz"
+        rel="noopener"
+        target="_blank"
+      >
+        Documentation
+      </a>
+      <a
+        class="chakra-link css-0"
+        href="https://docs.smartinvoice.xyz/misc/get-support"
+        rel="noopener"
+        target="_blank"
+      >
+        Support
+      </a>
+    </div>
+    <div
+      class="css-uqd54k"
+    />
+    <div
+      class="css-1mozfd5"
+    >
+      <button
+        class="chakra-button css-czfkw6"
+        type="button"
+      >
+        Dashboard
+      </button>
+      <a
+        class="chakra-link css-3le2fk"
+        href="https://docs.smartinvoice.xyz"
+        rel="noopener"
+        target="_blank"
+      >
+        <span
+          class="chakra-button css-czfkw6"
+        >
+          Documentation
+        </span>
+      </a>
+      <a
+        class="chakra-link css-3le2fk"
+        href="https://docs.smartinvoice.xyz/misc/get-support"
+        rel="noopener"
+        target="_blank"
+      >
+        <span
+          class="chakra-button css-czfkw6"
+        >
+          Support
+        </span>
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;

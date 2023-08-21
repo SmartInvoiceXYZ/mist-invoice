@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProfileButton should render 1`] = `
+<DocumentFragment>
+  <div
+    class="css-w4z2my"
+  >
+    <button
+      aria-controls="popover-content-:r1:"
+      aria-expanded="false"
+      aria-haspopup="dialog"
+      class="chakra-button css-40oqvg"
+      id="popover-trigger-:r1:"
+      type="button"
+    >
+      <div
+        class="css-191svit"
+      />
+      <div
+        class="css-zsu9ek"
+      >
+        <p
+          class="chakra-text css-arocge"
+        >
+          Anonymous
+        </p>
+        <p
+          class="chakra-text css-bq4rx1"
+        >
+          0x123...EFG
+        </p>
+      </div>
+      <span
+        class="css-1cf05q3"
+      >
+        unknown
+      </span>
+    </button>
+    <div
+      class="chakra-popover__popper css-0"
+      style="visibility: hidden; position: absolute; min-width: max-content; inset: 0 auto auto 0;"
+    >
+      <section
+        class="chakra-popover__content css-k3fjo0"
+        id="popover-content-:r1:"
+        role="dialog"
+        style="transform-origin: var(--popper-transform-origin); opacity: 0; visibility: hidden; transform: scale(0.95) translateZ(0);"
+        tabindex="-1"
+      >
+        <button
+          class="chakra-button css-1hzgfzu"
+          type="button"
+        >
+          Disconnect
+        </button>
+      </section>
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home should render 1`] = `
+<DocumentFragment>
+  <div
+    class="css-1d2481u"
+  >
+    <h2
+      class="chakra-heading css-ebueor"
+    >
+      Welcome to Smart Invoice
+    </h2>
+    <p
+      class="chakra-text css-19uy1a9"
+    >
+      How do you want to get started?
+    </p>
+    <div
+      class="css-140pq77"
+    >
+      <button
+        class="chakra-button css-8wf0kn"
+        type="button"
+      >
+        Create Invoice
+      </button>
+      <button
+        class="chakra-button css-8wf0kn"
+        type="button"
+      >
+        View Existing Invoices
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;
