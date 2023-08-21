@@ -1,5 +1,5 @@
 import { useMemo, useEffect } from 'react';
-import { BigNumberish, isAddress } from 'ethers';
+import { BigNumberish, isAddress, ethers } from 'ethers';
 
 export function useCreateInstant({
   step1Valid,
@@ -25,7 +25,7 @@ export function useCreateInstant({
       isAddress(clientAddress) &&
       isAddress(paymentAddress) &&
       isAddress(paymentToken) &&
-      BigInt(paymentDue) > 0 &&
+      (ethers.getBigInt(paymentDue) > 0) &&
       !isNaN(Number(milestones)) &&
       Number(milestones) > 0 &&
       Array.from(
