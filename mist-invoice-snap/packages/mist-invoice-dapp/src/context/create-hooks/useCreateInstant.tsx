@@ -26,7 +26,7 @@ export function useCreateInstant({
       isAddress(clientAddress) &&
       isAddress(paymentAddress) &&
       isAddress(paymentToken) &&
-      paymentDue.gt(0) &&
+      BigInt(paymentDue) > 0 &&
       !isNaN(Number(milestones)) &&
       milestones > 0 &&
       Array.from(
