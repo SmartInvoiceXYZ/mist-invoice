@@ -18,7 +18,8 @@ import {
   Wrap,
   WrapItem,
 } from '@chakra-ui/react';
-import {} from 'ethers';
+import { formatUnits, isAddress } from 'ethers';
+import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useFetchTokensViaIPFS } from '../../hooks/useFetchTokensViaIPFS';
 
@@ -49,30 +50,34 @@ import {
   getTxLink,
   logError,
   getAgreementLink,
+  ChainId,
 } from '../../utils';
+import { InvoiceResult } from '@/graphql/subgraph';
+import Wei from '@synthetixio/wei';
 
-export const ViewInvoice = ({
-  match: {
-    params: { hexChainId, invoiceId },
-  },
-}) => {
+export const ViewInvoice: React.FC = () => {
   const {
     chainId,
     account,
     provider: ethersProvider,
   } = useContext(Web3Context);
+  const router = useRouter();
+  const { hexChainId, invoiceId } = router.query;
   const [{ tokenData }] = useFetchTokensViaIPFS();
-  const [invoice, setInvoice] = useState();
+  const [invoice, setInvoice] = useState<InvoiceResult>();
   const [balanceLoading, setBalanceLoading] = useState(true);
-  const [balance, setBalance] = useState(BigNumber.from(0));
+  const [balance, setBalance] = useState(BigInt(0));
   const [modal, setModal] = useState(false);
   const [selected, setSelected] = useState(0);
-  const invoiceChainId = parseInt(hexChainId, 16);
+  const invoiceChainId =
+    typeof hexChainId === 'string' ? (parseInt(hexChainId, 16) as ChainId) : 1;
   const [verifiedStatus, setVerifiedStatus] = useState(false);
 
   useEffect(() => {
-    if (utils.isAddress(invoiceId) && !Number.isNaN(invoiceChainId)) {
-      getInvoice(invoiceChainId, invoiceId).then((i) => setInvoice(i));
+    if (isAddress(invoiceId) && !Number.isNaN(invoiceChainId)) {
+      getInvoice(invoiceChainId, invoiceId).then((i) => {
+        if (i) setInvoice(i);
+      });
     }
   }, [invoiceChainId, invoiceId]);
 
@@ -106,7 +111,7 @@ export const ViewInvoice = ({
   const buttonSize = useBreakpointValue({ base: 'md', lg: 'lg' });
   const smallScreen = useBreakpointValue({ base: true, sm: false });
 
-  if (!utils.isAddress(invoiceId) || invoice === null) {
+  if (!isAddress(invoiceId) || invoice === null) {
     return <InvoiceNotFound />;
   }
 
@@ -147,25 +152,23 @@ export const ViewInvoice = ({
     verified,
   } = invoice;
 
-  const isClient = account.toLowerCase() === client;
-  const isResolver = account.toLowerCase() === resolver.toLowerCase();
+  const isClient = account?.toLowerCase() === client;
+  const isResolver = account?.toLowerCase() === resolver.toLowerCase();
   const { decimals, symbol, image } = getTokenInfo(
     invoiceChainId,
     token,
     tokenData,
   );
 
-  const deposited = BigNumber.from(released).add(balance);
-  const due = deposited.gte(total)
-    ? BigNumber.from(0)
-    : BigNumber.from(total).sub(deposited);
-  const isExpired = terminationTime <= new Date().getTime() / 1000;
+  const deposited = released.add(balance);
+  const due = deposited.gte(total) ? new Wei(0) : total.sub(deposited);
+  const isExpired = terminationTime.lte(new Date().getTime() / 1000);
 
-  const amount = BigNumber.from(
-    currentMilestone < amounts.length ? amounts[currentMilestone] : 0,
-  );
-  const isReleasable = !isLocked && balance.gte(amount) && balance.gt(0);
-  const isLockable = !isExpired && !isLocked && balance.gt(0);
+  const amount = currentMilestone.lt(amounts.length)
+    ? amounts[currentMilestone.num]
+    : new Wei(0);
+  const isReleasable = !isLocked && balance >= amount.big && balance > 0;
+  const isLockable = !isExpired && !isLocked && balance > 0;
   const dispute =
     isLocked && disputes.length > 0 ? disputes[disputes.length - 1] : undefined;
   const resolution =
@@ -205,22 +208,22 @@ export const ViewInvoice = ({
   };
 
   const onAddMilestones = async () => {
-    if (!isLocked & !isExpired) {
+    if (!isLocked && !isExpired) {
       setSelected(5);
       setModal(true);
     }
   };
 
   let gridColumns;
-  if (isReleasable && (isLockable || (isExpired && balance.gt(0)))) {
+  if (isReleasable && (isLockable || (isExpired && balance > 0))) {
     gridColumns = { base: 2, sm: 3 };
-  } else if (isLockable || isReleasable || (isExpired && balance.gt(0))) {
+  } else if (isLockable || isReleasable || (isExpired && balance > 0)) {
     gridColumns = 2;
   } else {
     gridColumns = 1;
   }
 
-  let sum = BigNumber.from(0);
+  let sum = BigInt(0);
 
   return (
     <Container overlay>
@@ -288,7 +291,7 @@ export const ViewInvoice = ({
                   <Text>{'Project Start Date: '}</Text>
                 </WrapItem>
                 <WrapItem>
-                  <Text fontWeight="bold">{getDateString(startDate)}</Text>
+                  <Text fontWeight="bold">{getDateString(startDate.num)}</Text>
                 </WrapItem>
               </Wrap>
             )}
@@ -298,7 +301,7 @@ export const ViewInvoice = ({
                   <Text>{'Project End Date: '}</Text>
                 </WrapItem>
                 <WrapItem>
-                  <Text fontWeight="bold">{getDateString(endDate)}</Text>
+                  <Text fontWeight="bold">{getDateString(endDate.num)}</Text>
                 </WrapItem>
               </Wrap>
             )}
@@ -307,10 +310,12 @@ export const ViewInvoice = ({
                 <Text>{'Safety Valve Withdrawal Date: '}</Text>
               </WrapItem>
               <WrapItem>
-                <Text fontWeight="bold">{getDateString(terminationTime)}</Text>
+                <Text fontWeight="bold">
+                  {getDateString(terminationTime.num)}
+                </Text>
                 <Tooltip
                   label={`The Safety Valve gets activated on ${new Date(
-                    terminationTime * 1000,
+                    terminationTime.num * 1000,
                   ).toUTCString()}`}
                   placement="auto-start"
                 >
@@ -359,19 +364,19 @@ export const ViewInvoice = ({
                   invoice={invoice}
                   client={client}
                   isClient={isClient}
-                  verified={verified}
+                  // verified={verified}
                   verifiedStatus={verifiedStatus}
                   setVerifiedStatus={setVerifiedStatus}
                 />
               </WrapItem>
             </Wrap>
-            <Wrap>
+            {/* <Wrap>
               <GenerateInvoicePDF
                 invoice={invoice}
                 symbol={symbol}
                 buttonText="Preview & Download Invoice PDF"
               />
-            </Wrap>
+            </Wrap> */}
           </VStack>
         </Stack>
         <VStack
@@ -392,7 +397,7 @@ export const ViewInvoice = ({
           >
             Add Milestones
           </Button>
-          {console.log(invoice)}
+          {/* {console.log(invoice)} */}
           <Flex
             bg="background"
             direction="column"
@@ -413,7 +418,7 @@ export const ViewInvoice = ({
               <Text>
                 {smallScreen ? 'Total Amount' : 'Total Project Amount'}
               </Text>
-              <Text>{`${utils.formatUnits(total, decimals)} ${symbol}`}</Text>
+              <Text>{`${formatUnits(total.big, decimals)} ${symbol}`}</Text>
             </Flex>
             <VStack
               pl={{ base: '0.5rem', md: '1rem' }}
@@ -421,22 +426,22 @@ export const ViewInvoice = ({
               spacing="0.25rem"
             >
               {amounts.map((amt, index) => {
-                let tot = BigNumber.from(0);
+                let tot = BigInt(0);
                 let ind = -1;
                 let full = false;
                 if (deposits.length > 0) {
                   for (let i = 0; i < deposits.length; i += 1) {
-                    tot = tot.add(deposits[i].amount);
-                    if (tot.gt(sum)) {
+                    tot = tot + deposits[i].amount?.big;
+                    if (tot > sum) {
                       ind = i;
-                      if (tot.sub(sum).gte(amt)) {
+                      if (tot - sum >= amt.big) {
                         full = true;
                         break;
                       }
                     }
                   }
                 }
-                sum = sum.add(amt);
+                sum += amt.big;
 
                 return (
                   <Flex
@@ -452,24 +457,27 @@ export const ViewInvoice = ({
                       justify="flex-end"
                       ml={{ base: '0.5rem', md: '1rem' }}
                     >
-                      {index < currentMilestone && releases.length > index && (
-                        <Link
-                          fontSize="xs"
-                          isExternal
-                          color="grey"
-                          fontStyle="italic"
-                          href={getTxLink(
-                            invoiceChainId,
-                            releases[index].txHash,
-                          )}
-                        >
-                          Released{' '}
-                          {new Date(
-                            releases[index].timestamp * 1000,
-                          ).toLocaleDateString()}
-                        </Link>
-                      )}
-                      {!(index < currentMilestone && releases.length > index) &&
+                      {index < currentMilestone.num &&
+                        releases.length > index && (
+                          <Link
+                            fontSize="xs"
+                            isExternal
+                            color="grey"
+                            fontStyle="italic"
+                            href={getTxLink(
+                              invoiceChainId,
+                              releases[index].txHash || '',
+                            )}
+                          >
+                            Released{' '}
+                            {new Date(
+                              releases[index].timestamp?.num ?? 0 * 1000,
+                            ).toLocaleDateString()}
+                          </Link>
+                        )}
+                      {!(
+                        index < currentMilestone.num && releases.length > index
+                      ) &&
                         ind !== -1 && (
                           <Link
                             fontSize="xs"
@@ -478,19 +486,19 @@ export const ViewInvoice = ({
                             fontStyle="italic"
                             href={getTxLink(
                               invoiceChainId,
-                              deposits[ind].txHash,
+                              deposits[ind].txHash || '',
                             )}
                           >
                             {full ? '' : 'Partially '}Deposited{' '}
                             {new Date(
-                              deposits[ind].timestamp * 1000,
+                              deposits[ind].timestamp?.num ?? 0 * 1000,
                             ).toLocaleDateString()}
                           </Link>
                         )}
-                      <Text
-                        textAlign="right"
-                        fontWeight="500"
-                      >{`${utils.formatUnits(amt, decimals)} ${symbol}`}</Text>
+                      <Text textAlign="right" fontWeight="500">{`${formatUnits(
+                        amt.big,
+                        decimals,
+                      )} ${symbol}`}</Text>
                     </HStack>
                   </Flex>
                 );
@@ -508,15 +516,15 @@ export const ViewInvoice = ({
             >
               <Flex justify="space-between" align="center">
                 <Text>{smallScreen ? '' : 'Total '}Deposited</Text>
-                <Text fontWeight="500" textAlign="right">{`${utils.formatUnits(
-                  deposited,
+                <Text fontWeight="500" textAlign="right">{`${formatUnits(
+                  deposited.big,
                   decimals,
                 )} ${symbol}`}</Text>
               </Flex>
               <Flex justify="space-between" align="center">
                 <Text>{smallScreen ? '' : 'Total '}Released</Text>
-                <Text fontWeight="500" textAlign="right">{`${utils.formatUnits(
-                  released,
+                <Text fontWeight="500" textAlign="right">{`${formatUnits(
+                  released.big,
                   decimals,
                 )} ${symbol}`}</Text>
               </Flex>
@@ -530,8 +538,8 @@ export const ViewInvoice = ({
                 }
               >
                 <Text>Remaining{smallScreen ? '' : ' Amount Due'}</Text>
-                <Text fontWeight="500" textAlign="right">{`${utils.formatUnits(
-                  due,
+                <Text fontWeight="500" textAlign="right">{`${formatUnits(
+                  due.big,
                   decimals,
                 )} ${symbol}`}</Text>
               </Flex>
@@ -552,7 +560,7 @@ export const ViewInvoice = ({
                 {isExpired || (due.eq(0) && !isReleasable) ? (
                   <>
                     <Text>Remaining Balance</Text>
-                    <Text textAlign="right">{`${utils.formatUnits(
+                    <Text textAlign="right">{`${formatUnits(
                       balance,
                       decimals,
                     )} ${symbol}`}</Text>{' '}
@@ -567,8 +575,8 @@ export const ViewInvoice = ({
                       {!isReleasable &&
                         (smallScreen ? 'Due Today' : 'Total Due Today')}
                     </Text>
-                    <Text textAlign="right">{`${utils.formatUnits(
-                      isReleasable ? amount : amount.sub(balance),
+                    <Text textAlign="right">{`${formatUnits(
+                      isReleasable ? amount.big : amount.sub(balance).big,
                       decimals,
                     )} ${symbol}`}</Text>
                   </>
@@ -584,7 +592,7 @@ export const ViewInvoice = ({
                   fontSize="lg"
                 >
                   <Text>Amount Locked</Text>
-                  <Text textAlign="right">{`${utils.formatUnits(
+                  <Text textAlign="right">{`${formatUnits(
                     balance,
                     decimals,
                   )} ${symbol}`}</Text>
@@ -593,12 +601,12 @@ export const ViewInvoice = ({
                   {`A dispute is in progress with `}
                   <AccountLink address={resolver} chainId={invoiceChainId} />
                   <br />
-                  <Link href={getIpfsLink(dispute.ipfsHash)} isExternal>
+                  <Link href={getIpfsLink(dispute.ipfsHash || '')} isExternal>
                     <u>View details on IPFS</u>
                   </Link>
                   <br />
                   <Link
-                    href={getTxLink(invoiceChainId, dispute.txHash)}
+                    href={getTxLink(invoiceChainId, dispute.txHash || '')}
                     isExternal
                   >
                     <u>View transaction</u>
@@ -615,12 +623,12 @@ export const ViewInvoice = ({
                   fontSize="lg"
                 >
                   <Text>Amount Dispersed</Text>
-                  <Text textAlign="right">{`${utils.formatUnits(
-                    BigNumber.from(resolution.clientAward)
-                      .add(resolution.providerAward)
-                      .add(
+                  <Text textAlign="right">{`${formatUnits(
+                    resolution.clientAward
+                      ?.add(resolution.providerAward)
+                      ?.add(
                         resolution.resolutionFee ? resolution.resolutionFee : 0,
-                      ),
+                      )?.big ?? '',
                     decimals,
                   )} ${symbol}`}</Text>
                 </Flex>
@@ -638,12 +646,18 @@ export const ViewInvoice = ({
                         ' has resolved the dispute and dispersed remaining funds'
                       }
                       <br />
-                      <Link href={getIpfsLink(resolution.ipfsHash)} isExternal>
+                      <Link
+                        href={getIpfsLink(resolution.ipfsHash || '')}
+                        isExternal
+                      >
                         <u>View details on IPFS</u>
                       </Link>
                       <br />
                       <Link
-                        href={getTxLink(invoiceChainId, resolution.txHash)}
+                        href={getTxLink(
+                          invoiceChainId,
+                          resolution.txHash || '',
+                        )}
                         isExternal
                       >
                         <u>View transaction</u>
@@ -657,8 +671,8 @@ export const ViewInvoice = ({
                   >
                     {resolution.resolutionFee && (
                       <Text textAlign="right">
-                        {`${utils.formatUnits(
-                          BigNumber.from(resolution.resolutionFee),
+                        {`${formatUnits(
+                          resolution.resolutionFee.big,
                           decimals,
                         )} ${symbol} to `}
                         <AccountLink
@@ -668,15 +682,15 @@ export const ViewInvoice = ({
                       </Text>
                     )}
                     <Text textAlign="right">
-                      {`${utils.formatUnits(
-                        BigNumber.from(resolution.clientAward),
+                      {`${formatUnits(
+                        resolution.clientAward?.big,
                         decimals,
                       )} ${symbol} to `}
                       <AccountLink address={client} chainId={invoiceChainId} />
                     </Text>
                     <Text textAlign="right">
-                      {`${utils.formatUnits(
-                        BigNumber.from(resolution.providerAward),
+                      {`${formatUnits(
+                        resolution.providerAward?.big,
                         decimals,
                       )} ${symbol} to `}
                       <AccountLink
@@ -734,7 +748,7 @@ export const ViewInvoice = ({
                   Lock
                 </Button>
               )}
-              {isExpired && balance.gt(0) && (
+              {isExpired && balance > 0 && (
                 <Button
                   size={buttonSize}
                   _hover={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
@@ -844,16 +858,16 @@ export const ViewInvoice = ({
                   invoice={invoice}
                   balance={balance}
                   tokenData={tokenData}
-                  close={() => setModal(false)}
+                  // close={() => setModal(false)}
                 />
               )}
               {modal && selected === 1 && (
                 <DepositFunds
                   invoice={invoice}
-                  deposited={deposited}
-                  due={due}
+                  deposited={deposited.big}
+                  due={due.big}
                   tokenData={tokenData}
-                  close={() => setModal(false)}
+                  // close={() => setModal(false)}
                 />
               )}
               {modal && selected === 2 && (
@@ -883,10 +897,10 @@ export const ViewInvoice = ({
               {modal && selected === 5 && (
                 <AddMilestones
                   invoice={invoice}
-                  deposited={deposited}
-                  due={due}
+                  // deposited={deposited}
+                  due={due.big}
                   tokenData={tokenData}
-                  close={() => setModal(false)}
+                  // close={() => setModal(false)}
                 />
               )}
             </ModalContent>
@@ -896,3 +910,5 @@ export const ViewInvoice = ({
     </Container>
   );
 };
+
+export default ViewInvoice;

@@ -16,13 +16,7 @@ import {
   useBreakpointValue,
   VStack,
 } from '@chakra-ui/react';
-import {
-  BigNumberish,
-  Contract,
-  formatUnits,
-  parseUnits,
-  Transaction,
-} from 'ethers';
+import { Contract, formatUnits, parseUnits, Transaction } from 'ethers';
 import React, { useContext, useEffect, useState } from 'react';
 
 import { Web3Context } from '../context/Web3Context';
@@ -36,7 +30,11 @@ import {
   getWrappedNativeToken,
   logError,
   calculateResolutionFeePercentage,
+  ChainId,
+  Chain,
+  TokenData,
 } from '../utils';
+import { InvoiceResult } from '@/graphql/subgraph';
 
 const getCheckedStatus = (deposited: bigint, amounts: bigint[]) => {
   let sum = BigInt(0);
@@ -51,10 +49,10 @@ const checkedAtIndex = (index: number, checked: boolean[]) => {
 };
 
 export type DepositFundsProps = {
-  invoice: any;
-  deposited: any;
-  due: any;
-  tokenData: any;
+  invoice: InvoiceResult;
+  deposited: bigint;
+  due: bigint;
+  tokenData: Record<ChainId, Record<string, TokenData>>;
 };
 
 export const DepositFunds: React.FC<DepositFundsProps> = ({
@@ -112,7 +110,9 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
       }
       setTransaction(tx);
       await tx.wait();
-      window.location.href = `/invoice/${getHexChainId(network)}/${address}`;
+      window.location.href = `/invoice/${getHexChainId(
+        network as Chain,
+      )}/${address}`;
     } catch (depositError) {
       setLoading(false);
       logError({ depositError });
@@ -120,7 +120,10 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
   };
 
   const isWRAPPED = token.toLowerCase() === wrappedNativeToken.toLowerCase();
-  const initialStatus = getCheckedStatus(deposited, amounts);
+  const initialStatus = getCheckedStatus(
+    deposited,
+    amounts.map((a) => a.big),
+  );
   const [checked, setChecked] = useState(initialStatus);
 
   const [balance, setBalance] = useState(BigInt(0));
@@ -161,7 +164,7 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
       </Heading>
       <Text textAlign="center" fontSize="sm" mb="1rem" color="black">
         At a minimum, you’ll need to deposit enough to cover the{' '}
-        {currentMilestone === 0 ? 'first' : 'next'} project payment.
+        {currentMilestone.eq(0) ? 'first' : 'next'} project payment.
       </Text>
       {depositError ? (
         <Flex>
@@ -189,12 +192,11 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
                   ? checkedAtIndex(i, checked)
                   : checkedAtIndex(i - 1, checked);
                 const totAmount = amounts.reduce(
-                  (tot, cur, ind) => (newChecked[ind] ? tot.add(cur) : tot),
+                  (tot, cur, ind) => (newChecked[ind] ? tot + cur.big : tot),
                   BigInt(0),
                 );
-                const newAmount = totAmount.gte(deposited)
-                  ? totAmount.sub(deposited)
-                  : BigInt(0);
+                const newAmount =
+                  totAmount >= deposited ? totAmount - deposited : BigInt(0);
 
                 setChecked(newChecked);
                 setAmount(newAmount);
@@ -207,7 +209,7 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
               color="#323C47"
             >
               Payment #{i + 1} &nbsp; &nbsp;
-              {formatUnits(a, tokenInfo.decimals)} {tokenInfo.symbol}
+              {formatUnits(a.big, tokenInfo.decimals)} {tokenInfo.symbol}
             </Checkbox>
           );
         })}
@@ -243,7 +245,12 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
                   tokenInfo.decimals,
                 );
                 setAmount(newAmount);
-                setChecked(getCheckedStatus(deposited.add(newAmount), amounts));
+                setChecked(
+                  getCheckedStatus(
+                    deposited + newAmount,
+                    amounts.map((a) => a.big),
+                  ),
+                );
               } else {
                 setAmount(BigInt(0));
                 setChecked(initialStatus);
@@ -279,7 +286,7 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
         )}
       </VStack>
       <Flex color="black" justify="space-between" w="100%" fontSize="sm">
-        {deposited && (
+        {deposited !== undefined && (
           <VStack align="flex-start">
             <Text fontWeight="bold">Total Deposited</Text>
             <Text>{`${formatUnits(deposited, tokenInfo.decimals)} ${
@@ -287,17 +294,17 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
             }`}</Text>
           </VStack>
         )}
-        {deposited && (
+        {deposited !== undefined && (
           <VStack align="flex-start">
             <Text fontWeight="bold">Potential Dispute Fee</Text>
             <Text>{`${(
               (Number(formatUnits(amount, tokenInfo.decimals)) -
                 Number(formatUnits(deposited, tokenInfo.decimals))) *
-              calculateResolutionFeePercentage(invoice.resolutionRate)
+              calculateResolutionFeePercentage(invoice.resolutionRate.big)
             ).toFixed(6)} ${tokenInfo.symbol}`}</Text>
           </VStack>
         )}
-        {due && (
+        {due !== undefined && (
           <VStack>
             <Text fontWeight="bold">Total Due</Text>
             <Text>{`${formatUnits(due, tokenInfo.decimals)} ${
@@ -305,7 +312,7 @@ export const DepositFunds: React.FC<DepositFundsProps> = ({
             }`}</Text>
           </VStack>
         )}
-        {balance && (
+        {balance !== undefined && (
           <VStack align="flex-end">
             <Text fontWeight="bold">Your Balance</Text>
             <Text>
