@@ -70,18 +70,20 @@ contract InvoiceCreationScript is Script {
         string memory network = vm.envString("NETWORK");
 
         bytes memory _data;
+        address mistWrapperDeployment;
 
         if (keccak256(bytes(network)) == keccak256(bytes("sepolia"))) {
             _data = getSepoliaDummyData();
+            mistWrapperDeployment = vm.envAddress("MIST_INVOICE_ESCROW_WRAPPER");
         } else if (keccak256(bytes(network)) == keccak256(bytes("linea"))) {
             _data = getLineaDummyData();
+            mistWrapperDeployment = vm.envAddress("LINEA_GOERLI_MIST_INVOICE_ESCROW_WRAPPER");
         } else {
             revert("Invalid network selection");
         }
 
         vm.startBroadcast(deployerPrivateKey);
 
-        address mistWrapperDeployment = vm.envAddress("MIST_INVOICE_ESCROW_WRAPPER");
         MistInvoiceEscrowWrapper mistWrapper = MistInvoiceEscrowWrapper(mistWrapperDeployment);
         bytes[] memory encDataArray = new bytes[](1);
         encDataArray[0] = abi.encodePacked("dummyEncData");
