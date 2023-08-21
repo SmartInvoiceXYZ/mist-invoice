@@ -6,12 +6,11 @@ import "../src/MistInvoiceEscrowWrapper.sol";
 import "forge-std/console.sol";
 
 contract InvoiceCreationScript is Script {
-    struct MistData {
-        bytes32 merkleRoot;
-        bytes32 clientRandom;
-        bytes32 providerRandom;
-        bytes32 clientKey;
-        bytes32 providerKey;
+    struct MistSecret {
+        uint256 merkleRoot;
+        uint256 providerHash;
+        uint256 clientHash;
+        bytes[] encData;
     }
 
     function getSepoliaDummyData() public view returns (bytes memory) {
@@ -84,14 +83,15 @@ contract InvoiceCreationScript is Script {
 
         address mistWrapperDeployment = vm.envAddress("MIST_INVOICE_ESCROW_WRAPPER");
         MistInvoiceEscrowWrapper mistWrapper = MistInvoiceEscrowWrapper(mistWrapperDeployment);
+        bytes[] memory encDataArray = new bytes[](1);
+        encDataArray[0] = abi.encodePacked("dummyEncData");
 
         // Dummy data
-        MistData memory _mistData = MistData({
-            merkleRoot: keccak256(abi.encodePacked("dummyMerkleRoot")),
-            clientRandom: keccak256(abi.encodePacked("dummyClientRandom")),
-            providerRandom: keccak256(abi.encodePacked("dummyProviderRandom")),
-            clientKey: keccak256(abi.encodePacked("dummyClientKey")),
-            providerKey: keccak256(abi.encodePacked("dummyProviderKey"))
+        MistSecret memory _mistData = MistSecret({
+            merkleRoot: uint256(keccak256(abi.encodePacked("dummyMerkleRoot"))),
+            clientHash: uint256(keccak256(abi.encodePacked("dummyClientRandom"))),
+            providerHash: uint256(keccak256(abi.encodePacked("dummyProviderRandom"))),
+            encData: encDataArray
         });
 
         uint256[] memory _amounts = new uint256[](1);
@@ -99,12 +99,11 @@ contract InvoiceCreationScript is Script {
 
         bytes32 _type = bytes32("escrow");
 
-        MistInvoiceEscrowWrapper.MistData memory mistDataForWrapper = MistInvoiceEscrowWrapper.MistData({
+        MistInvoiceEscrowWrapper.MistSecret memory mistDataForWrapper = MistInvoiceEscrowWrapper.MistSecret({
             merkleRoot: _mistData.merkleRoot,
-            clientRandom: _mistData.clientRandom,
-            providerRandom: _mistData.providerRandom,
-            clientKey: _mistData.clientKey,
-            providerKey: _mistData.providerKey
+            clientHash: _mistData.clientHash,
+            providerHash: _mistData.providerHash,
+            encData: _mistData.encData
         });
 
         address invoiceAddress = mistWrapper.createInvoice(mistDataForWrapper, _amounts, _data, _type);

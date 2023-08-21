@@ -4,3 +4,6 @@
 [submodule "mist-invoice-contracts/lib/core"]
 	path = mist-invoice-contracts/lib/core
 	url = https://github.com/ModularIncognitoSTack/core
+[submodule "mist-invoice-contracts/lib/modules"]
+	path = mist-invoice-contracts/lib/modules
+	url = https://github.com/ModularIncognitoSTack/modules
