@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectInvoiceType should render 1`] = `
+<DocumentFragment>
+  <div
+    class="css-1d2481u"
+  >
+    <h2
+      class="chakra-heading css-ebueor"
+    >
+      Select an Invoice
+    </h2>
+    <p
+      class="chakra-text css-19uy1a9"
+    >
+      Which type of invoice do you want to create?
+    </p>
+    <div
+      class="css-140pq77"
+    >
+      <button
+        class="chakra-button css-7f4zjv"
+        type="button"
+      >
+        <h2
+          class="chakra-heading css-0"
+        >
+          Escrow
+        </h2>
+        <div
+          class="css-jw0hkm"
+        >
+          <p
+            class="chakra-text css-0"
+          >
+            Secure funds and release payments by milestones.
+          </p>
+          <p
+            class="chakra-text css-0"
+          >
+            Includes arbitration.
+          </p>
+          <p
+            class="chakra-text css-1fhgjcy"
+          >
+            Recommended for medium to large projects
+          </p>
+        </div>
+      </button>
+      <button
+        class="chakra-button css-blk5zb"
+        type="button"
+      >
+        <div
+          class="css-j7qwjs"
+        >
+          <h2
+            class="chakra-heading css-0"
+          >
+            Instant
+          </h2>
+          <div
+            class="css-jw0hkm"
+          >
+            <p
+              class="chakra-text css-542wex"
+            >
+              Receive payment immediately.
+            </p>
+            <p
+              class="chakra-text css-0"
+            >
+              Does NOT include arbitration.
+            </p>
+            <p
+              class="chakra-text css-1fhgjcy"
+            >
+              Recommended for small projects
+            </p>
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -10,9 +10,7 @@ contract InvoiceCreationScript is Script {
         uint256 merkleRoot;
         uint256 providerHash;
         uint256 clientHash;
-        bytes encData;
-        bytes encClientKey;
-        bytes encProviderKey;
+        bytes[] encData;
     }
 
     function getSepoliaDummyData() public view returns (bytes memory) {
@@ -85,15 +83,15 @@ contract InvoiceCreationScript is Script {
 
         address mistWrapperDeployment = vm.envAddress("MIST_INVOICE_ESCROW_WRAPPER");
         MistInvoiceEscrowWrapper mistWrapper = MistInvoiceEscrowWrapper(mistWrapperDeployment);
+        bytes[] memory encDataArray = new bytes[](1);
+        encDataArray[0] = abi.encodePacked("dummyEncData");
 
         // Dummy data
         MistSecret memory _mistData = MistSecret({
             merkleRoot: uint256(keccak256(abi.encodePacked("dummyMerkleRoot"))),
             clientHash: uint256(keccak256(abi.encodePacked("dummyClientRandom"))),
             providerHash: uint256(keccak256(abi.encodePacked("dummyProviderRandom"))),
-            encData: abi.encodePacked("dummyEncData"),
-            encClientKey: abi.encodePacked("dummyClientKey"),
-            encProviderKey: abi.encodePacked("dummyProviderKey")
+            encData: encDataArray
         });
 
         uint256[] memory _amounts = new uint256[](1);
@@ -105,9 +103,7 @@ contract InvoiceCreationScript is Script {
             merkleRoot: _mistData.merkleRoot,
             clientHash: _mistData.clientHash,
             providerHash: _mistData.providerHash,
-            encData: _mistData.encData,
-            encClientKey: _mistData.encClientKey,
-            encProviderKey: _mistData.encProviderKey
+            encData: _mistData.encData
         });
 
         address invoiceAddress = mistWrapper.createInvoice(mistDataForWrapper, _amounts, _data, _type);
