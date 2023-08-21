@@ -14,6 +14,7 @@ import { CreateContext } from '../context/CreateContext';
 import { Web3Context } from '../context/Web3Context';
 import { getTokenInfo } from '../utils/helpers';
 import { QuestionIcon } from '../icons/QuestionIcon';
+import { MistContext } from '@/context/MistContext';
 
 export type PaymentChunksFormProps = {
   display: string;
@@ -25,6 +26,7 @@ export const PaymentChunksForm: React.FC<PaymentChunksFormProps> = ({
   tokenData,
 }) => {
   const { chainId } = useContext(Web3Context);
+  const { setAmounts } = useContext(MistContext);
   const { paymentToken, milestones, payments, setPayments, paymentDue } =
     useContext(CreateContext);
   const [tokenInfo, setTokenInfo] = useState({ decimals: 0, symbol: '' });
@@ -73,6 +75,7 @@ export const PaymentChunksForm: React.FC<PaymentChunksFormProps> = ({
                   const newPayments = payments.slice();
                   newPayments[index] = amount;
                   setPayments(newPayments);
+                  setAmounts(newPayments);
                 }}
               />
               <InputRightElement color="white" w="3.5rem">

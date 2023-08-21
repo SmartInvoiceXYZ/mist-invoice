@@ -12,15 +12,15 @@ import {
   getTokenInfo,
   getTokens,
   isKnownResolver,
-  TokenData,
 } from '../utils/helpers';
 import { getResolutionRateFromFactory } from '../utils/invoice';
 import { ChainId } from '@/utils';
+import { MistContext } from '@/context/MistContext';
 
 export type PaymentDetailsFormProps = {
   display: string;
   tokenData: any;
-  allTokens: Record<ChainId, Record<string, TokenData>>;
+  allTokens: Record<ChainId, Record<string, string>>;
 };
 
 export const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({
@@ -29,6 +29,7 @@ export const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({
   allTokens,
 }) => {
   const { chainId, provider } = useContext(Web3Context);
+  const { setReceiver, setTokenAddress } = useContext(MistContext);
   const RESOLVERS = useMemo(
     () => (chainId ? getResolvers(chainId) : ([] as string[])),
     [chainId],
@@ -54,9 +55,7 @@ export const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({
 
   const TOKENS = useMemo(
     () =>
-      chainId
-        ? getTokens(chainId, allTokens)
-        : ({} as Record<string, TokenData>),
+      chainId ? getTokens(chainId, allTokens) : ({} as Record<string, string>),
     [chainId, allTokens],
   );
 
@@ -87,6 +86,11 @@ export const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({
       );
   }, [chainId, provider, arbitrationProvider]);
 
+  function handlePaymentTokenChange(value: string): void {
+    setPaymentToken(value);
+    setTokenAddress(value);
+  }
+
   return (
     <VStack w="100%" spacing="1rem" display={display}>
       <OrderedInput
@@ -107,6 +111,7 @@ export const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({
         isInvalid={providerInvalid}
         setValue={(v) => {
           setPaymentAddress(v);
+          setReceiver(v);
           setProviderInvalid(!isAddress(v));
         }}
         error={providerInvalid ? 'Invalid Address' : ''}
@@ -140,16 +145,17 @@ export const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({
         />
         <OrderedSelect
           value={paymentToken}
-          setValue={setPaymentToken}
+          setValue={handlePaymentTokenChange}
           label="Payment Token"
           required="required"
           tooltip="This is the cryptocurrency you’ll receive payment in. The network your wallet is connected to determines which tokens display here. (If you change your wallet network now, you’ll be forced to start the invoice over)."
         >
           {chainId &&
             TOKENS &&
-            Object.keys(TOKENS).map((token) => (
-              <option value={token} key={token}>
-                {getTokenInfo(chainId, token, tokenData)?.symbol ?? token}
+            Object.keys(TOKENS).map((i) => (
+              <option value={i} key={i}>
+                {getTokenInfo(chainId, TOKENS[i], tokenData)?.symbol ??
+                  TOKENS[i]}
               </option>
             ))}
         </OrderedSelect>

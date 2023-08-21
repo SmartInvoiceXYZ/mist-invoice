@@ -1,4 +1,4 @@
-import { AbiCoder, encodeBytes32String, Transaction } from 'ethers';
+import { AbiCoder, encodeBytes32String, TransactionResponse } from 'ethers';
 import React, {
   createContext,
   useCallback,
@@ -11,7 +11,7 @@ import React, {
 import {
   getResolvers,
   getWrappedNativeToken,
-  getInvoiceFactoryAddress,
+  // getInvoiceFactoryAddress,
   isValidLink,
   logError,
 } from '../utils/helpers';
@@ -24,6 +24,12 @@ import { INSTANT_STEPS, ESCROW_STEPS } from '../utils/constants';
 import { INVOICE_TYPES } from '../utils/constants';
 import { useCreateInstant } from './create-hooks/useCreateInstant';
 import { useCreateEscrow } from './create-hooks/useCreateEscrow';
+import {
+  MistInvoiceEscrowWrapper,
+  MistInvoiceEscrowWrapper__factory,
+} from '@/types';
+import { uploadMetadata } from '@/utils';
+import { MistContext } from './MistContext';
 
 export type ProjectAgreement = {
   type: string;
@@ -52,7 +58,7 @@ export type CreateContextType = {
   deadline?: number;
   lateFee?: bigint;
   lateFeeInterval?: number;
-  tx?: Transaction;
+  tx?: TransactionResponse;
   loading: boolean;
   currentStep: number;
   nextStepEnabled: boolean;
@@ -114,6 +120,7 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const { provider: rpcProvider, chainId } = useContext(Web3Context);
+  const { data: mistData, secret: mistSecret } = useContext(MistContext);
 
   const [wrappedNativeToken, setWrappedNativeToken] = useState('');
 
@@ -155,7 +162,7 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
 
   // payments chunks
   const [payments, setPayments] = useState([BigInt(0)]);
-  const [tx, setTx] = useState();
+  const [tx, setTx] = useState<TransactionResponse>();
   const [loading, setLoading] = useState(false);
 
   // step handling
@@ -232,38 +239,46 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
     ]);
   }, [projectAgreementSource, projectAgreementLinkType]);
 
-  //   useEffect(() => {
-  //     if (step1Valid && currentStep === 2) {
-  //       uploadMetadata({
-  //         projectName,
-  //         projectDescription,
-  //         projectAgreement,
-  //         startDate: Math.floor(startDate / 1000),
-  //         endDate: Math.floor(endDate / 1000),
-  //       })
-  //         .catch((ipfsError) => {
-  //           logError({ ipfsError });
-  //         })
-  //         .then((hash) => setDetailsHash(hash));
-  //     }
-  //   }, [
-  //     step1Valid,
-  //     currentStep,
-  //     projectName,
-  //     projectDescription,
-  //     projectAgreement,
-  //     projectAgreementLinkType,
-  //     projectAgreementSource,
-  //     startDate,
-  //     endDate,
-  //   ]);
+  useEffect(() => {
+    if (step1Valid && currentStep === 2) {
+      uploadMetadata({
+        projectName,
+        projectDescription,
+        projectAgreement,
+        startDate: startDate ? Math.floor(startDate / 1000) : undefined,
+        endDate: endDate ? Math.floor(endDate / 1000) : undefined,
+      })
+        .then(
+          (hash) => setDetailsHash(hash),
+          (ipfsError) => {
+            logError({ ipfsError });
+            setDetailsHash(
+              '0xed70cef5a086e264386ab026edaaabb8f25c378f1e3a699a2c0a72a20d53c7fb',
+            );
+          },
+        )
+        .then(() => {
+          console.log('uploadedMetadata', detailsHash);
+        });
+    }
+  }, [
+    step1Valid,
+    currentStep,
+    projectName,
+    projectDescription,
+    projectAgreement,
+    projectAgreementLinkType,
+    projectAgreementSource,
+    startDate,
+    endDate,
+  ]);
 
   const encodeEscrowData = useCallback(
     (factoryAddress: string) => {
       const resolverType = 0; // 0 for individual, 1 for erc-792 arbitrator
       const type = encodeBytes32String(Escrow);
 
-      const data = AbiCoder.prototype.encode(
+      const data = AbiCoder.defaultAbiCoder().encode(
         [
           'address',
           'uint8',
@@ -341,39 +356,59 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
     let type;
     let data;
 
-    if (chainId && rpcProvider && allValid && detailsHash) {
+    console.log('createInvoice', chainId, allValid, detailsHash, mistSecret);
+
+    if (
+      chainId &&
+      rpcProvider &&
+      allValid &&
+      detailsHash &&
+      mistData?.merkleRoot &&
+      mistData?.clientRandom &&
+      mistData?.providerRandom &&
+      mistData?.clientKey &&
+      mistData?.providerKey &&
+      mistSecret?.encData
+    ) {
       setLoading(true);
       setTx(undefined);
 
-      const factoryAddress = getInvoiceFactoryAddress(chainId);
+      // const factoryAddress = getInvoiceFactoryAddress(chainId);
+      const escrowWrapperAddress =
+        process.env.NEXT_PUBLIC_MIST_INVOICE_ESCROW_WRAPPER;
 
       let paymentAmounts = [BigInt(0)];
-      if (invoiceType === Escrow) {
-        const escrowInfo = encodeEscrowData(factoryAddress);
+      if (escrowWrapperAddress && invoiceType === Escrow) {
+        const escrowInfo = encodeEscrowData(escrowWrapperAddress);
         type = escrowInfo.type;
         data = escrowInfo.data;
         paymentAmounts = payments;
+        const wrapper =
+          MistInvoiceEscrowWrapper__factory.connect(escrowWrapperAddress);
+        const connected = wrapper.connect(await rpcProvider.getSigner());
+        const txResult = await connected.createInvoice(
+          {
+            merkleRoot: mistData.merkleRoot,
+            clientRandom: mistData.clientRandom,
+            providerRandom: mistData.providerRandom,
+            clientKey: mistData.clientKey,
+            providerKey: mistData.providerKey,
+          },
+          paymentAmounts,
+          data,
+          type,
+        );
+
+        console.log('txResult', txResult);
+
+        setTx(txResult);
       } else if (invoiceType === Instant) {
-        const instantInfo = encodeInstantData();
-        type = instantInfo.type;
-        data = instantInfo.data;
-        paymentAmounts = [paymentDue];
+        // const instantInfo = encodeInstantData();
+        // type = instantInfo.type;
+        // data = instantInfo.data;
+        // paymentAmounts = [paymentDue];
       }
 
-      const transaction = await register(
-        factoryAddress,
-        rpcProvider,
-        paymentAddress,
-        paymentAmounts,
-        data,
-        type,
-      ).catch((registerError) => {
-        logError({ registerError });
-        setLoading(false);
-        throw registerError;
-      });
-
-      setTx(transaction);
       setLoading(false);
     }
   }, [
