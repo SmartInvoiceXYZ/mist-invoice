@@ -1,5 +1,4 @@
 import {
-  ethers,
   Contract,
   BytesLike,
   AbiCoder,
@@ -14,7 +13,6 @@ import { ExtData, EncryptedNote, UTXONote } from '.';
 import { SCALAR_FIELD } from '../constants';
 import { Lit } from '../encryption';
 import { Proof, RawProof } from '../prover';
-import { get } from 'http';
 
 export function formatProof(proof: RawProof): Proof {
   return {
