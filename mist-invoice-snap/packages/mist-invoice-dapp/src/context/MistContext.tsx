@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-import { TransferType, UTXONote } from '@usemist/sdk';
+import { TransferType, UTXONote } from '../mist-sdk';
 import {
   IncrementalMerkleTree,
   MerkleProof,
@@ -33,14 +33,16 @@ export type MistSecret = {
   encData: BytesLike[];
 };
 
+const utf8Encode = new TextEncoder();
+
 export const SNARK_SCALAR_FIELD =
   21888242871839275222246405745257275088548364400416034343698204186575808495617n;
 export const CLIENT_SIGNAL =
-  getBigInt(keccak256('client')) % SNARK_SCALAR_FIELD;
+  getBigInt(keccak256(utf8Encode.encode('client'))) % SNARK_SCALAR_FIELD;
 export const PROVIDER_SIGNAL =
-  getBigInt(keccak256('provider')) % SNARK_SCALAR_FIELD;
+  getBigInt(keccak256(utf8Encode.encode('provider'))) % SNARK_SCALAR_FIELD;
 export const NULLIFYING_KEY =
-  getBigInt(keccak256('nullifier')) % SNARK_SCALAR_FIELD;
+  getBigInt(keccak256(utf8Encode.encode('nullifier'))) % SNARK_SCALAR_FIELD;
 
 export type MistContextType = {
   data?: MistData;

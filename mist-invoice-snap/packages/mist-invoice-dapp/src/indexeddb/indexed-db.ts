@@ -15,7 +15,7 @@ export interface IndexDetails {
   order: string;
 }
 
-const indexedDB: IDBFactory | undefined =
+const indexedDB = () =>
   typeof window === 'undefined'
     ? undefined
     : window.indexedDB ||
@@ -28,24 +28,25 @@ export function openDatabase(
   version: number,
   upgradeCallback?: (e: Event, db: IDBDatabase) => void,
 ) {
-  if (typeof indexedDB === 'undefined')
+  const db = indexedDB();
+  if (typeof db === 'undefined')
     return new Promise<IDBDatabase>((resolve, reject) => {
       reject('IndexedDB not supported on the server side.');
     });
 
   return new Promise<IDBDatabase>((resolve, reject) => {
-    const request = indexedDB.open(dbName, version);
-    let db: IDBDatabase;
+    const request = db.open(dbName, version);
+    let _db: IDBDatabase;
     request.onsuccess = () => {
-      db = request.result;
-      resolve(db);
+      _db = request.result;
+      resolve(_db);
     };
     request.onerror = () => {
       reject(`IndexedDB error: ${request.error}`);
     };
     if (typeof upgradeCallback === 'function') {
       request.onupgradeneeded = (event: Event) => {
-        upgradeCallback(event, db);
+        upgradeCallback(event, _db);
       };
     }
   });
@@ -56,10 +57,10 @@ export function CreateObjectStore(
   version: number,
   storeSchemas: ObjectStoreMeta[],
 ) {
-  if (typeof indexedDB === 'undefined')
-    return;
+  const db = indexedDB();
+  if (typeof db === 'undefined') return;
 
-  const request: IDBOpenDBRequest = indexedDB.open(dbName, version);
+  const request: IDBOpenDBRequest = db.open(dbName, version);
 
   request.onupgradeneeded = function (event: IDBVersionChangeEvent) {
     const database: IDBDatabase = (event.target as any).result;

@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import { DBOperations, openDatabase, Key } from "./indexed-db";
+import React, { ReactNode } from 'react';
+import { DBOperations, openDatabase, Key } from './indexed-db';
 
 interface IndexedDBProps {
   name: string;
@@ -26,8 +26,8 @@ const IndexedDBContext = React.createContext<{
   version: number;
 }>({
   db: null,
-  name: null,
-  version: null,
+  name: '',
+  version: 0,
 });
 
 const IndexedDBProvider = IndexedDBContext.Provider;
