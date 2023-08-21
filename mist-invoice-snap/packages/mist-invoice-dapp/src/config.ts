@@ -96,7 +96,7 @@ export const CONFIG = {
       },
     },
     31137: {
-      SUBGRAPH: 'psparacino/goerli-smart-invoices',
+      SUBGRAPH: 'subgraphs/name/SmartInvoiceXYZ/smart-invoice-linea-goerli',
       WRAPPED_NATIVE_TOKEN:
         '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'.toLowerCase(),
       INVOICE_FACTORY:
@@ -111,7 +111,7 @@ export const CONFIG = {
       },
     },
     59140: {
-      SUBGRAPH: 'psparacino/linea-goerli-smart-invoices',
+      SUBGRAPH: 'subgraphs/name/SmartInvoiceXYZ/smart-invoice-linea-goerli',
       WRAPPED_NATIVE_TOKEN: '0x2c1b868d6596a18e32e61b901e4060c872647b6c',
       INVOICE_FACTORY: '0xa9c2372FdFA2ef145A0d13784C74DE96f0e3eaff',
       RESOLVERS: {

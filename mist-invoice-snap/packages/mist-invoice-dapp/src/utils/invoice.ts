@@ -201,17 +201,17 @@ export const getDeadline = async (
   return contract.deadline();
 };
 
-// export const getLateFee = async (ethersProvider, address) => {
-//   const abi = new Interface([
-//     "function lateFee() public view returns(uint256)",
-//     "function lateFeeTimeInterval() public view returns (uint256)",
-//   ]);
-//   const contract = new Contract(address, abi, ethersProvider);
-//   return {
-//     amount: await contract.lateFee(),
-//     timeInterval: await contract.lateFeeTimeInterval(),
-//   };
-// };
+export const getLateFee = async (ethersProvider: Provider, address: string) => {
+  const abi = new Interface([
+    'function lateFee() public view returns(uint256)',
+    'function lateFeeTimeInterval() public view returns (uint256)',
+  ]);
+  const contract = new Contract(address, abi, ethersProvider);
+  return {
+    amount: await contract.lateFee(),
+    timeInterval: await contract.lateFeeTimeInterval(),
+  };
+};
 
 export const depositTokens = async (
   ethersProvider: BrowserProvider,

@@ -74,6 +74,7 @@ export const getTokenInfo = (
   token: string,
   tokenData: Record<ChainId, Record<string, TokenData>>,
 ) => {
+  console.log('getTokenInfo', chainId, token, tokenData);
   const unknownToken = {
     decimals: 18,
     symbol: 'UNKNOWN',
@@ -201,7 +202,8 @@ export type TokenData = {
 };
 
 export const formatTokenData = (object: any) => {
-  const tokenObject = {} as Record<string, Record<string, TokenData>>;
+  console.log('formatTokenData', object);
+  const tokenObject = {} as Record<ChainId, Record<string, TokenData>>;
 
   for (const [key, value] of Object.entries(object)) {
     const tokenDetails = {} as Record<string, TokenData>;
@@ -216,7 +218,7 @@ export const formatTokenData = (object: any) => {
         image: image,
       };
     }
-    tokenObject[key] = tokenDetails;
+    tokenObject[Number(key) as ChainId] = tokenDetails;
   }
 
   return tokenObject;

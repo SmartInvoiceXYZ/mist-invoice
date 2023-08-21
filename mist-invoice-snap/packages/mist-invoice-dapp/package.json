@@ -38,6 +38,7 @@
     "ethers": "^6.7.1",
     "framer-motion": "^10.16.0",
     "graphql-scalars": "^1.22.2",
+    "ipfs-http-client": "^60.0.1",
     "jest-environment-jsdom": "^29.6.2",
     "next": "13.4.19",
     "poseidon-lite": "^0.2.0",
