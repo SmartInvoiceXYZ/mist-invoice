@@ -4,8 +4,7 @@ import { TransferType, UTXONote } from "@usemist/sdk";
 import { IncrementalMerkleTree, MerkleProof } from "@zk-kit/incremental-merkle-tree";
 import { BytesLike, ethers, getBigInt, keccak256 } from "ethers";
 import { poseidon2 } from "poseidon-lite";
-import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
-import { generateKey, randomBytes } from "crypto";
+import { randomBytes } from "crypto";
 import { useIndexedDB } from "react-indexed-db-hook";
 import { logDebug, logError } from "../utils";
 import { Web3Context } from "./Web3Context";
@@ -167,7 +166,7 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
 
   const getClientProof = () => {
     if (account && tree && data) {
-      const proof = tree.getProof([account, data.clientRandom]);
+      const proof = tree.createProof(tree.indexOf(poseidon2([getBigInt(account), CLIENT_SIGNAL])));
       return proof;
     }
     return undefined;
