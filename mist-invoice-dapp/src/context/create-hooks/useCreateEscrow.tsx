@@ -1,6 +1,8 @@
 import { useMemo, useEffect } from "react";
 import { isAddress } from "@ethersproject/address";
 import { BigNumberish } from "ethers";
+import {ethers} from "ethers";
+
 
 export function useCreateEscrow({
   step1Valid,
@@ -33,7 +35,7 @@ export function useCreateEscrow({
       isAddress(paymentAddress) &&
       isAddress(paymentToken) &&
       isAddress(arbitrationProvider) &&
-      paymentDue.gt(0) &&
+      (ethers.getBigInt(paymentDue) > 0) &&
       !isNaN(Number(milestones)) &&
       milestones > 0 &&
       termsAccepted &&
@@ -57,7 +59,7 @@ export function useCreateEscrow({
   );
 
   const escrowStep3Valid = useMemo(
-    () => payments.reduce((t, a) => t + a, BigInt(0)) === paymentDue,
+    () => payments.reduce((t, a) => ethers.getBigInt(t) + ethers.getBigInt(a), BigInt(0)) === paymentDue,
     [payments, paymentDue]
   );
 
