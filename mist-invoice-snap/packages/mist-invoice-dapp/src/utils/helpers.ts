@@ -66,7 +66,7 @@ export const getResolverInfo = (chainId: ChainId, resolver: string) =>
 
 export const getTokens = (
   chainId: ChainId,
-  allTokens: Record<ChainId, Record<string, TokenData>>,
+  allTokens: Record<ChainId, Record<string, string>>,
 ) => allTokens[chainId] || allTokens[4];
 
 export const getTokenInfo = (
@@ -74,7 +74,7 @@ export const getTokenInfo = (
   token: string,
   tokenData: Record<ChainId, Record<string, TokenData>>,
 ) => {
-  console.log('getTokenInfo', chainId, token, tokenData);
+  // console.log('getTokenInfo', chainId, token, tokenData);
   const unknownToken = {
     decimals: 18,
     symbol: 'UNKNOWN',

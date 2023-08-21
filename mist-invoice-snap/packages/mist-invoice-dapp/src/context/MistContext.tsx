@@ -49,8 +49,14 @@ export type MistContextType = {
   data?: MistData;
   secret?: MistSecret;
   loading: boolean;
+  amounts?: bigint[];
+  receiver?: string;
+  tokenAddress?: string;
   getClientProof: () => MerkleProof | undefined;
   handleSnapConnectClick: () => void;
+  setAmounts: (amounts: bigint[]) => void;
+  setReceiver: (receiver: string) => void;
+  setTokenAddress: (tokenAddress: string) => void;
   state?: MetamaskState;
 };
 
@@ -58,6 +64,9 @@ export const MistContext = createContext<MistContextType>({
   handleSnapConnectClick: () => undefined,
   getClientProof: () => undefined,
   loading: true,
+  setAmounts: () => {},
+  setReceiver: () => {},
+  setTokenAddress: () => {},
 });
 
 export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
@@ -69,6 +78,9 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
   const [secret, setSecret] = useState<MistSecret>();
   const [tree, setTree] = useState<IncrementalMerkleTree>();
   const [loading, setLoading] = useState(false);
+  const [tokenAddress, setTokenAddress] = useState<string>('');
+  const [receiver, setReceiver] = useState<string>('');
+  const [amounts, setAmounts] = useState<bigint[]>([]);
 
   const providerAddress = process.env.MIST_PROVIDER_ADDRESS || '';
 
@@ -118,26 +130,26 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
   useEffect(() => {
     const generate = async () => {
       const random = getBigInt(randomBytes(32).toString('hex'));
-      const tokenAddress = '0x...';
-      const amounts = [100, 200, 300, 400, 500]; // dummy values
       // Contains bytes[] of encrypted note, clientKey and providerKey for each amount
       const encData = await Promise.all(
-        amounts.map(async (amount) => {
+        amounts.map(async (amount, i) => {
           const note = new UTXONote({
             sender: account || '',
-            receiver: providerAddress,
-            amount: BigInt(amount),
+            receiver: receiver || '',
+            amount,
             token: tokenAddress,
-            identifier: BigInt(0),
+            identifier: BigInt(i),
             random,
             transferType: TransferType.Deposit,
             nullifyingKey: NULLIFYING_KEY,
           });
           const encryptedNote = await note.encrypt('goerli');
           return ethers.AbiCoder.defaultAbiCoder().encode(
-            ["tuple(string encryptedData, string encryptedSenderKey, string encryptedReceiverKey)"],
-            [encryptedNote]
-          )
+            [
+              'tuple(string encryptedData, string encryptedSenderKey, string encryptedReceiverKey)',
+            ],
+            [encryptedNote],
+          );
         }),
       );
       const clientId = getBigInt(
@@ -182,17 +194,13 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
     if (account) {
       setLoading(true);
       try {
-        getByID<MistData>(account).then((res) => {
+        getByID(account).then((res) => {
           if (res) {
             logDebug('Using existing data');
             setData(res);
           } else {
             logDebug('Generating new data');
             genAddRes();
-            // res = generate();
-            // add(res, account).then(() => {
-            //   setData(res);
-            // });
           }
         });
       } catch (e) {
@@ -203,7 +211,7 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
     } else {
       setData(undefined);
     }
-  }, [account, add, data, getByID]);
+  }, [account, receiver, tokenAddress, amounts]);
 
   const getClientProof = () => {
     if (account && tree && data) {
@@ -220,9 +228,15 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
       value={{
         data,
         secret,
+        amounts,
+        receiver,
+        tokenAddress,
         loading,
         getClientProof,
         handleSnapConnectClick,
+        setAmounts,
+        setReceiver,
+        setTokenAddress,
         state,
       }}
     >
