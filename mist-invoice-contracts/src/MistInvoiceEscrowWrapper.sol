@@ -56,12 +56,6 @@ contract MistInvoiceEscrowWrapper is Verifier {
         return invoice;
     }
 
-    // maybe don't need wrapper
-    function privateDeposit(address _invoiceAddr) external {
-        // TODO call MIST withdraw()
-        // TODO call transfer to _invoiceAddr
-    }
-
     // TODO is reentrency guard needed?
     function privateRelease(
         address _invoiceAddr,

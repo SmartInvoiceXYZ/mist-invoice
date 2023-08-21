@@ -8,6 +8,7 @@
     "fork-linea": "anvil --fork-url https://rpc.goerli.linea.build  --block-base-fee-per-gas 30000000000 --chain-id 31137",
     "fork-sepolia": "anvil --fork-url https://gateway.tenderly.co/public/sepolia  --block-base-fee-per-gas 30000000000 --chain-id 31137",
     "deploy-local-wrapper": "forge script script/deployMistInvoiceEscrowWrapper.s.sol --fork-url http://localhost:8545 --broadcast --ffi --legacy",
+    "deploy-linea-wrapper": "forge script script/deployMistInvoiceEscrowWrapper.s.sol --fork-url https://rpc.goerli.linea.build --broadcast --ffi --legacy",
     "create-local-linea": "forge script script/createMistInvoice.s.sol --fork-url http://localhost:8545 --broadcast --ffi --legacy",
     "create-local-sepolia": "forge script script/createMistInvoice.s.sol --fork-url http://localhost:8545 --broadcast --ffi"
   },
