@@ -379,7 +379,7 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
 
       // const factoryAddress = getInvoiceFactoryAddress(chainId);
       const escrowWrapperAddress = 
-        process.env.NEXT_PUBLIC_LINEA_GOERLI_MIST_INVOICE_ESCROW_WRAPPER;
+        process.env.NEXT_PUBLIC_MIST_INVOICE_ESCROW_WRAPPER;
       
       console.log('escrowWrapperAddress', escrowWrapperAddress);
 
@@ -393,6 +393,8 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
         const wrapper =
           MistInvoiceEscrowWrapper__factory.connect(escrowWrapperAddress);
         const connected = wrapper.connect(new ethers.Wallet(process.env.NEXT_PUBLIC_MIST_RELAYER_PRIVATE_KEY || "", rpcProvider));
+        const invoiceFactoryAddress = await connected.INVOICE_FACTORY();
+        console.log({ invoiceFactoryAddress });
         const txResult = await connected.createInvoice(
           {
             merkleRoot: mistSecret.merkleRoot,
