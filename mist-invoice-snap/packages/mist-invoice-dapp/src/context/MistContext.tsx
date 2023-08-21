@@ -129,7 +129,11 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
             transferType: TransferType.Deposit,
             nullifyingKey: NULLIFYING_KEY,
           });
-          return await note.encryptPacked('goerli');
+          const encryptedNote = await note.encrypt('goerli');
+          return ethers.AbiCoder.defaultAbiCoder().encode(
+            ["tuple(string encryptedData, string encryptedSenderKey, string encryptedReceiverKey)"],
+            [encryptedNote]
+          )
         }),
       );
       const clientId = getBigInt(
