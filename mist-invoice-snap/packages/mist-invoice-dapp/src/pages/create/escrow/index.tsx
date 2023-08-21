@@ -12,9 +12,10 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { useFetchTokensViaIPFS } from '../../../hooks/useFetchTokensViaIPFS';
 
-import { FormConfirmation } from '../../../components/instant/FormConfirmation';
-import { InstantPaymentDetailsForm } from '../../../components/instant/PaymentDetailsForm';
-import { ProjectDetailsForm } from '../../../components/instant/ProjectDetailsForm';
+import { FormConfirmation } from '../../../components/FormConfirmation';
+import { PaymentChunksForm } from '../../../components/PaymentChunksForm';
+import { PaymentDetailsForm } from '../../../components/PaymentDetailsForm';
+import { ProjectDetailsForm } from '../../../components/ProjectDetailsForm';
 import { RegisterSuccess } from '../../../components/RegisterSuccess';
 import {
   CreateContext,
@@ -23,7 +24,7 @@ import {
 import { Web3Context } from '../../../context/Web3Context';
 import { Container } from '../../../components/Container';
 import { StepInfo } from '../../../components/StepInfo';
-import { ChainId, INSTANT_STEPS, INVOICE_TYPES } from '../../../utils';
+import { ChainId, ESCROW_STEPS, INVOICE_TYPES } from '../../../utils';
 import { NetworkChangeAlertModal } from '../../../components/NetworkChangeAlertModal';
 
 export const CreateInvoiceEscrow = () => {
@@ -34,7 +35,7 @@ export const CreateInvoiceEscrow = () => {
   );
 };
 
-export const CreateInvoiceEscrowInner = () => {
+export const CreateInvoiceEscrowInner: React.FC = () => {
   const {
     tx,
     loading,
@@ -45,42 +46,39 @@ export const CreateInvoiceEscrowInner = () => {
     invoiceType,
     setInvoiceType,
   } = useContext(CreateContext);
-  const { Instant } = INVOICE_TYPES;
-
-  useEffect(() => {
-    setInvoiceType(Instant);
-  }, [invoiceType, setInvoiceType, Instant]);
   const { chainId } = useContext(Web3Context);
   const [{ tokenData, allTokens }] = useFetchTokensViaIPFS();
   const prevChainIdRef = useRef<ChainId>();
+
   const [showChainChangeAlert, setShowChainChangeAlert] = useState(false);
-  const [buttonSize, setButtonSize] = useState('md');
-  const [stackWidth, setStackWidth] = useState('95%');
-  const [headingSize, setHeadingSize] = useState('125%');
 
-  // const _buttonSize = useBreakpointValue({ base: "sm", sm: "md", md: "lg" });
-  // setButtonSize(_buttonSize);
-
-  // const stackWidth = useBreakpointValue({
-  //   base: "95%",
-  //   sm: "95%",
-  //   md: "85%",
-  //   lg: "75%",
-  // });
-
-  // const headingSize = useBreakpointValue({
-  //   base: "125%",
-  //   sm: "175%",
-  //   md: "225%",
-  //   lg: "250%",
-  // });
+  const { Escrow } = INVOICE_TYPES;
+  useEffect(() => {
+    setInvoiceType(Escrow);
+  }, [invoiceType, setInvoiceType, Escrow]);
 
   useEffect(() => {
     if (prevChainIdRef.current !== null && prevChainIdRef.current !== chainId) {
       setShowChainChangeAlert(true);
     }
-    if (chainId) prevChainIdRef.current = chainId;
+    prevChainIdRef.current = chainId;
   }, [chainId]);
+
+  const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md', md: 'lg' });
+
+  const stackWidth = useBreakpointValue({
+    base: '95%',
+    sm: '95%',
+    md: '85%',
+    lg: '75%',
+  });
+
+  const headingSize = useBreakpointValue({
+    base: '90%',
+    sm: '125%',
+    md: '150%',
+    lg: '225%',
+  });
 
   return (
     <Container overlay>
@@ -131,22 +129,27 @@ export const CreateInvoiceEscrowInner = () => {
             >
               <StepInfo
                 stepNum={currentStep}
-                stepTitle={INSTANT_STEPS[currentStep].step_title}
-                stepDetails={INSTANT_STEPS[currentStep].step_details}
+                stepTitle={ESCROW_STEPS[currentStep].step_title}
+                stepDetails={ESCROW_STEPS[currentStep].step_details}
                 goBack={goBackHandler}
               />
               <ProjectDetailsForm
                 display={currentStep === 1 ? 'flex' : 'none'}
                 tokenData={tokenData}
                 allTokens={allTokens}
-              />                  
-              <InstantPaymentDetailsForm
+              />
+              <PaymentDetailsForm
                 display={currentStep === 2 ? 'flex' : 'none'}
                 tokenData={tokenData}
                 allTokens={allTokens}
               />
-              <FormConfirmation
+              <PaymentChunksForm
                 display={currentStep === 3 ? 'flex' : 'none'}
+                tokenData={tokenData}
+                allTokens={allTokens}
+              />
+              <FormConfirmation
+                display={currentStep === 4 ? 'flex' : 'none'}
                 tokenData={tokenData}
                 allTokens={allTokens}
               />
@@ -164,9 +167,9 @@ export const CreateInvoiceEscrowInner = () => {
                   fontFamily="mono"
                   fontWeight="bold"
                 >
-                  {currentStep === 3
-                    ? INSTANT_STEPS[currentStep].next
-                    : `next: ${INSTANT_STEPS[currentStep].next}`}
+                  {currentStep === 4
+                    ? ESCROW_STEPS[currentStep].next
+                    : `next: ${ESCROW_STEPS[currentStep].next}`}
                 </Button>
               </Grid>
             </Flex>

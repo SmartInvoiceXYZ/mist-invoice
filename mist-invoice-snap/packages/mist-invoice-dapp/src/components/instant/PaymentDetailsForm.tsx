@@ -1,4 +1,4 @@
-import { Checkbox, Link, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { parseUnits } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import React, { useContext, useMemo, useState } from 'react';
@@ -23,7 +23,7 @@ export type InstantPaymentDetailsFormProps = {
 export const InstantPaymentDetailsForm: React.FC<
   InstantPaymentDetailsFormProps
 > = ({ display, tokenData, allTokens }) => {
-  const { chainId, provider } = useContext(Web3Context);
+  const { chainId } = useContext(Web3Context);
 
   console.log(allTokens);
 
@@ -34,13 +34,9 @@ export const InstantPaymentDetailsForm: React.FC<
     setPaymentAddress,
     paymentToken,
     setPaymentToken,
-    paymentDue,
     setPaymentDue,
-    lateFee,
     setLateFee,
-    lateFeeInterval,
     setLateFeeInterval,
-    invoiceType,
     deadline,
     setDeadline,
   } = useContext(CreateContext);
@@ -55,11 +51,11 @@ export const InstantPaymentDetailsForm: React.FC<
     [chainId, allTokens],
   );
 
-  const { decimals, symbol } = useMemo(
+  const { decimals } = useMemo(
     () =>
       chainId && paymentToken
         ? getTokenInfo(chainId, paymentToken, tokenData)
-        : { decimals: 0, symbol: '' },
+        : { decimals: 0 },
     [chainId, paymentToken, tokenData],
   );
   const [paymentDueInput, setPaymentDueInput] = useState('');
@@ -68,7 +64,6 @@ export const InstantPaymentDetailsForm: React.FC<
   const [providerInvalid, setProviderInvalid] = useState(false);
   const [paymentInvalid, setPaymentInvalid] = useState(false);
   const [milestonesInvalid, setMilestonesInvalid] = useState(false);
-  // const [symbols, setSymbols] = useState([]);
   const [lateFeeInput, setLateFeeInput] = useState('');
   const [lateFeeIntervalInput, setLateFeeIntervalInput] = useState('');
   const lateFeeIntervalOptions = [1, 2, 7, 14, 28];

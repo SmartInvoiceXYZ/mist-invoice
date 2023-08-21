@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
-  IPFS_ENDPOINT,
+  ChainId,
+  TOKENS,
   TokenData,
   formatTokenData,
   formatTokens,
-} from "../utils";
-
-import { getCID } from "../utils";
+} from '../utils';
 
 export const useFetchTokensViaIPFS = () => {
   const [tokenData, setTokenData] = useState(
-    {} as Record<string, Record<string, TokenData>>,
+    {} as Record<ChainId, Record<string, TokenData>>,
   );
   const [allTokens, setAllTokens] = useState({} as Record<string, string[]>);
   const [isError, setIsError] = useState(false);
@@ -18,14 +17,13 @@ export const useFetchTokensViaIPFS = () => {
   useEffect(() => {
     let isMounted = true;
     const fetchTokens = async () => {
-      const CID = await getCID();
-      const IPFS_TOKENS = IPFS_ENDPOINT + `/ipfs/${CID}`;
+      // const CID = await getCID();
+      // const IPFS_TOKENS = IPFS_ENDPOINT + `/ipfs/${CID}`;
       setIsError(false);
       try {
-        const response = fetch(IPFS_TOKENS);
-        const fullData = (await response).json();
-        const formattedData = formatTokenData(await fullData);
-
+        // const response = fetch(IPFS_TOKENS);
+        // const fullData = (await response).json();
+        const formattedData = formatTokenData(TOKENS);
         const formattedTokens = formatTokens(formattedData);
 
         setAllTokens(formattedTokens);

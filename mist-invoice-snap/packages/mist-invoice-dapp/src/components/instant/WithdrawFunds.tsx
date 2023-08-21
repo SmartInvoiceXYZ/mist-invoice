@@ -5,20 +5,32 @@ import {
   Text,
   useBreakpointValue,
   VStack,
-} from "@chakra-ui/react";
-import { utils } from "ethers";
-import React, { useContext, useEffect, useState } from "react";
+} from '@chakra-ui/react';
+import {} from 'ethers';
+import React, { useContext, useEffect, useState } from 'react';
 
-import { Web3Context } from "../../context/Web3Context";
+import { Web3Context } from '../../context/Web3Context';
 import {
   getHexChainId,
   getTokenInfo,
   getTxLink,
   logError,
-} from "../../utils/helpers";
-import { withdraw } from "../../utils/invoice";
+} from '../../utils/helpers';
+import { withdraw } from '../../utils/invoice';
 
-export const WithdrawFunds = ({ invoice, balance, close, tokenData }) => {
+export type WithdrawFundsProps = {
+  invoice: any;
+  balance: any;
+  close: () => void;
+  tokenData: any;
+};
+
+export const WithdrawFunds: React.FC<WithdrawFundsProps> = ({
+  invoice,
+  balance,
+  close,
+  tokenData,
+}) => {
   const [loading, setLoading] = useState(false);
   const { chainId, provider } = useContext(Web3Context);
   const { network, address, token } = invoice;
@@ -26,7 +38,7 @@ export const WithdrawFunds = ({ invoice, balance, close, tokenData }) => {
   const { decimals, symbol } = getTokenInfo(chainId, token, tokenData);
   const [transaction, setTransaction] = useState();
   const [invalid, setInvalid] = useState(false);
-  const buttonSize = useBreakpointValue({ base: "md", md: "lg" });
+  const buttonSize = useBreakpointValue({ base: 'md', md: 'lg' });
 
   useEffect(() => {
     if (!loading && provider && balance.gte(0)) {
@@ -43,7 +55,7 @@ export const WithdrawFunds = ({ invoice, balance, close, tokenData }) => {
       setTransaction(tx);
       await tx.wait();
       window.location.href = `/invoice/${getHexChainId(
-        network
+        network,
       )}/${address}/instant`;
       setLoading(false);
     } catch (withdrawError) {
@@ -87,7 +99,7 @@ export const WithdrawFunds = ({ invoice, balance, close, tokenData }) => {
       </VStack>
       {transaction && (
         <Text color="black" textAlign="center" fontSize="sm">
-          Follow your transaction{" "}
+          Follow your transaction{' '}
           <Link
             href={getTxLink(chainId, transaction.hash)}
             isExternal
@@ -102,8 +114,8 @@ export const WithdrawFunds = ({ invoice, balance, close, tokenData }) => {
         <Button
           onClick={send}
           backgroundColor="blue.1"
-          _hover={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
-          _active={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
+          _hover={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
+          _active={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
           color="white"
           textTransform="uppercase"
           size={buttonSize}

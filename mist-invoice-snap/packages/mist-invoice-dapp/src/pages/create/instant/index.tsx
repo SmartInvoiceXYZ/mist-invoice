@@ -1,5 +1,3 @@
-
-
 import {
   Button,
   Text,
@@ -9,24 +7,24 @@ import {
   useBreakpointValue,
   VStack,
   Heading,
-} from "@chakra-ui/react";
-import React, { useContext, useEffect, useRef, useState } from "react";
+} from '@chakra-ui/react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import { useFetchTokensViaIPFS } from "../../../hooks/useFetchTokensViaIPFS";
+import { useFetchTokensViaIPFS } from '../../../hooks/useFetchTokensViaIPFS';
 
-import { FormConfirmation } from "../../../components/instant/FormConfirmation";
-import { InstantPaymentDetailsForm } from "../../../components/instant/PaymentDetailsForm";
-import { ProjectDetailsForm } from "../../../components/instant/ProjectDetailsForm";
-import { RegisterSuccess } from "../../../components/RegisterSuccess";
+import { FormConfirmation } from '../../../components/instant/FormConfirmation';
+import { InstantPaymentDetailsForm } from '../../../components/instant/PaymentDetailsForm';
+import { ProjectDetailsForm } from '../../../components/instant/ProjectDetailsForm';
+import { RegisterSuccess } from '../../../components/RegisterSuccess';
 import {
   CreateContext,
   CreateContextProvider,
-} from "../../../context/CreateContext";
-import { Web3Context } from "../../../context/Web3Context";
-import { Container } from "../../../components/Container";
-import { StepInfo } from "../../../components/StepInfo";
-import { INSTANT_STEPS, INVOICE_TYPES } from "../../../utils/";
-import { NetworkChangeAlertModal } from "../../../components/NetworkChangeAlertModal";
+} from '../../../context/CreateContext';
+import { Web3Context } from '../../../context/Web3Context';
+import { Container } from '../../../components/Container';
+import { StepInfo } from '../../../components/StepInfo';
+import { ChainId, INSTANT_STEPS, INVOICE_TYPES } from '../../../utils/';
+import { NetworkChangeAlertModal } from '../../../components/NetworkChangeAlertModal';
 
 export const CreateInvoiceInstant = () => {
   return (
@@ -54,11 +52,11 @@ export const CreateInvoiceInstantInner = () => {
   }, [invoiceType, setInvoiceType, Instant]);
   const { chainId } = useContext(Web3Context);
   const [{ tokenData, allTokens }] = useFetchTokensViaIPFS();
-  const prevChainIdRef = useRef(null);
+  const prevChainIdRef = useRef<ChainId>();
   const [showChainChangeAlert, setShowChainChangeAlert] = useState(false);
-  const [buttonSize, setButtonSize] = useState("md");
-  const [stackWidth, setStackWidth] = useState("95%");
-  const [headingSize, setHeadingSize] = useState("125%");
+  const [buttonSize, setButtonSize] = useState('md');
+  const [stackWidth, setStackWidth] = useState('95%');
+  const [headingSize, setHeadingSize] = useState('125%');
 
   // const _buttonSize = useBreakpointValue({ base: "sm", sm: "md", md: "lg" });
   // setButtonSize(_buttonSize);
@@ -90,7 +88,7 @@ export const CreateInvoiceInstantInner = () => {
         <RegisterSuccess />
       ) : tokenData ? (
         <Stack
-          direction={{ base: "column", lg: "column" }}
+          direction={{ base: 'column', lg: 'column' }}
           spacing="2rem"
           align="center"
           justify="center"
@@ -105,8 +103,8 @@ export const CreateInvoiceInstantInner = () => {
             chainId={chainId}
           />
           <VStack
-            spacing={{ base: "1.5rem", lg: "1rem" }}
-            w={{ base: "100%", md: "auto" }}
+            spacing={{ base: '1.5rem', lg: '1rem' }}
+            w={{ base: '100%', md: 'auto' }}
           >
             <Heading fontWeight="700" fontSize={headingSize}>
               Create an Instant Invoice
@@ -138,24 +136,24 @@ export const CreateInvoiceInstantInner = () => {
                 goBack={goBackHandler}
               />
               <ProjectDetailsForm
-                display={currentStep === 1 ? "flex" : "none"}
+                display={currentStep === 1 ? 'flex' : 'none'}
                 tokenData={tokenData}
                 allTokens={allTokens}
               />
               <InstantPaymentDetailsForm
-                display={currentStep === 2 ? "flex" : "none"}
+                display={currentStep === 2 ? 'flex' : 'none'}
                 tokenData={tokenData}
                 allTokens={allTokens}
               />
               <FormConfirmation
-                display={currentStep === 3 ? "flex" : "none"}
+                display={currentStep === 3 ? 'flex' : 'none'}
                 tokenData={tokenData}
                 allTokens={allTokens}
               />
               <Grid templateColumns="1fr" gap="1rem" w="100%" marginTop="20px">
                 <Button
-                  _hover={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
-                  _active={{ backgroundColor: "rgba(61, 136, 248, 0.7)" }}
+                  _hover={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
+                  _active={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
                   color="white"
                   backgroundColor="blue.1"
                   onClick={nextStepHandler}
