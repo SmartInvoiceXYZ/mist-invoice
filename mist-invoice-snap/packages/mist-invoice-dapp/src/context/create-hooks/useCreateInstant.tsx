@@ -1,6 +1,5 @@
-import { useMemo, useEffect } from "react";
-import { isAddress } from "@ethersproject/address";
-import { BigNumberish } from "ethers";
+import { useMemo, useEffect } from 'react';
+import { BigNumberish, isAddress } from 'ethers';
 
 export function useCreateInstant({
   step1Valid,
@@ -18,7 +17,7 @@ export function useCreateInstant({
   paymentAddress: string;
   paymentToken: string;
   paymentDue: BigNumberish;
-  milestones: number;
+  milestones: string;
   setAllValid: (allValid: boolean) => void;
 }) {
   const instantStep2Valid = useMemo(
@@ -28,15 +27,15 @@ export function useCreateInstant({
       isAddress(paymentToken) &&
       BigInt(paymentDue) > 0 &&
       !isNaN(Number(milestones)) &&
-      milestones > 0 &&
+      Number(milestones) > 0 &&
       Array.from(
         new Set([
           clientAddress.toLowerCase(),
           paymentAddress.toLowerCase(),
           paymentToken.toLowerCase(),
-        ])
+        ]),
       ).length === 3,
-    [clientAddress, paymentAddress, paymentToken, paymentDue, milestones]
+    [clientAddress, paymentAddress, paymentToken, paymentDue, milestones],
   );
 
   useEffect(() => {

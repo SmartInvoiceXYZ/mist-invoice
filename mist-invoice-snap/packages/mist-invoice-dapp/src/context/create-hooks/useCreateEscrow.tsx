@@ -1,6 +1,5 @@
-import { useMemo, useEffect } from "react";
-import { isAddress } from "@ethersproject/address";
-import { BigNumberish } from "ethers";
+import { useMemo, useEffect } from 'react';
+import { BigNumberish, isAddress } from 'ethers';
 
 export function useCreateEscrow({
   step1Valid,
@@ -22,7 +21,7 @@ export function useCreateEscrow({
   payments: BigNumberish[];
   paymentToken: string;
   paymentDue: BigNumberish;
-  milestones: number;
+  milestones: string;
   termsAccepted: boolean;
   arbitrationProvider: string;
   setAllValid: (allValid: boolean) => void;
@@ -35,7 +34,7 @@ export function useCreateEscrow({
       isAddress(arbitrationProvider) &&
       BigInt(paymentDue) > 0 &&
       !isNaN(Number(milestones)) &&
-      milestones > 0 &&
+      Number(milestones) > 0 &&
       termsAccepted &&
       Array.from(
         new Set([
@@ -43,7 +42,7 @@ export function useCreateEscrow({
           paymentAddress.toLowerCase(),
           paymentToken.toLowerCase(),
           arbitrationProvider.toLowerCase(),
-        ])
+        ]),
       ).length === 4,
     [
       clientAddress,
@@ -53,12 +52,14 @@ export function useCreateEscrow({
       paymentDue,
       milestones,
       termsAccepted,
-    ]
+    ],
   );
 
   const escrowStep3Valid = useMemo(
-    () => payments.reduce((t, a) => BigInt(t) + BigInt(a), BigInt(0)) === paymentDue,
-    [payments, paymentDue]
+    () =>
+      payments.reduce((t, a) => BigInt(t) + BigInt(a), BigInt(0)) ===
+      paymentDue,
+    [payments, paymentDue],
   );
 
   useEffect(() => {

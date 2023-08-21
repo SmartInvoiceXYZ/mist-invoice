@@ -92,7 +92,6 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
       [providerAddress, data.providerRandom],
     ];
 
-    // const _tree = StandardMerkleTree.of(values, ["address", "bytes32"]);
     const _tree = new IncrementalMerkleTree(poseidon2, 2, 0, 2, values);
     setTree(_tree);
     setData({
@@ -102,34 +101,6 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
   }, [account, providerAddress, data]);
 
   useEffect(() => {
-    // const generate = () => {
-    //   generateKey("aes", { length: 512 }, (err, key) => {
-    //     if (err) logError(err);
-    //     else {
-    //       const clientKey = key.export().toString("hex");
-    //       setData({ ...data, clientKey });
-    //     }
-    //   });
-    //   generateKey("aes", { length: 512 }, (err, key) => {
-    //     if (err) logError(err);
-    //     else {
-    //       const providerKey = key.export().toString("hex");
-    //       setData({ ...data, providerKey });
-    //     }
-    //   });
-
-    //   const clientRandom = randomBytes(32);
-    //   const providerRandom = randomBytes(32);
-    //   const generated = {
-    //     ...data,
-    //     clientRandom,
-    //     providerRandom,
-    //   };
-
-    //   setData(generated);
-
-    //   return generated;
-    // };
     const generate = async () => {
       const random = getBigInt(randomBytes(32).toString("hex"));
       const tokenAddress = "0x..."

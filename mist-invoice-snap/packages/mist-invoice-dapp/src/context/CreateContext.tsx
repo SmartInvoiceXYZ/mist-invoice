@@ -1,4 +1,4 @@
-import { BigNumber, utils } from "ethers";
+import { AbiCoder, encodeBytes32String, Transaction } from 'ethers';
 import React, {
   createContext,
   useCallback,
@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useMemo,
   useState,
-} from "react";
+} from 'react';
 
 import {
   getResolvers,
@@ -14,54 +14,138 @@ import {
   getInvoiceFactoryAddress,
   isValidLink,
   logError,
-} from "../utils/helpers";
-import { register } from "../utils/invoice";
+} from '../utils/helpers';
+import { register } from '../utils/invoice';
 // import { uploadMetadata } from "../utils";
-import { Web3Context } from "./Web3Context";
+import { Web3Context } from './Web3Context';
 
-import { INSTANT_STEPS, ESCROW_STEPS } from "../utils/constants";
+import { INSTANT_STEPS, ESCROW_STEPS } from '../utils/constants';
 
-import { INVOICE_TYPES } from "../utils/constants";
-import { useCreateInstant } from "./create-hooks/useCreateInstant";
-import { useCreateEscrow } from "./create-hooks/useCreateEscrow";
+import { INVOICE_TYPES } from '../utils/constants';
+import { useCreateInstant } from './create-hooks/useCreateInstant';
+import { useCreateEscrow } from './create-hooks/useCreateEscrow';
 
-export const CreateContext = createContext();
+export type ProjectAgreement = {
+  type: string;
+  src: string;
+  createdAt: string;
+};
+
+export type CreateContextType = {
+  projectName?: string;
+  projectDescription?: string;
+  projectAgreement?: ProjectAgreement[];
+  projectAgreementSource?: string;
+  projectAgreementLinkType?: string;
+  startDate?: number;
+  endDate?: number;
+  safetyValveDate?: number;
+  clientAddress?: string;
+  paymentAddress?: string;
+  paymentDue?: bigint;
+  paymentToken?: string;
+  milestones?: string;
+  termsAccepted?: boolean;
+  arbitrationProvider?: string;
+  payments?: bigint[];
+  invoiceType?: string;
+  deadline?: number;
+  lateFee?: bigint;
+  lateFeeInterval?: number;
+  tx?: Transaction;
+  loading: boolean;
+  currentStep: number;
+  nextStepEnabled: boolean;
+  goBackHandler: () => void;
+  nextStepHandler: () => void;
+  setProjectName: (projectName: string) => void;
+  setProjectDescription: (projectDescription: string) => void;
+  setProjectAgreement: (projectAgreement: ProjectAgreement[]) => void;
+  setProjectAgreementSource: (projectAgreementSource: string) => void;
+  setProjectAgreementLinkType: (projectAgreementLinkType: string) => void;
+  setStartDate: (startDate: number) => void;
+  setEndDate: (endDate: number) => void;
+  setSafetyValveDate: (safetyValveDate: number) => void;
+  setClientAddress: (clientAddress: string) => void;
+  setPaymentAddress: (paymentAddress: string) => void;
+  setPaymentDue: (paymentDue: bigint) => void;
+  setPaymentToken: (paymentToken: string) => void;
+  setMilestones: (milestones: string) => void;
+  setTermsAccepted: (termsAccepted: boolean) => void;
+  setArbitrationProvider: (arbitrationProvider: string) => void;
+  setPayments: (payments: bigint[]) => void;
+  setInvoiceType: (invoiceType: string) => void;
+  setDeadline: (deadline: number) => void;
+  setLateFee: (lateFee: bigint) => void;
+  setLateFeeInterval: (lateFeeInterval: number) => void;
+  createInvoice: () => Promise<void>;
+};
+
+export const CreateContext = createContext<CreateContextType>({
+  loading: true,
+  currentStep: -1,
+  nextStepEnabled: false,
+  goBackHandler: () => {},
+  nextStepHandler: () => {},
+  setProjectName: () => {},
+  setProjectDescription: () => {},
+  setProjectAgreement: () => {},
+  setProjectAgreementSource: () => {},
+  setProjectAgreementLinkType: () => {},
+  setStartDate: () => {},
+  setEndDate: () => {},
+  setSafetyValveDate: () => {},
+  setClientAddress: () => {},
+  setPaymentAddress: () => {},
+  setPaymentDue: () => {},
+  setPaymentToken: () => {},
+  setMilestones: () => {},
+  setTermsAccepted: () => {},
+  setArbitrationProvider: () => {},
+  setPayments: () => {},
+  setDeadline: () => {},
+  setInvoiceType: () => {},
+  setLateFee: () => {},
+  setLateFeeInterval: () => {},
+  createInvoice: async () => {},
+});
 
 export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const { provider: rpcProvider, chainId } = useContext(Web3Context);
-  const RESOLVERS = getResolvers(chainId);
-  const WRAPPED_NATIVE_TOKEN = getWrappedNativeToken(chainId);
+
+  const [wrappedNativeToken, setWrappedNativeToken] = useState('');
 
   // project details
-  const [invoiceType, setInvoiceType] = useState("");
-  const [projectName, setProjectName] = useState("");
-  const [projectDescription, setProjectDescription] = useState("");
+  const [invoiceType, setInvoiceType] = useState('');
+  const [projectName, setProjectName] = useState('');
+  const [projectDescription, setProjectDescription] = useState('');
   const [projectAgreementLinkType, setProjectAgreementLinkType] =
-    useState("https");
-  const [projectAgreementSource, setProjectAgreementSource] = useState("");
-  const [projectAgreement, setProjectAgreement] = useState([
+    useState('https');
+  const [projectAgreementSource, setProjectAgreementSource] = useState('');
+  const [projectAgreement, setProjectAgreement] = useState<ProjectAgreement[]>([
     {
       type: projectAgreementLinkType,
       src: projectAgreementSource,
+      createdAt: Date.now().toString(),
     },
   ]);
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-  const [detailsHash, setDetailsHash] = useState(""); // ipfsHash for projectDetails
+  const [startDate, setStartDate] = useState<number>();
+  const [endDate, setEndDate] = useState<number>();
+  const [detailsHash, setDetailsHash] = useState(''); // ipfsHash for projectDetails
 
   // payment details
-  const [clientAddress, setClientAddress] = useState("");
-  const [paymentAddress, setPaymentAddress] = useState("");
+  const [clientAddress, setClientAddress] = useState('');
+  const [paymentAddress, setPaymentAddress] = useState('');
   const [paymentDue, setPaymentDue] = useState(BigInt(0));
-  const [paymentToken, setPaymentToken] = useState(WRAPPED_NATIVE_TOKEN);
-  const [milestones, setMilestones] = useState("1");
+  const [paymentToken, setPaymentToken] = useState('');
+  const [milestones, setMilestones] = useState('1');
 
   // escrow details
-  const [safetyValveDate, setSafetyValveDate] = useState();
+  const [safetyValveDate, setSafetyValveDate] = useState(0);
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [arbitrationProvider, setArbitrationProvider] = useState(RESOLVERS[0]);
+  const [arbitrationProvider, setArbitrationProvider] = useState('');
   const [requireVerification, setRequireVerification] = useState(true);
 
   // instant payment details
@@ -79,20 +163,30 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
   const [nextStepEnabled, setNextStepEnabled] = useState(false);
   const [allValid, setAllValid] = useState(false);
 
+  useEffect(() => {
+    if (!chainId) return;
+    const resolvers = getResolvers(chainId);
+    if (resolvers?.length > 0) setArbitrationProvider(resolvers[0]);
+    const wrapNatToken = getWrappedNativeToken(chainId);
+    setWrappedNativeToken(wrapNatToken);
+    setPaymentToken(wrapNatToken);
+  }, [chainId]);
+
   const { Escrow, Instant } = INVOICE_TYPES;
 
   // common for all invoice types
   const step1Valid = useMemo(() => {
     if (invoiceType === Escrow) {
       return (
-        projectName &&
+        projectName !== undefined &&
         isValidLink(projectAgreementSource) &&
-        safetyValveDate &&
+        safetyValveDate !== undefined &&
         safetyValveDate > new Date().getTime()
       );
     } else if (invoiceType === Instant) {
-      return projectName && isValidLink(projectAgreementSource);
+      return projectName !== undefined && isValidLink(projectAgreementSource);
     }
+    return false;
   }, [
     projectName,
     projectAgreementSource,
@@ -167,19 +261,19 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
   const encodeEscrowData = useCallback(
     (factoryAddress: string) => {
       const resolverType = 0; // 0 for individual, 1 for erc-792 arbitrator
-      const type = formatBytes32String(Escrow);
+      const type = encodeBytes32String(Escrow);
 
       const data = AbiCoder.prototype.encode(
         [
-          "address",
-          "uint8",
-          "address",
-          "address",
-          "uint256",
-          "bytes32",
-          "address",
-          "bool",
-          "address",
+          'address',
+          'uint8',
+          'address',
+          'address',
+          'uint256',
+          'bytes32',
+          'address',
+          'bool',
+          'address',
         ],
         [
           clientAddress,
@@ -188,10 +282,10 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
           paymentToken,
           Math.floor(safetyValveDate / 1000),
           detailsHash,
-          WRAPPED_NATIVE_TOKEN,
+          wrappedNativeToken,
           requireVerification,
           factoryAddress,
-        ]
+        ],
       );
 
       return { type, data };
@@ -202,33 +296,33 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
       paymentToken,
       safetyValveDate,
       detailsHash,
-      WRAPPED_NATIVE_TOKEN,
+      wrappedNativeToken,
       requireVerification,
       Escrow,
-    ]
+    ],
   );
 
   const encodeInstantData = useCallback(() => {
-    const type = formatBytes32String(Instant);
+    const type = encodeBytes32String(Instant);
     const data = AbiCoder.prototype.encode(
       [
-        "address",
-        "address",
-        "uint256",
-        "bytes32",
-        "address",
-        "uint256",
-        "uint256",
+        'address',
+        'address',
+        'uint256',
+        'bytes32',
+        'address',
+        'uint256',
+        'uint256',
       ],
       [
         clientAddress,
         paymentToken,
         Math.floor(deadline / 1000),
         detailsHash,
-        WRAPPED_NATIVE_TOKEN,
+        wrappedNativeToken,
         lateFee,
         lateFeeInterval,
-      ]
+      ],
     );
 
     return { type, data };
@@ -237,7 +331,7 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
     paymentToken,
     deadline,
     detailsHash,
-    WRAPPED_NATIVE_TOKEN,
+    wrappedNativeToken,
     lateFee,
     lateFeeInterval,
     Instant,
@@ -247,9 +341,9 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
     let type;
     let data;
 
-    if (allValid && detailsHash) {
+    if (chainId && rpcProvider && allValid && detailsHash) {
       setLoading(true);
-      setTx();
+      setTx(undefined);
 
       const factoryAddress = getInvoiceFactoryAddress(chainId);
 
@@ -260,7 +354,7 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
         data = escrowInfo.data;
         paymentAmounts = payments;
       } else if (invoiceType === Instant) {
-        const instantInfo = encodeInstantData(factoryAddress);
+        const instantInfo = encodeInstantData();
         type = instantInfo.type;
         data = instantInfo.data;
         paymentAmounts = [paymentDue];
@@ -272,7 +366,7 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
         paymentAddress,
         paymentAmounts,
         data,
-        type
+        type,
       ).catch((registerError) => {
         logError({ registerError });
         setLoading(false);

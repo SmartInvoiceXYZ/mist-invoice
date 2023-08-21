@@ -1,16 +1,22 @@
-import { SimpleGrid, Text, VStack } from "@chakra-ui/react";
-import React, { useContext, useState } from "react";
+import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import React, { useContext, useState } from 'react';
 
-import { CreateContext } from "../../context/CreateContext";
+import { CreateContext } from '../../context/CreateContext';
 import {
   OrderedInput,
   OrderedLinkInput,
   OrderedTextarea,
-} from "../../components/OrderedInput";
+} from '../../components/OrderedInput';
 
-import { formatDate } from "../../utils/helpers";
+import { formatDate } from '../../utils/helpers';
 
-export const ProjectDetailsForm = ({ display }) => {
+export type ProjectDetailsFormProps = {
+  display: string;
+};
+
+export const ProjectDetailsForm: React.FC<ProjectDetailsFormProps> = ({
+  display,
+}) => {
   const {
     startDate,
     setStartDate,
@@ -29,8 +35,8 @@ export const ProjectDetailsForm = ({ display }) => {
     invoiceType,
   } = useContext(CreateContext);
 
-  const startDateString = startDate ? formatDate(startDate) : "";
-  const endDateString = endDate ? formatDate(endDate) : "";
+  const startDateString = startDate ? formatDate(startDate) : '';
+  const endDateString = endDate ? formatDate(endDate) : '';
   const [nameInvalid, setNameInvalid] = useState(false);
   const [dateInvalid, setDateInvalid] = useState(false);
 
@@ -41,10 +47,10 @@ export const ProjectDetailsForm = ({ display }) => {
         value={projectName}
         setValue={(v) => {
           setProjectName(v);
-          setNameInvalid(v === "");
+          setNameInvalid(v === '');
         }}
         isInvalid={nameInvalid}
-        error={nameInvalid ? "Cannot be empty" : ""}
+        error={nameInvalid ? 'Cannot be empty' : ''}
         tooltip="Choose something easily identifiable by you & your client. This is how the invoice will appear on your sortable invoices list later."
         required="required"
       />
@@ -62,7 +68,7 @@ export const ProjectDetailsForm = ({ display }) => {
         value={projectDescription}
         setValue={setProjectDescription}
         infoText="140 character limit"
-        maxLength="140"
+        maxLength={140}
         required="optional"
         tooltip="This brief description will help you & your client remember key project details in the future."
       />
@@ -70,7 +76,7 @@ export const ProjectDetailsForm = ({ display }) => {
         w="100%"
         spacing="1rem"
         columns={{ base: 1, sm: 2, md: 2 }}
-        mb={dateInvalid ? "-0.5rem" : ""}
+        mb={dateInvalid ? '-0.5rem' : ''}
       >
         <OrderedInput
           label="Project Start Date"
@@ -88,7 +94,7 @@ export const ProjectDetailsForm = ({ display }) => {
           required="optional"
           tooltip="This is the date you expect to complete work on this project."
         />
-        {/* <OrderedInput
+        <OrderedInput
           gridArea={{
             base: 'auto/auto/auto/auto',
             sm: '2/1/2/span 2',
@@ -96,8 +102,10 @@ export const ProjectDetailsForm = ({ display }) => {
           }}
           label="Safety Valve Date"
           type="date"
-          value={safetyValveDateString}
-          setValue={v => {
+          value={
+            safetyValveDate ? new Date(safetyValveDate).toLocaleString() : ''
+          }
+          setValue={(v) => {
             const date = Date.parse(v);
             setSafetyValveDate(date);
             setDateInvalid(date < new Date().getTime());
@@ -105,7 +113,7 @@ export const ProjectDetailsForm = ({ display }) => {
           tooltip="If you do not complete this project by this date, the client can withdraw deposited funds in escrow after 00:00:00 GMT on this date. (Add extra time after the expected end date, in case things take longer to complete)."
           isInvalid={dateInvalid}
           required="required"
-        /> */}
+        />
       </SimpleGrid>
       {dateInvalid && (
         <Text
@@ -115,7 +123,7 @@ export const ProjectDetailsForm = ({ display }) => {
           fontSize="xs"
           fontWeight="700"
         >
-          {dateInvalid ? "Invalid Safety Valve Date: Already Passed" : ""}
+          {dateInvalid ? 'Invalid Safety Valve Date: Already Passed' : ''}
         </Text>
       )}
     </VStack>

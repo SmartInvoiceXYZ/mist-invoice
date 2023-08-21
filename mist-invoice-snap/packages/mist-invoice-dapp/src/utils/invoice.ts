@@ -7,42 +7,42 @@ import {
   Provider,
   Transaction,
   isAddress,
-} from "ethers";
+} from 'ethers';
 
-import { getInvoiceFactoryAddress, logError } from "./helpers";
-import { ChainId } from ".";
+import { getInvoiceFactoryAddress, logError } from './helpers';
+import { ChainId } from '.';
 
 export const register = async (
   factoryAddress: string,
   ethersProvider: BrowserProvider,
-  provider: Provider,
+  paymentAddress: string,
   amounts: any,
   data: any,
-  type: any
+  type: any,
 ) => {
   const abi = new Interface([
-    "function create(address _recipient, uint256[] calldata _amounts, bytes _data, bytes32 _type) public",
+    'function create(address _recipient, uint256[] calldata _amounts, bytes _data, bytes32 _type) public',
   ]);
   const signer = await ethersProvider.getSigner();
   const contract = new Contract(factoryAddress, abi, signer);
 
-  return contract.create(provider, amounts, data, type);
+  return contract.create(ethersProvider, amounts, data, type);
 };
 
 export const getResolutionRateFromFactory = async (
   chainId: ChainId,
   ethersProvider: Provider,
-  resolver: any
+  resolver: any,
 ) => {
   if (!isAddress(resolver)) return 20;
   try {
     const abi = new Interface([
-      "function resolutionRates(address resolver) public view returns (uint256)",
+      'function resolutionRates(address resolver) public view returns (uint256)',
     ]);
     const contract = new Contract(
       getInvoiceFactoryAddress(chainId),
       abi,
-      ethersProvider
+      ethersProvider,
     );
 
     const resolutionRate = Number(await contract.resolutionRates(resolver));
@@ -53,31 +53,39 @@ export const getResolutionRateFromFactory = async (
   }
 };
 
-export const awaitInvoiceAddress = async (ethersProvider: Provider, tx: Transaction) => {
-  await tx.wait(1);
+export const awaitInvoiceAddress = async (
+  ethersProvider: Provider,
+  tx: Transaction,
+) => {
+  // await tx.wait(1);
   const abi = new Interface([
-    "event LogNewInvoice(uint256 indexed index, address indexed invoice, uint256[] amounts, bytes32 invoiceType, uint256 version)",
+    'event LogNewInvoice(uint256 indexed index, address indexed invoice, uint256[] amounts, bytes32 invoiceType, uint256 version)',
   ]);
+  if (!tx.hash) throw new Error('Transaction hash not found.');
   const receipt = await ethersProvider.getTransactionReceipt(tx.hash);
-  const eventFragment = abi.events[Object.keys(abi.events)[0]];
-  const eventTopic = abi.getEventTopic(eventFragment);
-  const event = receipt.logs.find((e) => e.topics[0] === eventTopic);
+  if (receipt === null) throw new Error('Transaction receipt not found.');
+  const logNewInvoice = 'LogNewInvoice';
+  const eventFragment = abi.getEvent(logNewInvoice);
+  if (eventFragment === null)
+    throw new Error(`Event ${logNewInvoice} not found.`);
+  const eventTopic = eventFragment.topicHash;
+  const event = receipt?.logs.find((e) => e.topics[0] === eventTopic);
   if (event) {
     const decodedLog = abi.decodeEventLog(
       eventFragment,
       event.data,
-      event.topics
+      event.topics,
     );
     return decodedLog.invoice;
   }
-  return "";
+  return '';
 };
 
 export const release = async (
   ethersProvider: BrowserProvider,
-  address: string
+  address: string,
 ) => {
-  const abi = new Interface(["function release() public"]);
+  const abi = new Interface(['function release() public']);
   const signer = await ethersProvider.getSigner();
   const contract = new Contract(address, abi, signer);
   return contract.release();
@@ -85,9 +93,9 @@ export const release = async (
 
 export const withdraw = async (
   ethersProvider: BrowserProvider,
-  address: string
+  address: string,
 ) => {
-  const abi = new Interface(["function withdraw() public"]);
+  const abi = new Interface(['function withdraw() public']);
   const signer = await ethersProvider.getSigner();
   const contract = new Contract(address, abi, signer);
   return contract.withdraw();
@@ -96,9 +104,9 @@ export const withdraw = async (
 export const lock = async (
   ethersProvider: BrowserProvider,
   address: string,
-  detailsHash: BytesLike // 32 bits hex
+  detailsHash: BytesLike, // 32 bits hex
 ) => {
-  const abi = new Interface(["function lock(bytes32 details) external"]);
+  const abi = new Interface(['function lock(bytes32 details) external']);
   const signer = await ethersProvider.getSigner();
   const contract = new Contract(address, abi, signer);
   return contract.lock(detailsHash);
@@ -109,10 +117,10 @@ export const resolve = async (
   address: string,
   clientAward: number,
   providerAward: number,
-  detailsHash: BytesLike // 32 bits hex
+  detailsHash: BytesLike, // 32 bits hex
 ) => {
   const abi = new Interface([
-    "function resolve(uint256 clientAward, uint256 providerAward, bytes32 details) external",
+    'function resolve(uint256 clientAward, uint256 providerAward, bytes32 details) external',
   ]);
   const signer = await ethersProvider.getSigner();
   const contract = new Contract(address, abi, signer);
@@ -158,10 +166,10 @@ export const unixToDateTime = (unixTimestamp: number) => {
 // // Functions for Instant type
 export const getTotalDue = async (
   ethersProvider: Provider,
-  address: string
+  address: string,
 ) => {
   const abi = new Interface([
-    "function getTotalDue() public view returns(uint256)",
+    'function getTotalDue() public view returns(uint256)',
   ]);
   const contract = new Contract(address, abi, ethersProvider);
   return contract.getTotalDue();
@@ -169,11 +177,11 @@ export const getTotalDue = async (
 
 export const getTotalFulfilled = async (
   ethersProvider: Provider,
-  address: string
+  address: string,
 ) => {
   const abi = new Interface([
-    "function totalFulfilled() public view returns(uint256)",
-    "function fulfilled() public view returns (bool)",
+    'function totalFulfilled() public view returns(uint256)',
+    'function fulfilled() public view returns (bool)',
   ]);
   const contract = new Contract(address, abi, ethersProvider);
   return {
@@ -184,10 +192,10 @@ export const getTotalFulfilled = async (
 
 export const getDeadline = async (
   ethersProvider: Provider,
-  address: string
+  address: string,
 ) => {
   const abi = new Interface([
-    "function deadline() public view returns(uint256)",
+    'function deadline() public view returns(uint256)',
   ]);
   const contract = new Contract(address, abi, ethersProvider);
   return contract.deadline();
@@ -209,10 +217,10 @@ export const depositTokens = async (
   ethersProvider: BrowserProvider,
   address: string,
   tokenAddress: string,
-  amount: BigNumberish
+  amount: BigNumberish,
 ) => {
   const abi = new Interface([
-    "function depositTokens(address _token, uint256 _amount) external",
+    'function depositTokens(address _token, uint256 _amount) external',
   ]);
   const signer = await ethersProvider.getSigner();
   const contract = new Contract(address, abi, signer);
@@ -223,10 +231,10 @@ export const tipTokens = async (
   ethersProvider: BrowserProvider,
   address: string,
   tokenAddress: string,
-  amount: BigNumberish
+  amount: BigNumberish,
 ) => {
   const abi = new Interface([
-    "function tip(address _token, uint256 _amount) external",
+    'function tip(address _token, uint256 _amount) external',
   ]);
   const signer = await ethersProvider.getSigner();
   const contract = new Contract(address, abi, signer);

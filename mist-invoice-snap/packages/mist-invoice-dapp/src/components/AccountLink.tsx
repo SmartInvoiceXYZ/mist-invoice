@@ -1,19 +1,29 @@
-import { Flex, Link, Text } from "@chakra-ui/react";
-import { isAddress } from "@ethersproject/address";
-import React, { useContext, useEffect, useState } from "react";
+import { Flex, Link, Text } from '@chakra-ui/react';
+import { isAddress } from '@ethersproject/address';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
-import { Web3Context } from "../context/Web3Context";
-import { theme } from "../theme";
+import { Web3Context } from '../context/Web3Context';
+import { theme } from '../theme';
 import {
   getProfile,
   getAddressLink,
   getResolverInfo,
   getResolverString,
   isKnownResolver,
-} from "../utils";
+  Chain,
+  ChainId,
+} from '../utils';
+
+export type Profile = {
+  address: string;
+  name: string;
+  emoji: string;
+  imageHash: string;
+  imageUrl: string;
+};
 
 export type AccountLinkProps = {
-  address: string;
+  address?: string;
   chainId?: number;
 };
 
@@ -22,16 +32,22 @@ export const AccountLink: React.FC<AccountLinkProps> = ({
   chainId: inputChainId,
 }) => {
   const { chainId: walletChainId } = useContext(Web3Context);
-  const address = inputAddress.toLowerCase();
-  const [profile, setProfile] = useState();
-  const chainId = inputChainId || walletChainId;
-  const isResolver = isKnownResolver(chainId, address);
+  const address = useMemo(
+    () => (inputAddress ? inputAddress.toLowerCase() : undefined),
+    [inputAddress],
+  );
+  const [profile, setProfile] = useState<Profile>();
+  const chainId = (inputChainId || walletChainId) as ChainId;
+  const isResolver = useMemo(
+    () => (chainId && address ? isKnownResolver(chainId, address) : false),
+    [chainId, address],
+  );
 
   useEffect(() => {
     let isSubscribed = true;
-    if (!isResolver && isAddress(address)) {
+    if (!isResolver && address && isAddress(address)) {
       getProfile(address).then((p) =>
-        isSubscribed ? setProfile(p) : undefined
+        isSubscribed ? setProfile(p) : undefined,
       );
     }
     return () => {
@@ -39,11 +55,18 @@ export const AccountLink: React.FC<AccountLinkProps> = ({
     };
   }, [address, isResolver]);
 
-  let displayString = getResolverString(chainId, address);
+  let displayString = useMemo(
+    () => (chainId && address ? getResolverString(chainId, address) : ''),
+    [chainId, address],
+  );
 
-  let imageUrl = isResolver
-    ? getResolverInfo(chainId, address).logoUrl
-    : undefined;
+  let imageUrl = useMemo(
+    () =>
+      chainId && address && isResolver
+        ? getResolverInfo(chainId, address).logoUrl
+        : undefined,
+    [chainId, address, isResolver],
+  );
 
   if (!isResolver && profile) {
     if (profile.name) {
@@ -56,15 +79,15 @@ export const AccountLink: React.FC<AccountLinkProps> = ({
 
   return (
     <Link
-      href={getAddressLink(chainId, address)}
+      href={chainId && address ? getAddressLink(chainId, address) : undefined}
       isExternal
       display="inline-flex"
       textAlign="right"
       bgColor="white"
       px="0.25rem"
       _hover={{
-        textDecor: "none",
-        bgColor: "#ECECF3",
+        textDecor: 'none',
+        bgColor: '#ECECF3',
       }}
       borderRadius="5px"
       alignItems="center"

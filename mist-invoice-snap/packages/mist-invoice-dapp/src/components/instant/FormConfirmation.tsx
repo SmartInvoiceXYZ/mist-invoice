@@ -6,14 +6,14 @@ import {
   VStack,
   useBreakpointValue,
   Spacer,
-} from "@chakra-ui/react";
-import { formatUnits } from "ethers";
-import React, { useContext, useState } from "react";
+} from '@chakra-ui/react';
+import { formatUnits } from 'ethers';
+import React, { useContext, useMemo, useState } from 'react';
 
-import { CreateContext } from "../../context/CreateContext";
-import { Web3Context } from "../../context/Web3Context";
-import { AccountLink } from "../../components/AccountLink";
-import { getDateString, getTokenInfo } from "../../utils";
+import { CreateContext } from '../../context/CreateContext';
+import { Web3Context } from '../../context/Web3Context';
+import { AccountLink } from '../../components/AccountLink';
+import { getDateString, getTokenInfo } from '../../utils';
 
 export type FormConfirmationProps = {
   display: string;
@@ -39,9 +39,15 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({
     paymentDue,
     paymentToken,
   } = useContext(CreateContext);
-  const [flexWidth, setFlexWidth] = useState("95%");
+  const [flexWidth, setFlexWidth] = useState('95%');
 
-  const { decimals, symbol } = getTokenInfo(chainId, paymentToken, tokenData);
+  const { decimals, symbol } = useMemo(
+    () =>
+      chainId && paymentToken
+        ? getTokenInfo(chainId, paymentToken, tokenData)
+        : { decimals: 0, symbol: '' },
+    [chainId, paymentToken, tokenData],
+  );
 
   // const flexWidth = useBreakpointValue({
   //   base: "95%",
@@ -62,14 +68,16 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({
         {projectName}
       </Text>
       {projectDescription && <Text align="center">{projectDescription}</Text>}
-      <Link
-        href={projectAgreement.src}
-        isExternal
-        mb="1rem"
-        textDecor="underline"
-      >
-        {projectAgreement.src}
-      </Link>
+      {projectAgreement?.length && projectAgreement[0]?.src && (
+        <Link
+          href={projectAgreement[0].src}
+          isExternal
+          mb="1rem"
+          textDecor="underline"
+        >
+          {projectAgreement[0].src}
+        </Link>
+      )}
       <Divider />
       <Flex justify="space-between" width={flexWidth}>
         <Text>{`Client Address: `}</Text>
@@ -98,26 +106,30 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({
           <Text textAlign="right">{getDateString(deadline / 1000)}</Text>
         </Flex>
       )}
-      {lateFee && lateFeeInterval && (
+      {lateFee !== undefined && lateFeeInterval && (
         <Flex justify="space-between" width={flexWidth}>
           <Text>{`Late Fee: `}</Text>
           <Text textAlign="right">
             {`${formatUnits(lateFee, decimals)} ${symbol} 
               every ${lateFeeInterval / (1000 * 60 * 60 * 24)} 
-              day${lateFeeInterval / (1000 * 60 * 60 * 24) > 1 && "s"}`}
+              day${lateFeeInterval / (1000 * 60 * 60 * 24) > 1 && 's'}`}
           </Text>
         </Flex>
       )}
-      <Divider
-        color="black"
-        w="calc(100% + 2rem)"
-        transform="translateX(-1rem)"
-      />
-      <Flex justify="flex-end">
-        <Text color="blue.1" ml="2.5rem" fontWeight="bold">
-          {`${formatUnits(paymentDue, decimals)} ${symbol} Total`}
-        </Text>
-      </Flex>
+      {paymentDue !== undefined && (
+        <>
+          <Divider
+            color="black"
+            w="calc(100% + 2rem)"
+            transform="translateX(-1rem)"
+          />
+          <Flex justify="flex-end">
+            <Text color="blue.1" ml="2.5rem" fontWeight="bold">
+              {`${formatUnits(paymentDue, decimals)} ${symbol} Total`}
+            </Text>
+          </Flex>
+        </>
+      )}
     </VStack>
   );
 };

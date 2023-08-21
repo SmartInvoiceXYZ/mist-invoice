@@ -1,17 +1,17 @@
-import { SafeAppWeb3Modal as Web3Modal } from "@gnosis.pm/safe-apps-web3modal";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import { BrowserProvider, Eip1193Provider } from "ethers";
+import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import { BrowserProvider, Eip1193Provider } from 'ethers';
 import React, {
   createContext,
   useCallback,
   useContext,
   useEffect,
   useState,
-} from "react";
-import Web3, { EthExecutionAPI, Web3BaseProvider } from "web3";
+} from 'react';
+import Web3, { EthExecutionAPI, Web3BaseProvider } from 'web3';
 
-import { theme } from "../theme";
-import { getRpcUrl, logError, ChainId, SUPPORTED_NETWORKS } from "../utils";
+import { theme } from '../theme';
+import { getRpcUrl, logError, ChainId, SUPPORTED_NETWORKS } from '../utils';
 
 const providerOptions = {
   walletconnect: {
@@ -32,7 +32,7 @@ type Web3ContextType = {
   loading: boolean;
   account?: string;
   provider?: BrowserProvider;
-  chainId?: number;
+  chainId?: ChainId;
   connectAccount: () => Promise<void>;
   disconnect: () => Promise<void>;
 };
@@ -40,7 +40,7 @@ type Web3ContextType = {
 type Web3ProviderState = {
   account?: string;
   provider?: BrowserProvider;
-  chainId?: number;
+  chainId?: ChainId;
 };
 
 export const Web3Context = createContext<Web3ContextType>({
@@ -55,21 +55,21 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren> = ({
 }) => {
   const [loading, setLoading] = useState(true);
   const [{ account, provider, chainId }, setWeb3] = useState<Web3ProviderState>(
-    {}
+    {},
   );
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>();
 
   const setWeb3Provider = async (
     prov: Web3BaseProvider<EthExecutionAPI>,
-    initialCall = false
+    initialCall = false,
   ) => {
     if (prov) {
       const web3Provider = new Web3(prov);
       const gotProvider = new BrowserProvider(
-        web3Provider.currentProvider as Eip1193Provider
+        web3Provider.currentProvider as Eip1193Provider,
       );
       const network = await gotProvider.getNetwork();
-      const gotChainId = Number(network.chainId);
+      const gotChainId = Number(network.chainId) as ChainId;
       if (initialCall) {
         const signer = await gotProvider.getSigner();
         const gotAccount = await signer.getAddress();
@@ -97,6 +97,8 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren> = ({
 
   const connectWeb3 = useCallback(async () => {
     try {
+      if (!web3Modal) return;
+
       setLoading(true);
       const modalProvider = await web3Modal.requestProvider();
 
@@ -105,13 +107,13 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren> = ({
       const isGnosisSafe = !!modalProvider.safe;
 
       if (!isGnosisSafe) {
-        modalProvider.on("accountsChanged", (accounts: string[]) => {
+        modalProvider.on('accountsChanged', (accounts: string[]) => {
           setWeb3((_provider: Web3ProviderState) => ({
             ..._provider,
             account: accounts[0],
           }));
         });
-        modalProvider.on("chainChanged", () => {
+        modalProvider.on('chainChanged', () => {
           setWeb3Provider(modalProvider);
         });
       }
@@ -124,6 +126,7 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren> = ({
   }, [web3Modal]);
 
   const disconnect = useCallback(async () => {
+    if (!web3Modal) return;
     web3Modal.clearCachedProvider();
     setWeb3({});
   }, [web3Modal]);
@@ -140,7 +143,7 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren> = ({
           secondary: theme.colors.white,
           hover: theme.colors.black30,
         },
-      })
+      }),
     );
   }, []);
 
@@ -149,7 +152,7 @@ export const Web3ContextProvider: React.FC<React.PropsWithChildren> = ({
       window.ethereum.autoRefreshOnNetworkChange = false;
     }
     (async function load() {
-      if (web3Modal.cachedProvider) {
+      if (web3Modal?.cachedProvider) {
         connectWeb3();
       } else {
         setLoading(false);

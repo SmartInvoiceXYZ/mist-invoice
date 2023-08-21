@@ -1,17 +1,23 @@
-import { Checkbox, Link, SimpleGrid, Text, VStack } from "@chakra-ui/react";
-import { parseUnits } from "ethers";
-import { isAddress } from "@ethersproject/address";
-import React, { useContext, useMemo, useState } from "react";
+import { Checkbox, Link, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { parseUnits } from 'ethers';
+import { isAddress } from '@ethersproject/address';
+import React, { useContext, useMemo, useState } from 'react';
 
-import { CreateContext } from "../../context/CreateContext";
-import { Web3Context } from "../../context/Web3Context";
-import { OrderedInput, OrderedSelect } from "../../components/OrderedInput";
-import { getTokenInfo, getTokens, formatDate } from "../../utils";
+import { CreateContext } from '../../context/CreateContext';
+import { Web3Context } from '../../context/Web3Context';
+import { OrderedInput, OrderedSelect } from '../../components/OrderedInput';
+import {
+  getTokenInfo,
+  getTokens,
+  formatDate,
+  ChainId,
+  TokenData,
+} from '../../utils';
 
 export type InstantPaymentDetailsFormProps = {
   display: string;
   tokenData: any;
-  allTokens: string[];
+  allTokens: Record<ChainId, Record<string, TokenData>>;
 };
 
 export const InstantPaymentDetailsForm: React.FC<
@@ -37,26 +43,32 @@ export const InstantPaymentDetailsForm: React.FC<
     setDeadline,
   } = useContext(CreateContext);
 
-  const deadlineDateString = deadline ? formatDate(deadline) : "";
+  const deadlineDateString = deadline ? formatDate(deadline) : '';
 
   const TOKENS = useMemo(
-    () => getTokens(chainId, allTokens),
-    [chainId, allTokens]
+    () =>
+      chainId
+        ? getTokens(chainId, allTokens)
+        : ({} as Record<string, TokenData>),
+    [chainId, allTokens],
   );
 
   const { decimals, symbol } = useMemo(
-    () => getTokenInfo(chainId, paymentToken, tokenData),
-    [chainId, paymentToken, tokenData]
+    () =>
+      chainId && paymentToken
+        ? getTokenInfo(chainId, paymentToken, tokenData)
+        : { decimals: 0, symbol: '' },
+    [chainId, paymentToken, tokenData],
   );
-  const [paymentDueInput, setPaymentDueInput] = useState("");
+  const [paymentDueInput, setPaymentDueInput] = useState('');
 
   const [clientInvalid, setClientInvalid] = useState(false);
   const [providerInvalid, setProviderInvalid] = useState(false);
   const [paymentInvalid, setPaymentInvalid] = useState(false);
   const [milestonesInvalid, setMilestonesInvalid] = useState(false);
   // const [symbols, setSymbols] = useState([]);
-  const [lateFeeInput, setLateFeeInput] = useState("");
-  const [lateFeeIntervalInput, setLateFeeIntervalInput] = useState("");
+  const [lateFeeInput, setLateFeeInput] = useState('');
+  const [lateFeeIntervalInput, setLateFeeIntervalInput] = useState('');
   const lateFeeIntervalOptions = [1, 2, 7, 14, 28];
 
   return (
@@ -69,7 +81,7 @@ export const InstantPaymentDetailsForm: React.FC<
           setClientAddress(v);
           setClientInvalid(!isAddress(v));
         }}
-        error={clientInvalid ? "Invalid Address" : ""}
+        error={clientInvalid ? 'Invalid Address' : ''}
         tooltip="This is the wallet address your client uses to access the invoice, pay with, & release escrow funds with. It’s essential your client has control of this address. (Do NOT use a multi-sig address)."
         required="required"
       />
@@ -81,7 +93,7 @@ export const InstantPaymentDetailsForm: React.FC<
           setPaymentAddress(v);
           setProviderInvalid(!isAddress(v));
         }}
-        error={providerInvalid ? "Invalid Address" : ""}
+        error={providerInvalid ? 'Invalid Address' : ''}
         tooltip="This is the address of the recipient/provider. It’s how you access this invoice & where you’ll receive funds released from escrow. It’s essential you have control of this address. (Do NOT use a multi-sig address)."
         required="required"
       />
@@ -89,7 +101,7 @@ export const InstantPaymentDetailsForm: React.FC<
         w="100%"
         columns={{ base: 2, sm: 2 }}
         spacing="1rem"
-        mb={paymentInvalid ? "-0.5rem" : ""}
+        mb={paymentInvalid ? '-0.5rem' : ''}
       >
         <OrderedInput
           label="Total Payment Due"
@@ -101,7 +113,7 @@ export const InstantPaymentDetailsForm: React.FC<
             if (v && !isNaN(Number(v))) {
               const p = parseUnits(v, decimals);
               setPaymentDue(p);
-              setPaymentInvalid(p.lte(0));
+              setPaymentInvalid(p <= 0);
             } else {
               setPaymentDue(BigInt(0));
               setPaymentInvalid(true);
@@ -117,11 +129,12 @@ export const InstantPaymentDetailsForm: React.FC<
           required="required"
           tooltip="This is the cryptocurrency you’ll receive payment in. The network your wallet is connected to determines which tokens display here. (If you change your wallet network now, you’ll be forced to start the invoice over)."
         >
-          {TOKENS?.map((token) => (
-            <option value={token} key={token}>
-              {getTokenInfo(chainId, token, tokenData).symbol}
-            </option>
-          ))}
+          {chainId &&
+            Object.keys(TOKENS).map((token) => (
+              <option value={token} key={token}>
+                {getTokenInfo(chainId, token, tokenData).symbol}
+              </option>
+            ))}
         </OrderedSelect>
       </SimpleGrid>
       {(paymentInvalid || milestonesInvalid) && (
@@ -172,7 +185,7 @@ export const InstantPaymentDetailsForm: React.FC<
         >
           {lateFeeIntervalOptions.map((interval) => (
             <option value={interval} key={interval}>
-              {interval > 1 ? `Every ${interval} days` : "Every day"}
+              {interval > 1 ? `Every ${interval} days` : 'Every day'}
             </option>
           ))}
         </OrderedSelect>

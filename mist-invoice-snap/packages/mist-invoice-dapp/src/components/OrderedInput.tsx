@@ -8,17 +8,17 @@ import {
   Textarea,
   Tooltip,
   VStack,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
+} from '@chakra-ui/react';
+import React, { useState } from 'react';
 
-import { QuestionIcon } from "../icons/QuestionIcon";
-import { isValidLink } from "../utils";
+import { QuestionIcon } from '../icons/QuestionIcon';
+import { isValidLink } from '../utils';
 
 export type OrderedLinkInputProps = {
-  label: string;
-  linkType: string;
+  label?: string;
+  linkType?: string;
   setLinkType: (linkType: string) => void;
-  value: string;
+  value?: string;
   setValue: (value: string) => void;
   infoText?: string;
   tooltip?: string;
@@ -36,12 +36,12 @@ export const OrderedLinkInput: React.FC<OrderedLinkInputProps> = ({
   infoText,
   tooltip,
   placeholder,
-  type = "text",
+  type = 'text',
   required,
   ...props
 }) => {
   const [protocol, setProtocol] = useState(`${linkType}://`);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [isInvalid, setInvalid] = useState(false);
 
   return (
@@ -87,7 +87,7 @@ export const OrderedLinkInput: React.FC<OrderedLinkInputProps> = ({
               color="black"
               border="1px"
               borderColor="lightgrey"
-              _hover={{ borderColor: "lightgrey" }}
+              _hover={{ borderColor: 'lightgrey' }}
               fontWeight="normal"
               borderRadius="none"
             >
@@ -104,14 +104,14 @@ export const OrderedLinkInput: React.FC<OrderedLinkInputProps> = ({
             onChange={(e) => {
               let newInput = e.target.value;
               let newProtocol = protocol;
-              if (newInput.startsWith("https://") && newInput.length > 8) {
-                newProtocol = "https://";
+              if (newInput.startsWith('https://') && newInput.length > 8) {
+                newProtocol = 'https://';
                 newInput = newInput.slice(8);
               } else if (
-                newInput.startsWith("ipfs://") &&
+                newInput.startsWith('ipfs://') &&
                 newInput.length > 7
               ) {
-                newProtocol = "ipfs://";
+                newProtocol = 'ipfs://';
                 newInput = newInput.slice(7);
               }
               const newValue = newProtocol + newInput;
@@ -126,9 +126,9 @@ export const OrderedLinkInput: React.FC<OrderedLinkInputProps> = ({
             color="black"
             border="1px"
             borderColor="lightgrey"
-            _hover={{ borderColor: "lightgrey" }}
+            _hover={{ borderColor: 'lightgrey' }}
             isInvalid={isInvalid}
-            _invalid={{ border: "1px solid", borderColor: "red" }}
+            _invalid={{ border: '1px solid', borderColor: 'red' }}
           />
         </InputGroup>
         {isInvalid && (
@@ -149,8 +149,8 @@ export const OrderedLinkInput: React.FC<OrderedLinkInputProps> = ({
 };
 
 export type OrderedInputProps = {
-  label: string;
-  value: string;
+  label?: string;
+  value?: string;
   setValue: (value: string) => void;
   infoText?: string;
   tooltip?: string;
@@ -172,8 +172,8 @@ export const OrderedInput: React.FC<OrderedInputProps> = ({
   required,
   isInvalid = false,
   isDisabled = false,
-  type = "text",
-  error = "",
+  type = 'text',
+  error = '',
   ...props
 }) => {
   return (
@@ -208,10 +208,10 @@ export const OrderedInput: React.FC<OrderedInputProps> = ({
           color="black"
           border="1px"
           borderColor="lightgrey"
-          _hover={{ borderColor: "lightgrey" }}
+          _hover={{ borderColor: 'lightgrey' }}
           isDisabled={isDisabled}
           isInvalid={isInvalid}
-          _invalid={{ border: "1px solid", borderColor: "red" }}
+          _invalid={{ border: '1px solid', borderColor: 'red' }}
         />
         {error && (
           <Text
@@ -231,8 +231,8 @@ export const OrderedInput: React.FC<OrderedInputProps> = ({
 };
 
 export type OrderedSelectProps = {
-  label: string;
-  value: string;
+  label?: string;
+  value?: string;
   setValue: (value: string) => void;
   infoText?: string;
   tooltip?: string;
@@ -283,7 +283,7 @@ export const OrderedSelect: React.FC<
         color="black"
         border="1px"
         borderColor="lightgrey"
-        _hover={{ borderColor: "lightgrey" }}
+        _hover={{ borderColor: 'lightgrey' }}
         isDisabled={isDisabled}
       >
         {children}
@@ -293,8 +293,8 @@ export const OrderedSelect: React.FC<
 };
 
 export type OrderedTextareaProps = {
-  label: string;
-  value: string;
+  label?: string;
+  value?: string;
   setValue: (value: string) => void;
   infoText?: string;
   tooltip?: string;
@@ -315,7 +315,7 @@ export const OrderedTextarea: React.FC<OrderedTextareaProps> = ({
   maxLength,
   required,
   isDisabled = false,
-  type = "text",
+  type = 'text',
 }) => {
   return (
     <VStack w="100%" spacing="0.5rem">
@@ -333,9 +333,9 @@ export const OrderedTextarea: React.FC<OrderedTextareaProps> = ({
         <Flex color="#707683">
           {infoText && (
             <Text fontSize="xs">
-              {infoText}{" "}
+              {infoText}{' '}
               {required && (
-                <span style={{ fontStyle: "italic" }}>• {required}</span>
+                <span style={{ fontStyle: 'italic' }}>• {required}</span>
               )}
             </Text>
           )}
@@ -355,7 +355,7 @@ export const OrderedTextarea: React.FC<OrderedTextareaProps> = ({
         color="black"
         border="1px"
         borderColor="lightgrey"
-        _hover={{ borderColor: "lightgrey" }}
+        _hover={{ borderColor: 'lightgrey' }}
         isDisabled={isDisabled}
         h="4rem"
         resize="none"
