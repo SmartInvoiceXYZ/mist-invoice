@@ -86,7 +86,7 @@ export async function prepareBalanceCheck(params: {
     zKeyFilePath,
   );
 
-  const encodedProof = new AbiCoder().encode(
+  const encodedProof = AbiCoder.defaultAbiCoder().encode(
     ['uint256[2]', 'uint256[2][2]', 'uint256[2]'],
     [proof.a, proof.b, proof.c],
   );

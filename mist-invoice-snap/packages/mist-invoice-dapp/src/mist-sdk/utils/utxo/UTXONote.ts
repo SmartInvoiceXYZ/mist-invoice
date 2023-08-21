@@ -18,7 +18,7 @@ export class UTXONote {
   private _commitment?: bigint;
   nullifyingKey: bigint;
   transferType: TransferType;
-  private abiCoder = new AbiCoder();
+  private abiCoder = AbiCoder.defaultAbiCoder();
 
   constructor(params: {
     index?: number;

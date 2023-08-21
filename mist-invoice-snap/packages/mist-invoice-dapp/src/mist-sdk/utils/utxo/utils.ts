@@ -5,14 +5,16 @@ import {
   AbiCoder,
   keccak256,
   getBigInt,
+  Result,
+  EventLog,
+  Log,
 } from 'ethers';
 
 import { ExtData, EncryptedNote, UTXONote } from '.';
 import { SCALAR_FIELD } from '../constants';
 import { Lit } from '../encryption';
 import { Proof, RawProof } from '../prover';
-
-const defaultAbiCoder = new AbiCoder();
+import { get } from 'http';
 
 export function formatProof(proof: RawProof): Proof {
   return {
@@ -32,7 +34,7 @@ export function formatProof(proof: RawProof): Proof {
 }
 
 export function encodeFormattedProof(proof: Proof): BytesLike {
-  return defaultAbiCoder.encode(
+  return AbiCoder.defaultAbiCoder().encode(
     [
       'tuple(tuple(uint256 X, uint256 Y) A, tuple(uint256[2] X, uint256[2] Y) B, tuple(uint256 X, uint256 Y) C)',
     ],
@@ -41,7 +43,7 @@ export function encodeFormattedProof(proof: Proof): BytesLike {
 }
 
 export function getExtDataHash(extData: ExtData): BigInt {
-  const abi = new AbiCoder();
+  const abi = AbiCoder.defaultAbiCoder();
   const tokenTuple =
     'tuple(uint256 standard, address token, uint256 identifier, uint256 amount)';
   const encodedData = abi.encode(
@@ -54,6 +56,16 @@ export function getExtDataHash(extData: ExtData): BigInt {
   return getBigInt(hash) % SCALAR_FIELD;
 }
 
+const getEventArgs = (events: (EventLog | Log)[]) => {
+  let args = [] as Result[];
+  for (const e of events) {
+    if ('args' in e) {
+      args.push(e.args);
+    }
+  }
+  return args;
+};
+
 export async function fetchUTXONotes(params: {
   chain: string;
   contract: Contract;
@@ -65,9 +77,9 @@ export async function fetchUTXONotes(params: {
   const lit = new Lit();
   const filter = params.contract.filters.Commitment(params.startTreeIndex);
   const events = await params.contract.queryFilter(filter);
-  const args = events.map((e) => e.args);
-  const startIndex = args.findIndex(
-    (a) => a?.leafIndex.eq(params.startLeafIndex),
+  const args = getEventArgs(events);
+  const startIndex = args.findIndex((a) =>
+    a.leafIndex.eq(params.startLeafIndex),
   );
   const endIndex = params.endLeafIndex
     ? args.findIndex((a) => a?.leafIndex.eq(params.endLeafIndex))
@@ -75,7 +87,7 @@ export async function fetchUTXONotes(params: {
   const sentNotes: any[] = [];
   const receivedNotes: any[] = [];
   for (const arg of args.slice(startIndex, endIndex)) {
-    let note: EncryptedNote = defaultAbiCoder.decode(
+    let note: EncryptedNote = AbiCoder.defaultAbiCoder().decode(
       [
         'tuple(string encryptedData, string encryptedSenderKey, string encryptedReceiverKey)',
       ],
@@ -129,7 +141,7 @@ export async function fetchUTXONotesSent(params: {
   const lit = new Lit();
   const filter = params.contract.filters.Commitment(params.startTreeIndex);
   const events = await params.contract.queryFilter(filter);
-  const args = events.map((e) => e.args);
+  const args = getEventArgs(events);
   const startIndex = args.findIndex(
     (a) => a?.leafIndex.eq(params.startLeafIndex),
   );
@@ -138,7 +150,7 @@ export async function fetchUTXONotesSent(params: {
     : args.length;
   const sentNotes: any[] = [];
   for (const arg of args.slice(startIndex, endIndex)) {
-    let note: EncryptedNote = defaultAbiCoder.decode(
+    let note: EncryptedNote = AbiCoder.defaultAbiCoder().decode(
       [
         'tuple(string encryptedData, string encryptedSenderKey, string encryptedReceiverKey)',
       ],
@@ -176,7 +188,7 @@ export async function fetchUTXONotesReceived(params: {
   const lit = new Lit();
   const filter = params.contract.filters.Commitment(params.startTreeIndex);
   const events = await params.contract.queryFilter(filter);
-  const args = events.map((e) => e.args);
+  const args = getEventArgs(events);
   const startIndex = args.findIndex(
     (a) => a?.leafIndex.eq(params.startLeafIndex),
   );
@@ -185,7 +197,7 @@ export async function fetchUTXONotesReceived(params: {
     : args.length;
   const receivedNotes: any[] = [];
   for (const arg of args.slice(startIndex, endIndex)) {
-    let note: EncryptedNote = defaultAbiCoder.decode(
+    let note: EncryptedNote = AbiCoder.defaultAbiCoder().decode(
       [
         'tuple(string encryptedData, string encryptedSenderKey, string encryptedReceiverKey)',
       ],

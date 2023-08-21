@@ -152,7 +152,7 @@ export async function prepareTransfer(params: {
     wasmFilePath,
     zKeyFilePath,
   );
-  const abiCoder = new AbiCoder();
+  const abiCoder = AbiCoder.defaultAbiCoder();
   const encodedNotes = await Promise.all(
     outputs.map(async (note) => await note.encryptPacked('goerli')),
   );
@@ -243,7 +243,7 @@ export async function prepareWithdrawal(params: {
   const encodedNotes = await Promise.all(
     outputs.map(async (note) => await note.encryptPacked('goerli')),
   );
-  const abiCoder = new AbiCoder();
+  const abiCoder = AbiCoder.defaultAbiCoder();
   const encodedProof = abiCoder.encode(
     ['uint256[2]', 'uint256[2][2]', 'uint256[2]'],
     [proof.a, proof.b, proof.c],

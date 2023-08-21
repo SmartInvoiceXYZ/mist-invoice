@@ -15,7 +15,7 @@ export class Account {
   constructor(address: string, treeDepth: number, quorum?: number) {
     this.address = address;
     this.accountId = getBigInt(
-      keccak256(new AbiCoder().encode(['address'], [address])),
+      keccak256(AbiCoder.defaultAbiCoder().encode(['address'], [address])),
     );
     this.merkleTree = new IncrementalMerkleTree(
       poseidon2,

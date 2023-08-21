@@ -52,7 +52,10 @@ export async function createAccount(params: {
     root: account.root,
     quorum: account.quorum,
     registry,
-    merkleProof: new AbiCoder().encode(['uint256[]', 'uint8[]'], [[], []]),
+    merkleProof: AbiCoder.defaultAbiCoder().encode(
+      ['uint256[]', 'uint8[]'],
+      [[], []],
+    ),
     nonce: BigInt(1),
   };
   if (useRelayer) {
@@ -88,7 +91,7 @@ export async function manageAccount(params: {
     options,
   } = params;
   const proof = registryTree.createProof(registryTree.indexOf(account.root));
-  const merkleProof = new AbiCoder().encode(
+  const merkleProof = AbiCoder.defaultAbiCoder().encode(
     ['uint256[]', 'uint8[]'],
     [proof.siblings.map((sibling) => sibling[0]), proof.pathIndices],
   );
