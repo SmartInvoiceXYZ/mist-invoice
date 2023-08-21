@@ -33,7 +33,7 @@ export type MistContextType = {
   data?: MistData;
   secret?: MistSecret;
   loading: boolean;
-  getClientProof: () => BytesLike[] | undefined;
+  getClientProof: () => MerkleProof | undefined;
 };
 
 export const MistContext = createContext<MistContextType>({
