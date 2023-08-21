@@ -13,6 +13,7 @@ import { MistContextProvider } from "../context/MistContext";
 import { DBConfig } from "../dbconfig";
 import { Layout } from "../shared/Layout";
 import { globalStyles } from "../theme";
+import { MetaMaskProvider } from "@/context/MetamaskContext";
 
 initDB(DBConfig);
 
@@ -23,11 +24,13 @@ const MistApp = ({ Component, pageProps }: AppProps) => (
     <Global styles={globalStyles} />
     <ErrorBoundary FallbackComponent={ErrorHandler}>
       <Web3ContextProvider>
-        <MistContextProvider>
-          {/* <Layout> */}
-          <Component {...pageProps} />
-          {/* </Layout> */}
-        </MistContextProvider>
+        <MetaMaskProvider>
+          <MistContextProvider>
+            {/* <Layout> */}
+            <Component {...pageProps} />
+            {/* </Layout> */}
+          </MistContextProvider>
+        </MetaMaskProvider>
       </Web3ContextProvider>
     </ErrorBoundary>
   </ChakraProvider>

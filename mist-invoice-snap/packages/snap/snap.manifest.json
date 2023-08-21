@@ -19,6 +19,12 @@
   },
   "initialPermissions": {
     "snap_dialog": {},
+    "snap_getBip32Entropy": [
+      {
+        "path": ["m", "44'", "420'"],
+        "curve": "ed25519"
+      }
+    ],
     "endowment:rpc": {
       "dapps": true,
       "snaps": false

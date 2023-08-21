@@ -27,8 +27,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "@metamask/key-tree": "^9.0.0",
     "@metamask/snaps-types": "^0.32.2",
     "@metamask/snaps-ui": "^0.32.2",
+    "@usemist/sdk": "^0.1.0",
     "buffer": "^6.0.3"
   },
   "devDependencies": {

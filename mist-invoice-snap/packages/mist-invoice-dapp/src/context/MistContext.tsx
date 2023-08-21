@@ -8,6 +8,8 @@ import { randomBytes } from "crypto";
 import { useIndexedDB } from "react-indexed-db-hook";
 import { logDebug, logError } from "../utils";
 import { Web3Context } from "./Web3Context";
+import { connectSnap, getSnap, sendHello } from "@/snap/utils";
+import { MetaMaskContext, MetamaskActions, MetamaskState } from "./MetamaskContext";
 
 export type MistData = {
   merkleRoot?: BytesLike;
@@ -34,6 +36,8 @@ export type MistContextType = {
   secret?: MistSecret;
   loading: boolean;
   getClientProof: () => MerkleProof | undefined;
+  handleConnectClick?: () => void;
+  state?: MetamaskState
 };
 
 export const MistContext = createContext<MistContextType>({
@@ -52,6 +56,34 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
   const [loading, setLoading] = useState(false);
 
   const providerAddress = process.env.MIST_PROVIDER_ADDRESS || "";
+
+  // FROM MM SNAP TEMPLATE SITE
+  const [state, dispatch] = useContext(MetaMaskContext);
+
+  const handleConnectClick = async () => {
+    try {
+      await connectSnap();
+      const installedSnap = await getSnap();
+
+      dispatch({
+        type: MetamaskActions.SetInstalled,
+        payload: installedSnap,
+      });
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
+  const handleSendHelloClick = async () => {
+    try {
+      await sendHello();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+  //////////////////////////////////////////////////////////
 
   useEffect(() => {
     if (!account || !providerAddress || !data) return;
@@ -173,7 +205,7 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
   };
 
   return (
-    <MistContext.Provider value={{ data, secret, loading, getClientProof }}>
+    <MistContext.Provider value={{ data, secret, loading, getClientProof, handleConnectClick, state }}>
       {children}
     </MistContext.Provider>
   );
