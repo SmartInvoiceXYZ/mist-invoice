@@ -1,11 +1,11 @@
 {
-  "name": "test-next-app",
+  "name": "mist-invoice-dapp",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next dev",
     "lint": "next lint",
     "test": "jest --coverage --watchAll",
     "graphql-codegen": "codegen-graph-ts pull https://api.thegraph.com/subgraphs/name/psparacino/xdai-smart-invoices > ./src/graphql/manifest.json && codegen-graph-ts gen -s ./src/graphql/manifest.json -o ./src/graphql/subgraph.ts"
