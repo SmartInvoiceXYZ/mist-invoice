@@ -17,6 +17,7 @@ import {
   MetamaskActions,
   MetamaskState,
 } from './MetamaskContext';
+import { DBConfig } from '@/dbconfig';
 
 export type MistData = {
   merkleRoot?: BytesLike;
@@ -61,7 +62,7 @@ export const MistContext = createContext<MistContextType>({
 export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const { getByID, add } = useIndexedDB(process.env.MIST_DB_NAME || '');
+  const { getByID, add } = useIndexedDB(DBConfig.name, DBConfig);
   const { account } = useContext(Web3Context);
   const [data, setData] = useState<MistData>();
   const [secret, setSecret] = useState<MistSecret>();

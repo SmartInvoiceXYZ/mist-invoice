@@ -3,7 +3,7 @@ import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
 import { ChakraProvider, ColorModeScript, CSSReset } from '@chakra-ui/react';
 import theme from '@chakra-ui/theme';
 import { Global } from '@emotion/react';
-import React from 'react';
+import React, { use, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { initDB } from '../indexeddb';
 
@@ -15,27 +15,32 @@ import { Layout } from '../shared/Layout';
 import { globalStyles } from '../theme';
 import { MetaMaskProvider } from '@/context/MetamaskContext';
 
-initDB(DBConfig);
-
 console.log('_app.tsx');
 
-const MistApp = ({ Component, pageProps }: AppProps) => (
-  <ChakraProvider theme={theme}>
-    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-    <CSSReset />
-    <Global styles={globalStyles} />
-    <ErrorBoundary FallbackComponent={ErrorHandler}>
-      <Web3ContextProvider>
-        <MetaMaskProvider>
-          <MistContextProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </MistContextProvider>
-        </MetaMaskProvider>
-      </Web3ContextProvider>
-    </ErrorBoundary>
-  </ChakraProvider>
-);
+const MistApp = ({ Component, pageProps }: AppProps) => {
+  const isClient = typeof window !== 'undefined';
+  useEffect(() => {
+    if (isClient) initDB(DBConfig);
+  }, [isClient]);
+
+  return (
+    <ChakraProvider theme={theme}>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+      <CSSReset />
+      <Global styles={globalStyles} />
+      <ErrorBoundary FallbackComponent={ErrorHandler}>
+        <Web3ContextProvider>
+          <MetaMaskProvider>
+            <MistContextProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </MistContextProvider>
+          </MetaMaskProvider>
+        </Web3ContextProvider>
+      </ErrorBoundary>
+    </ChakraProvider>
+  );
+};
 
 export default MistApp;

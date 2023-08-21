@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { DBOperations, Key, CreateObjectStore } from "./indexed-db";
+import { useMemo } from 'react';
+import { DBOperations, Key, CreateObjectStore } from './indexed-db';
 
 export interface IndexedDBProps {
   name: string;
@@ -26,18 +26,25 @@ export interface useIndexedDB {
 }
 
 const indexeddbConfiguration: { version: number; name: string } = {
-  version: null,
-  name: null,
+  version: 0,
+  name: '',
 };
 
 export function initDB({ name, version, objectStoresMeta }: IndexedDBProps) {
-  indexeddbConfiguration.name = name;
-  indexeddbConfiguration.version = version;
-  Object.freeze(indexeddbConfiguration);
-  CreateObjectStore(name, version, objectStoresMeta);
+  console.log('initDB', name, version, objectStoresMeta);
+  var created = CreateObjectStore(name, version, objectStoresMeta);
+  if (created) {
+    indexeddbConfiguration.name = name;
+    indexeddbConfiguration.version = version;
+    Object.freeze(indexeddbConfiguration);
+  }
+  return created;
 }
 
-export function useIndexedDB(objectStore: string): {
+export function useIndexedDB(
+  objectStore: string,
+  props?: IndexedDBProps,
+): {
   add: <T = any>(value: T, key?: any) => Promise<number>;
   getByID: <T = any>(id: number | string) => Promise<T>;
   getAll: <T = any>() => Promise<T[]>;
@@ -50,16 +57,37 @@ export function useIndexedDB(objectStore: string): {
   getByIndex: (indexName: string, key: any) => Promise<any>;
   clear: () => Promise<any>;
 } {
-  if (!indexeddbConfiguration.name || !indexeddbConfiguration.version) {
-    throw new Error("Please, initialize the DB before the use.");
+  const uninitialized = {
+    add: () => Promise.resolve(0),
+    getByID: <T = any>() => Promise.resolve({} as T),
+    getAll: () => Promise.resolve([]),
+    update: () => Promise.resolve({}),
+    deleteRecord: () => Promise.resolve({}),
+    openCursor: () => Promise.resolve(),
+    getByIndex: () => Promise.resolve({}),
+    clear: () => Promise.resolve({}),
+  };
+  const isClient = typeof window === 'object';
+  if (!isClient) {
+    return uninitialized;
   }
-  return useMemo(
-    () =>
-      DBOperations(
-        indexeddbConfiguration.name,
-        indexeddbConfiguration.version,
-        objectStore,
-      ),
-    [indexeddbConfiguration, objectStore],
-  );
+
+  return useMemo(() => {
+    if (!indexeddbConfiguration.name || !indexeddbConfiguration.version) {
+      if (!props) {
+        throw new Error('Please, initialize the DB before the use.');
+      } else {
+        var created = initDB(props);
+        if (!created) {
+          return uninitialized;
+        }
+      }
+    }
+
+    return DBOperations(
+      indexeddbConfiguration.name,
+      indexeddbConfiguration.version,
+      objectStore,
+    );
+  }, [indexeddbConfiguration, objectStore]);
 }

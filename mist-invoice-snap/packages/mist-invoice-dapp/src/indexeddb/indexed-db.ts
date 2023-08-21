@@ -58,7 +58,9 @@ export function CreateObjectStore(
   storeSchemas: ObjectStoreMeta[],
 ) {
   const db = indexedDB();
-  if (typeof db === 'undefined') return;
+  if (typeof db === 'undefined') return false;
+
+  let result = false;
 
   const request: IDBOpenDBRequest = db.open(dbName, version);
 
@@ -79,7 +81,10 @@ export function CreateObjectStore(
   };
   request.onsuccess = function (e: any) {
     e.target.result.close();
+    result = true;
   };
+
+  return result;
 }
 
 export function DBOperations(

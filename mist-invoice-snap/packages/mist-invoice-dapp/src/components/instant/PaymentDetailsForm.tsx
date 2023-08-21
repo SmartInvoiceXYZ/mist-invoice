@@ -25,6 +25,8 @@ export const InstantPaymentDetailsForm: React.FC<
 > = ({ display, tokenData, allTokens }) => {
   const { chainId, provider } = useContext(Web3Context);
 
+  console.log(allTokens);
+
   const {
     clientAddress,
     setClientAddress,
@@ -130,6 +132,7 @@ export const InstantPaymentDetailsForm: React.FC<
           tooltip="This is the cryptocurrency you’ll receive payment in. The network your wallet is connected to determines which tokens display here. (If you change your wallet network now, you’ll be forced to start the invoice over)."
         >
           {chainId &&
+            TOKENS &&
             Object.keys(TOKENS).map((token) => (
               <option value={token} key={token}>
                 {getTokenInfo(chainId, token, tokenData).symbol}
