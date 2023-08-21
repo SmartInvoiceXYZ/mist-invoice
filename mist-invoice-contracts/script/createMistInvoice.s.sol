@@ -38,7 +38,7 @@ contract InvoiceCreationScript is Script {
         );
     }
 
-       function getLineaDummyData() public view returns (bytes memory) {
+    function getLineaDummyData() public view returns (bytes memory) {
         address _client = 0x1111111111111111111111111111111111111111;
         uint8 _resolverType = 1; // For simplicity
         address _resolver = 0x2222222222222222222222222222222222222222;

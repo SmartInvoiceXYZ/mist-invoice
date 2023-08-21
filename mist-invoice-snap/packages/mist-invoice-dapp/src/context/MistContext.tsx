@@ -50,11 +50,12 @@ export type MistContextType = {
   secret?: MistSecret;
   loading: boolean;
   getClientProof: () => MerkleProof | undefined;
-  handleConnectClick?: () => void;
+  handleSnapConnectClick: () => void;
   state?: MetamaskState;
 };
 
 export const MistContext = createContext<MistContextType>({
+  handleSnapConnectClick: () => undefined,
   getClientProof: () => undefined,
   loading: true,
 });
@@ -74,7 +75,7 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
   // FROM MM SNAP TEMPLATE SITE
   const [state, dispatch] = useContext(MetaMaskContext);
 
-  const handleConnectClick = async () => {
+  const handleSnapConnectClick = async () => {
     try {
       await connectSnap();
       const installedSnap = await getSnap();
@@ -221,7 +222,7 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
         secret,
         loading,
         getClientProof,
-        handleConnectClick,
+        handleSnapConnectClick,
         state,
       }}
     >
