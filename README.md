@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-georgeh · Tufnel_Enterprises · mr_bluesky · plor
+[georgeh](https://github.com/geovgy) · [Tufnel_Enterprises](https://github.com/psparacino) · [mr_bluesky](https://github.com/moconnell) · [plor](https://github.com/plor)
 </p>
 
 ## 📚 About
