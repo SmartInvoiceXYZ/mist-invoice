@@ -10,11 +10,16 @@
     "deploy-local-wrapper": "forge script script/deployMistInvoiceEscrowWrapper.s.sol --fork-url http://localhost:8545 --broadcast --ffi --legacy",
     "deploy-linea-wrapper": "forge script script/deployMistInvoiceEscrowWrapper.s.sol --fork-url https://rpc.goerli.linea.build --broadcast --ffi --legacy",
     "create-local-linea": "forge script script/createMistInvoice.s.sol --fork-url http://localhost:8545 --broadcast --ffi --legacy",
-    "create-local-sepolia": "forge script script/createMistInvoice.s.sol --fork-url http://localhost:8545 --broadcast --ffi"
+    "create-local-sepolia": "forge script script/createMistInvoice.s.sol --fork-url http://localhost:8545 --broadcast --ffi",
+    "build": "forge build && yarn typechain",
+    "typechain": "typechain --target=ethers-v6 --out-dir=types \"out/**/*.json\""
   },
   "devDependencies": {
+    "@typechain/ethers-v6": "^0.5.0",
     "prettier": "^3.0.0",
-    "solhint": "^3.4.1"
+    "solhint": "^3.4.1",
+    "typechain": "^8.3.1",
+    "typescript": "^5.1.6"
   },
   "name": "mist-invoice",
   "description": "A privacy layer on top of smart invoice."

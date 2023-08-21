@@ -22,3 +22,5 @@ export { MistInvoiceEscrowWrapper__factory } from "./MistInvoiceEscrowWrapper__f
 export { Script__factory } from "./Script__factory";
 export { StdAssertions__factory } from "./StdAssertions__factory";
 export { StdInvariant__factory } from "./StdInvariant__factory";
+export { Test__factory } from "./Test__factory";
+export { Verifier__factory } from "./Verifier__factory";

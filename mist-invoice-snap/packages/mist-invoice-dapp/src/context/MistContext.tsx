@@ -5,7 +5,7 @@ import {
   IncrementalMerkleTree,
   MerkleProof,
 } from '@zk-kit/incremental-merkle-tree';
-import { BytesLike, ethers, getBigInt, keccak256 } from 'ethers';
+import { BytesLike, ethers, getBigInt, keccak256, toBigInt } from 'ethers';
 import { poseidon2 } from 'poseidon-lite';
 import { randomBytes } from 'crypto';
 import { useIndexedDB } from '../indexeddb';
@@ -81,6 +81,7 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
   const [tokenAddress, setTokenAddress] = useState<string>('');
   const [receiver, setReceiver] = useState<string>('');
   const [amounts, setAmounts] = useState<bigint[]>([]);
+  const [random, setRandom] = useState<bigint>(0n);
 
   const providerAddress = process.env.MIST_PROVIDER_ADDRESS || '';
 
@@ -112,24 +113,28 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
   };
   //////////////////////////////////////////////////////////
 
-  useEffect(() => {
-    if (!account || !providerAddress || !data) return;
-    const values = [
-      [account, data.clientRandom],
-      [providerAddress, data.providerRandom],
-    ];
+  // useEffect(() => {
+  //   if (!account || !receiver || !secret) return;
+  //   const values = [
+  //     [account, data.clientRandom],
+  //     [receiver, data.providerRandom],
+  //   ];
 
-    const _tree = new IncrementalMerkleTree(poseidon2, 2, 0, 2, values);
-    setTree(_tree);
-    setData({
-      ...data,
-      merkleRoot: _tree.root,
-    });
-  }, [account, providerAddress, data]);
+  //   const _tree = new IncrementalMerkleTree(poseidon2, 2, 0, 2, values);
+  //   setTree(_tree);
+  //   setSecret({ merkleRoot: _tree.root, ...secret })
+  //   // setData({
+  //   //   ...data,
+  //   //   merkleRoot: _tree.root,
+  //   // });
+  // }, [account, receiver, secret]);
 
   useEffect(() => {
+    if (!account || !receiver || !tokenAddress || !amounts.length) return;
+    console.log('Generating new data');
     const generate = async () => {
-      const random = getBigInt(randomBytes(32).toString('hex'));
+      const random = toBigInt(randomBytes(32).valueOf());
+      console.log('random', random);
       // Contains bytes[] of encrypted note, clientKey and providerKey for each amount
       const encData = await Promise.all(
         amounts.map(async (amount, i) => {
@@ -152,16 +157,16 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
           );
         }),
       );
-      const clientId = getBigInt(
+      const clientId = toBigInt(
         keccak256(
           ethers.AbiCoder.defaultAbiCoder().encode(['address'], [account]),
         ),
       );
-      const providerId = getBigInt(
+      const providerId = toBigInt(
         keccak256(
           ethers.AbiCoder.defaultAbiCoder().encode(
             ['address'],
-            [providerAddress],
+            [receiver],
           ),
         ),
       );
@@ -174,49 +179,61 @@ export const MistContextProvider: React.FC<React.PropsWithChildren> = ({
         random,
       ]);
 
+      const leaves = [
+        poseidon2([toBigInt(account), CLIENT_SIGNAL]),
+        poseidon2([toBigInt(receiver), PROVIDER_SIGNAL]),
+      ]
+      const _tree = new IncrementalMerkleTree(poseidon2, 2, 0, 2, leaves);
+
       const newSecret = {
+        merkleRoot: _tree.root,
         providerHash,
         clientHash,
         encData,
       };
 
       setSecret(newSecret);
+      console.log('newSecret', newSecret);
       return secret;
     };
 
     async function genAddRes() {
       let res = await generate();
-      add(res, account).then(() => {
-        setSecret(res);
-      });
+      // add(res, account).then(() => {
+      //   setSecret(res);
+      // });
     }
 
-    if (account) {
-      setLoading(true);
-      try {
-        getByID(account).then((res) => {
-          if (res) {
-            logDebug('Using existing data');
-            setData(res);
-          } else {
-            logDebug('Generating new data');
-            genAddRes();
-          }
-        });
-      } catch (e) {
-        logError(e);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      setData(undefined);
-    }
+    // if (account) {
+    //   setLoading(true);
+    //   try {
+    //     getByID(account).then((res) => {
+    //       console.log('res', res)
+    //       if (res) {
+    //         logDebug('Using existing data');
+    //         setData(res);
+    //         setSecret(res)
+    //       } else {
+    //         logDebug('Generating new data');
+    //         genAddRes();
+    //       }
+    //     });
+    //   } catch (e) {
+    //     logError(e);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // } else {
+    //   setData(undefined);
+    //   setSecret(undefined);
+    // }
+    genAddRes();
   }, [account, receiver, tokenAddress, amounts]);
 
   const getClientProof = () => {
     if (account && tree && data) {
       const proof = tree.createProof(
-        tree.indexOf(poseidon2([getBigInt(account), CLIENT_SIGNAL])),
+        tree.indexOf(poseidon2([toBigInt(account), CLIENT_SIGNAL])),
       );
       return proof;
     }

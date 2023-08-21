@@ -22,50 +22,95 @@ import type {
 } from "./common";
 
 export declare namespace MistInvoiceEscrowWrapper {
-  export type MistDataStruct = {
-    merkleRoot: BytesLike;
-    clientRandom: BytesLike;
-    providerRandom: BytesLike;
-    clientKey: BytesLike;
-    providerKey: BytesLike;
+  export type MistSecretStruct = {
+    merkleRoot: BigNumberish;
+    providerHash: BigNumberish;
+    clientHash: BigNumberish;
+    encData: BytesLike[];
   };
 
-  export type MistDataStructOutput = [
-    merkleRoot: string,
-    clientRandom: string,
-    providerRandom: string,
-    clientKey: string,
-    providerKey: string
+  export type MistSecretStructOutput = [
+    merkleRoot: bigint,
+    providerHash: bigint,
+    clientHash: bigint,
+    encData: string[]
   ] & {
-    merkleRoot: string;
-    clientRandom: string;
-    providerRandom: string;
-    clientKey: string;
-    providerKey: string;
+    merkleRoot: bigint;
+    providerHash: bigint;
+    clientHash: bigint;
+    encData: string[];
+  };
+}
+
+export declare namespace Pairing {
+  export type G1PointStruct = { X: BigNumberish; Y: BigNumberish };
+
+  export type G1PointStructOutput = [X: bigint, Y: bigint] & {
+    X: bigint;
+    Y: bigint;
+  };
+
+  export type G2PointStruct = {
+    X: [BigNumberish, BigNumberish];
+    Y: [BigNumberish, BigNumberish];
+  };
+
+  export type G2PointStructOutput = [
+    X: [bigint, bigint],
+    Y: [bigint, bigint]
+  ] & { X: [bigint, bigint]; Y: [bigint, bigint] };
+}
+
+export declare namespace Verifier {
+  export type ProofStruct = {
+    A: Pairing.G1PointStruct;
+    B: Pairing.G2PointStruct;
+    C: Pairing.G1PointStruct;
+  };
+
+  export type ProofStructOutput = [
+    A: Pairing.G1PointStructOutput,
+    B: Pairing.G2PointStructOutput,
+    C: Pairing.G1PointStructOutput
+  ] & {
+    A: Pairing.G1PointStructOutput;
+    B: Pairing.G2PointStructOutput;
+    C: Pairing.G1PointStructOutput;
   };
 }
 
 export interface MistInvoiceEscrowWrapperInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "CLIENT_SIGNAL"
       | "INVOICE_FACTORY"
+      | "PROVIDER_SIGNAL"
       | "createInvoice"
       | "mistPool"
-      | "privateDeposit"
       | "privateDispute"
       | "privateRelease"
       | "privateWithdraw"
       | "resolve"
+      | "verify"
+      | "verifyProof"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "CLIENT_SIGNAL",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "INVOICE_FACTORY",
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "PROVIDER_SIGNAL",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "createInvoice",
     values: [
-      MistInvoiceEscrowWrapper.MistDataStruct,
+      MistInvoiceEscrowWrapper.MistSecretStruct,
       BigNumberish[],
       BytesLike,
       BytesLike
@@ -73,28 +118,72 @@ export interface MistInvoiceEscrowWrapperInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "mistPool", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "privateDeposit",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "privateDispute",
-    values: [AddressLike, BytesLike, BytesLike]
+    values: [
+      AddressLike,
+      BytesLike,
+      [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      BigNumberish,
+      Verifier.ProofStruct
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "privateRelease",
-    values: [AddressLike, BytesLike, BigNumberish]
+    values: [
+      AddressLike,
+      BigNumberish,
+      [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      Verifier.ProofStruct
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "privateWithdraw",
-    values: [AddressLike, BytesLike]
+    values: [
+      AddressLike,
+      [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      Verifier.ProofStruct,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "resolve",
-    values: [AddressLike, BigNumberish, BigNumberish, BytesLike]
+    values: [
+      AddressLike,
+      BigNumberish,
+      BigNumberish,
+      BytesLike,
+      [BytesLike, BytesLike]
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "verify",
+    values: [
+      Verifier.ProofStruct,
+      BigNumberish,
+      [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      BigNumberish
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "verifyProof",
+    values: [
+      [BigNumberish, BigNumberish],
+      [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]],
+      [BigNumberish, BigNumberish],
+      BigNumberish[]
+    ]
   ): string;
 
   decodeFunctionResult(
+    functionFragment: "CLIENT_SIGNAL",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "INVOICE_FACTORY",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "PROVIDER_SIGNAL",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -102,10 +191,6 @@ export interface MistInvoiceEscrowWrapperInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "mistPool", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "privateDeposit",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "privateDispute",
     data: BytesLike
@@ -119,6 +204,11 @@ export interface MistInvoiceEscrowWrapperInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "resolve", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "verify", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "verifyProof",
+    data: BytesLike
+  ): Result;
 }
 
 export interface MistInvoiceEscrowWrapper extends BaseContract {
@@ -164,11 +254,15 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  CLIENT_SIGNAL: TypedContractMethod<[], [bigint], "view">;
+
   INVOICE_FACTORY: TypedContractMethod<[], [string], "view">;
+
+  PROVIDER_SIGNAL: TypedContractMethod<[], [bigint], "view">;
 
   createInvoice: TypedContractMethod<
     [
-      _mistData: MistInvoiceEscrowWrapper.MistDataStruct,
+      _mistData: MistInvoiceEscrowWrapper.MistSecretStruct,
       _amounts: BigNumberish[],
       _data: BytesLike,
       _type: BytesLike
@@ -179,26 +273,36 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
 
   mistPool: TypedContractMethod<[], [string], "view">;
 
-  privateDeposit: TypedContractMethod<
-    [_invoiceAddr: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
   privateDispute: TypedContractMethod<
-    [_invoiceAddr: AddressLike, _details: BytesLike, _proof: BytesLike],
+    [
+      _invoiceAddr: AddressLike,
+      _details: BytesLike,
+      _digest: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      _role: BigNumberish,
+      _proof: Verifier.ProofStruct
+    ],
     [void],
     "nonpayable"
   >;
 
   privateRelease: TypedContractMethod<
-    [_invoiceAddr: AddressLike, _proof: BytesLike, _milestone: BigNumberish],
+    [
+      _invoiceAddr: AddressLike,
+      _milestone: BigNumberish,
+      _digest: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      _proof: Verifier.ProofStruct
+    ],
     [void],
     "nonpayable"
   >;
 
   privateWithdraw: TypedContractMethod<
-    [_invoiceAddr: AddressLike, _proof: BytesLike],
+    [
+      _invoiceAddr: AddressLike,
+      _digest: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      _proof: Verifier.ProofStruct,
+      _encNote: BytesLike
+    ],
     [void],
     "nonpayable"
   >;
@@ -208,10 +312,33 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
       _invoiceAddr: AddressLike,
       _clientAward: BigNumberish,
       _providerAward: BigNumberish,
-      _details: BytesLike
+      _details: BytesLike,
+      _encNotes: [BytesLike, BytesLike]
     ],
     [void],
     "nonpayable"
+  >;
+
+  verify: TypedContractMethod<
+    [
+      proof: Verifier.ProofStruct,
+      root: BigNumberish,
+      digest: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      signal: BigNumberish
+    ],
+    [boolean],
+    "view"
+  >;
+
+  verifyProof: TypedContractMethod<
+    [
+      a: [BigNumberish, BigNumberish],
+      b: [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]],
+      c: [BigNumberish, BigNumberish],
+      input: BigNumberish[]
+    ],
+    [boolean],
+    "view"
   >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -219,13 +346,19 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
   ): T;
 
   getFunction(
+    nameOrSignature: "CLIENT_SIGNAL"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "INVOICE_FACTORY"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "PROVIDER_SIGNAL"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "createInvoice"
   ): TypedContractMethod<
     [
-      _mistData: MistInvoiceEscrowWrapper.MistDataStruct,
+      _mistData: MistInvoiceEscrowWrapper.MistSecretStruct,
       _amounts: BigNumberish[],
       _data: BytesLike,
       _type: BytesLike
@@ -237,26 +370,39 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
     nameOrSignature: "mistPool"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "privateDeposit"
-  ): TypedContractMethod<[_invoiceAddr: AddressLike], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "privateDispute"
   ): TypedContractMethod<
-    [_invoiceAddr: AddressLike, _details: BytesLike, _proof: BytesLike],
+    [
+      _invoiceAddr: AddressLike,
+      _details: BytesLike,
+      _digest: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      _role: BigNumberish,
+      _proof: Verifier.ProofStruct
+    ],
     [void],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "privateRelease"
   ): TypedContractMethod<
-    [_invoiceAddr: AddressLike, _proof: BytesLike, _milestone: BigNumberish],
+    [
+      _invoiceAddr: AddressLike,
+      _milestone: BigNumberish,
+      _digest: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      _proof: Verifier.ProofStruct
+    ],
     [void],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "privateWithdraw"
   ): TypedContractMethod<
-    [_invoiceAddr: AddressLike, _proof: BytesLike],
+    [
+      _invoiceAddr: AddressLike,
+      _digest: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      _proof: Verifier.ProofStruct,
+      _encNote: BytesLike
+    ],
     [void],
     "nonpayable"
   >;
@@ -267,10 +413,35 @@ export interface MistInvoiceEscrowWrapper extends BaseContract {
       _invoiceAddr: AddressLike,
       _clientAward: BigNumberish,
       _providerAward: BigNumberish,
-      _details: BytesLike
+      _details: BytesLike,
+      _encNotes: [BytesLike, BytesLike]
     ],
     [void],
     "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "verify"
+  ): TypedContractMethod<
+    [
+      proof: Verifier.ProofStruct,
+      root: BigNumberish,
+      digest: [BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+      signal: BigNumberish
+    ],
+    [boolean],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "verifyProof"
+  ): TypedContractMethod<
+    [
+      a: [BigNumberish, BigNumberish],
+      b: [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]],
+      c: [BigNumberish, BigNumberish],
+      input: BigNumberish[]
+    ],
+    [boolean],
+    "view"
   >;
 
   filters: {};

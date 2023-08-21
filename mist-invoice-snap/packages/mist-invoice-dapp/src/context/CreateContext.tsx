@@ -1,4 +1,4 @@
-import { AbiCoder, encodeBytes32String, TransactionResponse } from 'ethers';
+import { AbiCoder, encodeBytes32String, ethers, TransactionResponse } from 'ethers';
 import React, {
   createContext,
   useCallback,
@@ -120,7 +120,7 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const { provider: rpcProvider, chainId } = useContext(Web3Context);
-  const { data: mistData, secret: mistSecret } = useContext(MistContext);
+  const { data: mistData, secret: mistSecret, setAmounts, setReceiver, setTokenAddress } = useContext(MistContext);
 
   const [wrappedNativeToken, setWrappedNativeToken] = useState('');
 
@@ -178,6 +178,12 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
     setWrappedNativeToken(wrapNatToken);
     setPaymentToken(wrapNatToken);
   }, [chainId]);
+
+  useEffect(() => {
+    setReceiver(paymentAddress)
+    setTokenAddress(paymentToken)
+    setAmounts(payments)
+  }, [paymentToken, payments, clientAddress, paymentAddress]);
 
   const { Escrow, Instant } = INVOICE_TYPES;
 
@@ -363,36 +369,36 @@ export const CreateContextProvider: React.FC<React.PropsWithChildren> = ({
       rpcProvider &&
       allValid &&
       detailsHash &&
-      mistData?.merkleRoot &&
-      mistData?.clientRandom &&
-      mistData?.providerRandom &&
-      mistData?.clientKey &&
-      mistData?.providerKey &&
+      mistSecret?.merkleRoot &&
+      mistSecret?.clientHash &&
+      mistSecret?.providerHash &&
       mistSecret?.encData
     ) {
       setLoading(true);
       setTx(undefined);
 
       // const factoryAddress = getInvoiceFactoryAddress(chainId);
-      const escrowWrapperAddress =
-        process.env.NEXT_PUBLIC_MIST_INVOICE_ESCROW_WRAPPER;
+      const escrowWrapperAddress = 
+        process.env.NEXT_PUBLIC_LINEA_GOERLI_MIST_INVOICE_ESCROW_WRAPPER;
+      
+      console.log('escrowWrapperAddress', escrowWrapperAddress);
 
       let paymentAmounts = [BigInt(0)];
       if (escrowWrapperAddress && invoiceType === Escrow) {
+        console.log('Creating escrow invoice...')
         const escrowInfo = encodeEscrowData(escrowWrapperAddress);
         type = escrowInfo.type;
         data = escrowInfo.data;
         paymentAmounts = payments;
         const wrapper =
           MistInvoiceEscrowWrapper__factory.connect(escrowWrapperAddress);
-        const connected = wrapper.connect(await rpcProvider.getSigner());
+        const connected = wrapper.connect(new ethers.Wallet(process.env.NEXT_PUBLIC_MIST_RELAYER_PRIVATE_KEY || "", rpcProvider));
         const txResult = await connected.createInvoice(
           {
-            merkleRoot: mistData.merkleRoot,
-            clientRandom: mistData.clientRandom,
-            providerRandom: mistData.providerRandom,
-            clientKey: mistData.clientKey,
-            providerKey: mistData.providerKey,
+            merkleRoot: mistSecret.merkleRoot,
+            clientHash: mistSecret.clientHash,
+            providerHash: mistSecret.providerHash,
+            encData: mistSecret.encData
           },
           paymentAmounts,
           data,
