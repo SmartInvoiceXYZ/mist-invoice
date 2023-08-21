@@ -4,6 +4,9 @@
 // TODO 🔗 link to website
 </p>
 
+<p align="center">
+georgeh · Tufnel_Enterprises · mr_bluesky · plor
+</p>
 
 ## 📚 About
 
@@ -11,6 +14,13 @@ This project uses an alpha privacy tool called [MIST](https://github.com/Modular
 
 ### 📼 Demo
 // TODO youtube demo video
+
+### 🎯 Bounties submitted for
+
+- IYKYK Linea Edition
+  - // TODO link to deployed smart contract on blockscout
+- OH SNAP!
+- Make a Dapp That Slaps, No Cap
 
 ## 🧰 Components
 
