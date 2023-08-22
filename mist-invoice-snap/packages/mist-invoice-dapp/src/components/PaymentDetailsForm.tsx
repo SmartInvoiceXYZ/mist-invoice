@@ -68,13 +68,17 @@ export const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({
   const [paymentInvalid, setPaymentInvalid] = useState(false);
   const [milestonesInvalid, setMilestonesInvalid] = useState(false);
   const [resolutionRate, setResolutionRate] = useState(20);
+  const unknownToken = { decimals: 0, symbol: '' };
   // const [symbols, setSymbols] = useState([]);
-  const [tokenInfo, setTokenInfo] = useState({ decimals: 0, symbol: '' });
+  const [tokenInfo, setTokenInfo] = useState(unknownToken);
 
   useEffect(() => {
     if (chainId && paymentToken) {
       if (tokenData) {
-        setTokenInfo(getTokenInfo(chainId, paymentToken, tokenData));
+        const token = getTokenInfo(chainId, paymentToken, tokenData);
+        //console.log('token', chainId, paymentToken, token);
+        setTokenInfo(token ?? unknownToken);
+        setTokenAddress(token?.tokenContract);
       }
     }
   }, [chainId, paymentToken, tokenData]);
@@ -85,11 +89,6 @@ export const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({
         setResolutionRate,
       );
   }, [chainId, provider, arbitrationProvider]);
-
-  function handlePaymentTokenChange(value: string): void {
-    setPaymentToken(value);
-    setTokenAddress(value);
-  }
 
   return (
     <VStack w="100%" spacing="1rem" display={display}>
@@ -131,7 +130,8 @@ export const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({
           isInvalid={paymentInvalid}
           setValue={(v) => {
             setPaymentDueInput(v);
-            if (v && !isNaN(Number(v))) {
+            if (v && !isNaN(Number(v)) && tokenInfo.decimals) {
+              //console.log(v, tokenInfo.decimals);
               const p = parseUnits(v, tokenInfo.decimals);
               setPaymentDue(p);
               setPaymentInvalid(p <= 0);
@@ -145,7 +145,7 @@ export const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({
         />
         <OrderedSelect
           value={paymentToken}
-          setValue={handlePaymentTokenChange}
+          setValue={setPaymentToken}
           label="Payment Token"
           required="required"
           tooltip="This is the cryptocurrency you’ll receive payment in. The network your wallet is connected to determines which tokens display here. (If you change your wallet network now, you’ll be forced to start the invoice over)."
@@ -153,9 +153,8 @@ export const PaymentDetailsForm: React.FC<PaymentDetailsFormProps> = ({
           {chainId &&
             TOKENS &&
             Object.keys(TOKENS).map((i) => (
-              <option value={i} key={i}>
-                {getTokenInfo(chainId, TOKENS[i], tokenData)?.symbol ??
-                  TOKENS[i]}
+              <option value={TOKENS[i]} key={i}>
+                {getTokenInfo(chainId, TOKENS[i], tokenData).symbol}
               </option>
             ))}
         </OrderedSelect>

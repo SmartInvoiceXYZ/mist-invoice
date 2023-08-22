@@ -40,12 +40,15 @@ export const FormConfirmation: React.FC<FormConfirmationProps> = ({
     paymentToken,
   } = useContext(CreateContext);
 
-  const [tokenInfo, setTokenInfo] = useState({ decimals: 0, symbol: '' });
+  const unknownToken = { decimals: 0, symbol: '' };
+  const [tokenInfo, setTokenInfo] = useState(unknownToken);
 
   useEffect(() => {
     if (chainId && paymentToken) {
       if (tokenData) {
-        setTokenInfo(getTokenInfo(chainId, paymentToken, tokenData));
+        setTokenInfo(
+          getTokenInfo(chainId, paymentToken, tokenData) ?? unknownToken,
+        );
       }
     }
   }, [chainId, paymentToken, tokenData]);

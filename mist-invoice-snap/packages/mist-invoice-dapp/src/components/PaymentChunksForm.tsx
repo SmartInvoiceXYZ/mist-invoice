@@ -29,12 +29,15 @@ export const PaymentChunksForm: React.FC<PaymentChunksFormProps> = ({
   const { setAmounts } = useContext(MistContext);
   const { paymentToken, milestones, payments, setPayments, paymentDue } =
     useContext(CreateContext);
-  const [tokenInfo, setTokenInfo] = useState({ decimals: 0, symbol: '' });
+  const unknownToken = { decimals: 0, symbol: '' };
+  const [tokenInfo, setTokenInfo] = useState(unknownToken);
 
   useEffect(() => {
     if (chainId && paymentToken) {
       if (tokenData) {
-        setTokenInfo(getTokenInfo(chainId, paymentToken, tokenData));
+        setTokenInfo(
+          getTokenInfo(chainId, paymentToken, tokenData) ?? unknownToken,
+        );
       }
     }
   }, [chainId, paymentToken, tokenData]);
